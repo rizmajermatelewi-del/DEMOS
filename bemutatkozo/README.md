@@ -19,6 +19,17 @@ mint amit a tartalma indokol.
 - `Electrician` típusú schema.org adat (cím, nyitvatartás, kiszállási terület)
   a helyi kereséshez
 
+## Mérés
+
+Lighthouse, mobil emuláció, 2026-09-24, három futásból a stabil érték:
+
+| Performance | Accessibility | Best Practices | SEO |
+|---|---|---|---|
+| 99 | 100 | 100 | 100 |
+
+A hiányzó pont a Google Fonts betöltése (render-blocking CSS). Saját
+hosztolt fonttal 100 lenne; a bemutatóban ez a kompromisszum látható marad.
+
 ## Döntések
 
 - **Nincs keretrendszer.** Sima HTML + CSS + egy 36 soros script. A Vite csak
