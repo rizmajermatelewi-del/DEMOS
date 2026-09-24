@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kovács Villanyszerelés — bemutató</title>
+    <meta
+      name="description"
+      content="Bemutató egyoldalas oldal egy debreceni villanyszerelőnek. Az űrlap nem küld üzenetet."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Electrician",
+        "name": "Kovács Villanyszerelés",
+        "description": "Bemutató egyoldalas oldal — saját portfólió-projekt, nem élő vállalkozás.",
+        "url": "https://demo-bemutatkozo.vercel.app",
+        "telephone": "+36 30 555 0187",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Csapó utca 12.",
+          "addressLocality": "Debrecen",
+          "postalCode": "4029",
+          "addressCountry": "HU"
+        },
+        "areaServed": ["Debrecen", "Hajdúböszörmény", "Balmazújváros", "Hajdúsámson"],
+        "openingHoursSpecification": [{
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "08:00",
+          "closes": "17:00"
+        }]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#tartalom">Ugrás a tartalomhoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong> — saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás.
+    </p>
+
+    <header class="top">
+      <p class="mark">Kovács Villanyszerelés</p>
+      <a class="phone" href="tel:+36305550187">+36 30 555 0187</a>
+    </header>
+
+    <main id="tartalom">
+      <section class="hero">
+        <p class="eyebrow">Debrecen · villanyszerelő</p>
+        <h1>Kovács<br />Villanyszerelés</h1>
+        <p class="lede">
+          Lakásfelújítás, biztosítékcsere, hibaelhárítás — visszahívok, és előre megmondom az árat.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="#ajanlat">Ajánlatot kérek</a>
+          <a class="btn" href="tel:+36305550187">Azonnali hívás</a>
+        </div>
+      </section>
+
+      <section class="work" aria-labelledby="work-title">
+        <p class="eyebrow">Mit vállalok</p>
+        <h2 id="work-title">Négy dolog. Naponta.</h2>
+        <p class="lede">Nincs tizenkét pontos listám. Ezeket csinálom jól.</p>
+        <ol>
+          <li>
+            <h3>Lakossági szerelés</h3>
+            <p>Új vezeték, kapcsoló, konnektor, lámpa — felújításkor vagy utána.</p>
+          </li>
+          <li>
+            <h3>Biztosítéktábla</h3>
+            <p>Csere, bővítés, FI-relé — átlátható árajánlattal, mielőtt hozzáfogok.</p>
+          </li>
+          <li>
+            <h3>Hibaelhárítás</h3>
+            <p>Zárlat, kieső automata, melegedő csatlakozó. Hétköznap 8–17.</p>
+          </li>
+          <li>
+            <h3>Okosotthon-alap</h3>
+            <p>Wi-Fi kapcsoló, termosztát bekötés — ha a meglévő hálózat bírja.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="where" aria-labelledby="where-title">
+        <p class="eyebrow">Hol dolgozom</p>
+        <h2 id="where-title">Debrecen + 25 km</h2>
+        <p class="lede">Hajdúböszörmény, Balmazújváros, Hajdúsámson. Városban a kiszállás díjmentes.</p>
+        <dl>
+          <div>
+            <dt>Cím</dt>
+            <dd>4029 Debrecen, Csapó utca 12.</dd>
+          </div>
+          <div>
+            <dt>Idő</dt>
+            <dd>Hétfő–péntek 8:00–17:00</dd>
+          </div>
+          <div>
+            <dt>Telefon</dt>
+            <dd><a href="tel:+36305550187">+36 30 555 0187</a></dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="ask" id="ajanlat" aria-labelledby="ask-title">
+        <p class="eyebrow">Kapcsolat</p>
+        <h2 id="ask-title">Írj — visszahívlak</h2>
+        <p class="lede">A bemutatóban az űrlap nem küld e-mailt. Élesben egy űrlapszolgáltatás menne ide.</p>
+        <form id="contact-form" novalidate>
+          <label>
+            Név
+            <input id="name" name="name" autocomplete="name" required minlength="2" />
+            <span class="error" id="name-error" hidden></span>
+          </label>
+          <label>
+            Telefon
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+            <span class="error" id="phone-error" hidden></span>
+          </label>
+          <label>
+            Település
+            <input id="city" name="city" autocomplete="address-level2" required minlength="2" />
+            <span class="error" id="city-error" hidden></span>
+          </label>
+          <label>
+            Mire lenne szükséged?
+            <textarea id="job" name="job" rows="4" required minlength="8"></textarea>
+            <span class="error" id="job-error" hidden></span>
+          </label>
+          <button class="btn primary" type="submit">Elküldöm</button>
+          <p id="form-status" role="status" hidden></p>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      Kovács Villanyszerelés · bemutató · nem élő vállalkozás
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
