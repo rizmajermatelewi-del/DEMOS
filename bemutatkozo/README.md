@@ -27,8 +27,8 @@ Lighthouse, mobil emuláció, 2026-09-24, három futásból a stabil érték:
 |---|---|---|---|
 | 99 | 100 | 100 | 100 |
 
-A hiányzó pont a Google Fonts betöltése (render-blocking CSS). Saját
-hosztolt fonttal 100 lenne; a bemutatóban ez a kompromisszum látható marad.
+A hiányzó pont az első festésé: a Google Fonts stíluslap blokkolja a
+renderelést (Lighthouse becslés: ~810 ms). Saját hosztolt font a következő lépés.
 
 ## Döntések
 
