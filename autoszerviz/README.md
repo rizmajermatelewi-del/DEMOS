@@ -2,7 +2,7 @@
 
 Bemutató projekt, saját kezdeményezés. Nem élő szerviz, minden adat kitalált.
 
-Élő: https://demo-autoszerviz.vercel.app
+Élő: https://demo-szerviz.vercel.app
 
 ## A probléma
 
