@@ -140,8 +140,6 @@ main { max-width: 72rem; margin: 0 auto; padding: 1.5rem 1.25rem 6rem; }
     grid-template-columns: minmax(0, 1.2fr) minmax(22rem, 0.8fr);
     align-items: start;
   }
-
-  .cart { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow-y: auto; }
 }
 
 .eyebrow {
@@ -429,3 +427,18 @@ input::placeholder { color: #8f7a73; }
     transition: none;
   }
 }
+
+/* One clear next step for a visitor who likes the demo. */
+.banner .banner-cta {
+  display: inline-block;
+  margin: 0.2rem 0 0 0.5rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.banner .banner-cta:hover { text-decoration: underline; }

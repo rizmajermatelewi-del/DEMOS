@@ -152,6 +152,7 @@ export default function App() {
       <p className="banner" role="status">
         <strong>Bemutató projekt</strong> — saját kezdeményezés. A készlet és a félretétel csak ebben a böngészőben él. Készítette:{' '}
         <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+        {' '}<a className="banner-cta" href="https://rizmajerdev.com/?demo=bolt#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
       </p>
 
       <header className="top">
@@ -302,7 +303,7 @@ export default function App() {
                   return (
                     <li key={p.id} className="card">
                       <p className="cat">{CATEGORIES.find((c) => c.id === p.cat)?.name}</p>
-                      <h3>{p.name}</h3>
+                      <h2>{p.name}</h2>
                       <p className="spec">{p.spec}</p>
                       <StockPill product={p} free={left} />
                       <div className="buy">

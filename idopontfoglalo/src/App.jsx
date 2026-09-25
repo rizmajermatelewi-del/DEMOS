@@ -148,6 +148,7 @@ export default function App() {
       </a>
       <p className="banner" role="status">
         <strong>Bemutató projekt</strong> — saját kezdeményezés. A foglalás csak ebben a böngészőben marad, e-mail nem megy ki. Készítette: <a href="https://rizmajerdev.com/" style={{ color: 'inherit', textDecoration: 'underline' }}>Rizmajer Máté</a>
+        {' '}<a className="banner-cta" href="https://rizmajerdev.com/?demo=idopontfoglalo#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
       </p>
 
       <header className="top">

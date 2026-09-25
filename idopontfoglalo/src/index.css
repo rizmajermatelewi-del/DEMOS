@@ -326,3 +326,18 @@ textarea { min-height: 6rem; resize: vertical; }
     transition: none;
   }
 }
+
+/* One clear next step for a visitor who likes the demo. */
+.banner .banner-cta {
+  display: inline-block;
+  margin: 0.2rem 0 0 0.5rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  background: #f3eee6;
+  color: #1a332c;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.banner .banner-cta:hover { text-decoration: underline; }

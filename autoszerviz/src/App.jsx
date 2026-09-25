@@ -224,6 +224,7 @@ export default function App() {
       <p className="banner" role="status">
         <strong>Bemutató projekt</strong> — saját kezdeményezés. A foglalás csak ebben a böngészőben marad, e-mail nem megy ki. Készítette:{' '}
         <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+        {' '}<a className="banner-cta" href="https://rizmajerdev.com/?demo=autoszerviz#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
       </p>
 
       <header className="top">

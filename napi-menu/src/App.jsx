@@ -185,6 +185,7 @@ export default function App() {
       </a>
       <p className="banner" role="status">
         <strong>Bemutató projekt</strong> — saját kezdeményezés. Nem élő étterem. Készítette: <a href="https://rizmajerdev.com/" style={{ color: 'inherit', textDecoration: 'underline' }}>Rizmajer Máté</a>
+        {' '}<a className="banner-cta" href="https://rizmajerdev.com/?demo=napi-menu#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
       </p>
       <header className="mast">
         <p className="where">
