@@ -10,6 +10,7 @@ kezdeményezés, kitalált mintaadatokkal — nem ügyfélmunka.
 | [`bemutatkozo/`](bemutatkozo) | Egyoldalas bemutatkozó villanyszerelőnek — gyors, keretrendszer nélkül | https://demo-bemutatkozo.vercel.app |
 | [`autoszerviz/`](autoszerviz) | Autószerviz — időpontfoglalás rendszámmal + árajánlatkérés, műhely nézet | https://demo-szerviz.vercel.app |
 | [`cukraszda/`](cukraszda) | Cukrászda — torta- és tálca-előrendelés felirattal, napi kapacitással, pult nézet | https://demo-cukraszda.vercel.app |
+| [`bolt/`](bolt) | Helyi vas-műszaki bolt — katalógus élő készlettel, nyitva/zárva jelzés, félretétel | https://demo-vasbolt.vercel.app |
 
 Mindegyik mappa önálló Vite projekt, saját `package.json`-nal és README-vel
 (probléma + döntések).
