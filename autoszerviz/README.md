@@ -45,4 +45,13 @@ npm test      # sávszámítás, tárolás, rendszám
 npm run dev
 ```
 
-React 19 + Vite, Vitest. Betűk: Barlow Condensed + Barlow (latin-ext).
+## Dizájn
+
+Az oldal egy papír munkalap: szürke nyomtatványpapír, indigókék minden,
+amit kitöltenek, piros csak a pecsét és a hiba. A munkák pontozott vezetővel
+árlistaként, a napok és időpontok nyomtatványos négyzetekként, a foglalás
+végén "BEÍRVA" pecsét. Kutatás: Awwwards (Oreck Vacuum Repair, Speeders Car
+Wash), sablonos sötét-műhelyes oldalak ellenpéldának.
+
+React 19 + Vite, Vitest. Betűk: Big Shoulders Display + IBM Plex Sans/Mono
+(latin-ext). Fotók: Lummi (szabad felhasználás).

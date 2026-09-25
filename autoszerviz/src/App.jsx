@@ -1,25 +1,43 @@
 import { useMemo, useState } from 'react'
-import { BUSINESS, SERVICES, formatHuf, minutesToLabel, normalizePlate } from './data.js'
+import { BUSINESS, OPEN_WINDOWS, SERVICES, formatHuf, minutesToLabel, normalizePlate } from './data.js'
 import { atMinutes, nextDays, slotsForDate } from './slots.js'
 import { createBooking, createQuote, deleteBooking, deleteQuote, loadBookings, loadQuotes } from './storage.js'
 
 const DAY_COUNT = 14
+/** Work orders are numbered on from the garage's paper book. */
+const FIRST_ORDER_NO = 418
 
 const PROMISES = [
-  'Javítás előtt írásban kapod az árat. Ha közben több baj derül ki, előbb hívunk.',
-  'A kicserélt alkatrészt megmutatjuk, ha kéred, hazaviheted.',
-  'Minden munkára 12 hónap garancia.',
+  { title: 'Előbb az ár, aztán a csavarkulcs.', body: 'Javítás előtt írásban kapod az árat. Ha közben több baj derül ki, előbb hívunk.' },
+  { title: 'A régi alkatrész a tiéd.', body: 'A kicserélt darabot megmutatjuk, és ha kéred, hazaviheted.' },
+  { title: '12 hónap garancia.', body: 'Minden elvégzett munkára, alkatrészre és munkadíjra is.' },
 ]
+
+const WEEK = [
+  [1, 'Hétfő'],
+  [2, 'Kedd'],
+  [3, 'Szerda'],
+  [4, 'Csütörtök'],
+  [5, 'Péntek'],
+  [6, 'Szombat'],
+  [0, 'Vasárnap'],
+]
+
+const PLATE_ERROR = 'Pl. ABC-123 vagy AA BB-123.'
 
 function formatDay(iso, opts) {
   return new Intl.DateTimeFormat('hu-HU', opts).format(atMinutes(iso, 12 * 60))
 }
 
-function Field({ id, label, value, onChange, type = 'text', error, hint, textarea, ...rest }) {
+function orderNo(n) {
+  return `Nº ${String(n).padStart(4, '0')}`
+}
+
+function Field({ id, label, value, onChange, type = 'text', error, hint, textarea, className = '', ...rest }) {
   const describedBy = [error ? `${id}-error` : null, hint ? `${id}-hint` : null].filter(Boolean).join(' ') || undefined
   const Tag = textarea ? 'textarea' : 'input'
   return (
-    <div className="field">
+    <div className={`field ${className}`}>
       <label htmlFor={id}>{label}</label>
       {hint ? (
         <p id={`${id}-hint`} className="hint">
@@ -30,7 +48,7 @@ function Field({ id, label, value, onChange, type = 'text', error, hint, textare
         id={id}
         name={id}
         type={textarea ? undefined : type}
-        rows={textarea ? 4 : undefined}
+        rows={textarea ? 5 : undefined}
         value={value}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
@@ -45,8 +63,6 @@ function Field({ id, label, value, onChange, type = 'text', error, hint, textare
     </div>
   )
 }
-
-const PLATE_ERROR = 'Pl. ABC-123 vagy AA BB-123.'
 
 function contactErrors({ name, phone }) {
   const next = {}
@@ -88,6 +104,8 @@ export default function App() {
     () => (service && date ? slotsForDate(date, service.durationMin, bookings) : []),
     [service, date, bookings],
   )
+  const nextNo = FIRST_ORDER_NO + bookings.length + quotes.length + 1
+  const today = new Date().getDay()
 
   function go(next) {
     setErrors({})
@@ -108,7 +126,7 @@ export default function App() {
   function onBook(event) {
     event.preventDefault()
     const next = contactErrors({ name, phone })
-    if (startMin == null) next.idopont = 'Válassz időpontot.'
+    if (startMin == null) next.idopont = 'Válassz leadási időt.'
     if (!normalizePlate(plate)) next.plate = PLATE_ERROR
     setErrors(next)
     if (Object.keys(next).length) {
@@ -117,6 +135,7 @@ export default function App() {
     }
 
     const result = createBooking({
+      no: nextNo,
       serviceId: service.id,
       serviceName: service.name,
       durationMin: service.durationMin,
@@ -131,7 +150,7 @@ export default function App() {
     setBookings(result.bookings)
     if (!result.ok) {
       setStartMin(null)
-      setErrors({ idopont: 'Ezt a sávot épp most foglalták le. Válassz másikat.' })
+      setErrors({ idopont: 'Ezt az időt épp most foglalták le. Válassz másikat.' })
       document.getElementById('idopont')?.focus()
       return
     }
@@ -155,6 +174,7 @@ export default function App() {
     }
 
     const result = createQuote({
+      no: nextNo,
       plate: normalizePlate(plate),
       car: car.trim(),
       year: year.trim(),
@@ -194,6 +214,7 @@ export default function App() {
 
   const sorted = [...bookings].sort((a, b) => a.date.localeCompare(b.date) || a.startMin - b.startMin)
   const tab = view === 'done' ? 'book' : view === 'quoteDone' ? 'quote' : view
+  const tel = BUSINESS.phone.replace(/\s/g, '')
 
   const plateField = (
     <Field
@@ -205,7 +226,7 @@ export default function App() {
       autoCapitalize="characters"
       spellCheck={false}
       error={errors.plate}
-      className="plate-input"
+      className="plate-field"
     />
   )
 
@@ -216,90 +237,125 @@ export default function App() {
     </>
   )
 
+  const side = (
+    <aside className="side" aria-label="A műhely">
+      <figure className="photo">
+        <img src="/szerelo.webp" width="800" height="1000" alt="Szerelő kék munkaruhában egy motoron dolgozik a műhelyben" />
+        <figcaption>A műhelyben három emelő van, ezért dolgozunk időpontra.</figcaption>
+      </figure>
+      <table className="hours">
+        <caption>Nyitvatartás</caption>
+        <tbody>
+          {WEEK.map(([d, label]) => {
+            const w = OPEN_WINDOWS[d]
+            return (
+              <tr key={d} aria-current={d === today ? 'date' : undefined}>
+                <th scope="row">{label}</th>
+                <td>{w ? `${minutesToLabel(w.start)} - ${minutesToLabel(w.end)}` : 'zárva'}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+      <p className="call">
+        Inkább telefonálnál?
+        <a href={`tel:${tel}`}>{BUSINESS.phone}</a>
+      </p>
+    </aside>
+  )
+
   return (
     <>
       <a className="skip" href="#tartalom">
         Ugrás a tartalomhoz
       </a>
       <p className="banner" role="status">
-        <strong>Bemutató projekt</strong> — saját kezdeményezés. A foglalás csak ebben a böngészőben marad, e-mail nem megy ki. Készítette:{' '}
-        <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
-        {' '}<a className="banner-cta" href="https://rizmajerdev.com/?demo=autoszerviz#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+        <strong>Bemutató projekt.</strong> Saját kezdeményezés, a foglalás csak ebben a böngészőben marad. Készítette:{' '}
+        <a href="https://rizmajerdev.com/">Rizmajer Máté</a>{' '}
+        <a className="banner-cta" href="https://rizmajerdev.com/?demo=autoszerviz#kapcsolat">
+          Ilyet kérek a vállalkozásomnak →
+        </a>
       </p>
 
-      <header className="top">
-        <p className="brand">
-          <span className="mark" aria-hidden="true">
-            K
-          </span>
-          <span>
-            {BUSINESS.name}
-            <small>{BUSINESS.city}</small>
-          </span>
+      <header className="masthead">
+        <div className="mast-id">
+          <p className="wordmark">
+            Kormos
+            <span>Autószerviz</span>
+          </p>
+          <p className="mast-addr">
+            {BUSINESS.address} {BUSINESS.city}
+            <br />
+            <a href={`tel:${tel}`}>{BUSINESS.phone}</a>
+          </p>
+        </div>
+        <p className="mast-doc">
+          Munkalap
+          <span>{orderNo(nextNo)}</span>
         </p>
-        <nav aria-label="Nézet">
-          <button type="button" aria-current={tab === 'book' ? 'page' : undefined} onClick={() => go(booking ? 'done' : 'book')}>
-            Időpont
-          </button>
-          <button type="button" aria-current={tab === 'quote' ? 'page' : undefined} onClick={() => go('quote')}>
-            Árajánlat
-          </button>
-          <button type="button" aria-current={tab === 'admin' ? 'page' : undefined} onClick={() => go('admin')}>
-            Műhely
-          </button>
-        </nav>
       </header>
+
+      <nav className="tabs" aria-label="Nézet">
+        <button type="button" aria-current={tab === 'book' ? 'page' : undefined} onClick={() => go(booking ? 'done' : 'book')}>
+          Időpont
+        </button>
+        <button type="button" aria-current={tab === 'quote' ? 'page' : undefined} onClick={() => go('quote')}>
+          Árajánlat
+        </button>
+        <button type="button" aria-current={tab === 'admin' ? 'page' : undefined} onClick={() => go('admin')}>
+          Műhely
+        </button>
+      </nav>
 
       <main id="tartalom">
         {view === 'admin' ? (
-          <section className="sheet admin">
-            <h1>Műhely</h1>
-            <p className="lede">A szerviz ezt látná reggel. A bemutató PIN-je nyilvános: {BUSINESS.adminPin}.</p>
+          <section className="sheet">
+            <h1 className="sheet-title">Műhely</h1>
+            <p className="sheet-lede">Ezt látná a szerviz reggel, a kávé mellett. A bemutató PIN-je nyilvános: {BUSINESS.adminPin}.</p>
             {adminOk ? (
               <>
-                <h2>Foglalások</h2>
+                <h2 className="block-title">Foglalások</h2>
                 {sorted.length ? (
-                  <ul className="book-list">
+                  <ul className="copies">
                     {sorted.map((b) => (
-                      <li key={b.id}>
-                        <div>
-                          <strong>
-                            {formatDay(b.date, { month: 'long', day: 'numeric', weekday: 'long' })} · {minutesToLabel(b.startMin)}
-                          </strong>
-                          <span>
-                            <b className="plate">{b.plate}</b> {b.car} · {b.serviceName}
-                          </span>
-                          <span>
-                            {b.name} · {b.phone}
-                          </span>
-                        </div>
-                        <button type="button" onClick={() => remove('b', b.id)}>
+                      <li key={b.id} className="copy">
+                        <p className="copy-no">{b.no ? orderNo(b.no) : 'Munkalap'}</p>
+                        <p className="copy-when">
+                          {formatDay(b.date, { month: 'long', day: 'numeric', weekday: 'long' })}, {minutesToLabel(b.startMin)}
+                        </p>
+                        <p>
+                          <b className="plate">{b.plate}</b> {b.car}
+                        </p>
+                        <p>{b.serviceName}</p>
+                        <p className="copy-who">
+                          {b.name}, <a href={`tel:${b.phone.replace(/\s/g, '')}`}>{b.phone}</a>
+                        </p>
+                        <button type="button" className="ghost" onClick={() => remove('b', b.id)}>
                           {pendingDelete === `b:${b.id}` ? 'Biztos, törlöm' : 'Törlés'}
                         </button>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="empty">Még nincs foglalás.</p>
+                  <p className="empty">Még nincs foglalás. Foglalj egyet az Időpont fülön, és itt megjelenik.</p>
                 )}
 
-                <h2>Árajánlatkérések</h2>
+                <h2 className="block-title">Árajánlatkérések</h2>
                 {quotes.length ? (
-                  <ul className="book-list">
+                  <ul className="copies">
                     {quotes.map((q) => (
-                      <li key={q.id}>
-                        <div>
-                          <strong>
-                            <b className="plate">{q.plate}</b> {q.car}
-                            {q.year ? `, ${q.year}` : ''}
-                          </strong>
-                          <span className="problem">{q.problem}</span>
-                          <span>
-                            {q.name} · <a href={`tel:${q.phone.replace(/\s/g, '')}`}>{q.phone}</a>
-                          </span>
-                        </div>
-                        <button type="button" onClick={() => remove('q', q.id)}>
-                          {pendingDelete === `q:${q.id}` ? 'Biztos, lezárom' : 'Lezárás'}
+                      <li key={q.id} className="copy">
+                        <p className="copy-no">{q.no ? orderNo(q.no) : 'Ajánlatkérés'}</p>
+                        <p>
+                          <b className="plate">{q.plate}</b> {q.car}
+                          {q.year ? `, ${q.year}` : ''}
+                        </p>
+                        <p className="copy-problem">{q.problem}</p>
+                        <p className="copy-who">
+                          {q.name}, <a href={`tel:${q.phone.replace(/\s/g, '')}`}>{q.phone}</a>
+                        </p>
+                        <button type="button" className="ghost" onClick={() => remove('q', q.id)}>
+                          {pendingDelete === `q:${q.id}` ? 'Biztos, lezárom' : 'Visszahívtuk'}
                         </button>
                       </li>
                     ))}
@@ -321,11 +377,17 @@ export default function App() {
 
         {view === 'done' && booking ? (
           <section className="sheet done">
-            <p className="eyebrow">Beírva</p>
-            <h1 id="kesz-cim" tabIndex={-1}>
+            <p className="stamp" aria-hidden="true">
+              Beírva
+            </p>
+            <h1 id="kesz-cim" className="sheet-title" tabIndex={-1}>
               Várjuk az autót.
             </h1>
-            <dl>
+            <dl className="receipt">
+              <div>
+                <dt>Munkalap</dt>
+                <dd>{orderNo(booking.no)}</dd>
+              </div>
               <div>
                 <dt>Munka</dt>
                 <dd>{booking.serviceName}</dd>
@@ -339,38 +401,47 @@ export default function App() {
               <div>
                 <dt>Leadás</dt>
                 <dd>
-                  {formatDay(booking.date, { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}
-                  {' · '}
-                  {minutesToLabel(booking.startMin)}
+                  {formatDay(booking.date, { month: 'long', day: 'numeric', weekday: 'long' })}, {minutesToLabel(booking.startMin)}
                 </dd>
               </div>
               <div>
-                <dt>Ár</dt>
+                <dt>Munkadíj</dt>
                 <dd>{formatHuf(booking.priceHuf)}-tól</dd>
               </div>
             </dl>
-            <p className="lede">Élesben előző nap SMS-emlékeztető menne. Itt nem megy.</p>
-            <button
-              className="submit"
-              type="button"
-              onClick={() => {
-                setBooking(null)
-                setStartMin(null)
-                setView('book')
-              }}
-            >
-              Új foglalás
-            </button>
+            <p className="sheet-lede">Élesben előző nap SMS-ben emlékeztetnénk. A Műhely fülön látod, mit kap belőle a szerviz.</p>
+            <div className="row">
+              <button
+                className="submit"
+                type="button"
+                onClick={() => {
+                  setBooking(null)
+                  setStartMin(null)
+                  setView('book')
+                }}
+              >
+                Új foglalás
+              </button>
+              <button className="ghost" type="button" onClick={() => go('admin')}>
+                Műhely nézet
+              </button>
+            </div>
           </section>
         ) : null}
 
         {view === 'quoteDone' && quote ? (
           <section className="sheet done">
-            <p className="eyebrow">Megkaptuk</p>
-            <h1 id="kesz-cim" tabIndex={-1}>
+            <p className="stamp" aria-hidden="true">
+              Megkaptuk
+            </p>
+            <h1 id="kesz-cim" className="sheet-title" tabIndex={-1}>
               Munkanapon délig visszahívunk.
             </h1>
-            <dl>
+            <dl className="receipt">
+              <div>
+                <dt>Szám</dt>
+                <dd>{orderNo(quote.no)}</dd>
+              </div>
               <div>
                 <dt>Autó</dt>
                 <dd>
@@ -387,118 +458,84 @@ export default function App() {
                 <dd>{quote.phone}</dd>
               </div>
             </dl>
-            <p className="lede">A kérés bekerült a Műhely nézetbe. Nézd meg, mit lát belőle a szerviz (PIN: {BUSINESS.adminPin}).</p>
-            <button className="submit" type="button" onClick={() => go('admin')}>
-              Műhely nézet
+            <button className="ghost" type="button" onClick={() => go('admin')}>
+              Műhely nézet (PIN: {BUSINESS.adminPin})
             </button>
           </section>
         ) : null}
 
         {view === 'book' || view === 'quote' ? (
-          <div className="layout">
-            <section className="intro">
-              <p className="eyebrow">Autószerviz · {BUSINESS.city}</p>
-              <h1>
-                Időpontra jössz,
-                <br />
-                nem sorba állsz.
-              </h1>
-              <p className="lede">Foglalj műhelyidőt online, vagy írd le a hibát, és árajánlattal hívunk vissza, mielőtt hozzányúlnánk az autóhoz.</p>
-              <ul className="promises">
-                {PROMISES.map((line) => (
-                  <li key={line}>{line}</li>
-                ))}
-              </ul>
-              <dl className="facts">
-                <div>
-                  <dt>Nyitva</dt>
-                  <dd>{BUSINESS.hours}</dd>
-                </div>
-                <div>
-                  <dt>Cím</dt>
-                  <dd>
-                    {BUSINESS.address}, {BUSINESS.city}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Telefon</dt>
-                  <dd>
-                    <a href={`tel:${BUSINESS.phone.replace(/\s/g, '')}`}>{BUSINESS.phone}</a>
-                  </dd>
-                </div>
-              </dl>
-            </section>
+          <>
+            <div className="desk">
+              {view === 'book' ? (
+                <form className="sheet" onSubmit={onBook} noValidate>
+                  <h1 className="sheet-title">Időpontra jössz, nem sorba állsz.</h1>
+                  <p className="sheet-lede">Jelöld be a munkát, válassz leadási időt. Az árat most látod, nem a számlán.</p>
 
-            {view === 'book' ? (
-              <form className="sheet" onSubmit={onBook} noValidate>
-                <h2>Időpontfoglalás</h2>
-
-                <fieldset>
-                  <legend>Munka</legend>
-                  <div className="choices">
-                    {SERVICES.map((item) => {
-                      const on = item.id === serviceId
-                      return (
-                        <button key={item.id} type="button" aria-pressed={on} className={on ? 'choice on' : 'choice'} onClick={() => pickService(item.id)}>
-                          <span>
-                            <strong>{item.name}</strong>
-                            <em>{item.blurb}</em>
-                          </span>
-                          <span className="meta">
-                            {formatHuf(item.priceHuf)}
-                            <small>{item.durationMin} perc</small>
-                          </span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                  <p className="hint">
-                    Nem tudod, mi a baj?{' '}
-                    <button type="button" className="link" onClick={() => go('quote')}>
-                      Kérj árajánlatot
-                    </button>
-                  </p>
-                </fieldset>
-
-                <fieldset>
-                  <legend>Nap</legend>
-                  <div className="days">
-                    {days.map((iso) => {
-                      const closed = atMinutes(iso, 12 * 60).getDay() === 0
-                      const on = iso === date
-                      return (
-                        <button
-                          key={iso}
-                          type="button"
-                          aria-pressed={closed ? undefined : on}
-                          disabled={closed}
-                          className={on ? 'day on' : 'day'}
-                          onClick={() => pickDate(iso)}
-                        >
-                          <span>{formatDay(iso, { weekday: 'short' })}</span>
-                          <strong>{formatDay(iso, { day: 'numeric' })}</strong>
-                          <small>{closed ? 'zárva' : formatDay(iso, { month: 'short' })}</small>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </fieldset>
-
-                <fieldset id="idopont" tabIndex={-1} aria-describedby={errors.idopont ? 'slot-error' : 'slot-hint'}>
-                  <legend>Leadás ideje</legend>
-                  <p className="hint" id="slot-hint">
-                    {date ? `${formatDay(date, { month: 'long', day: 'numeric', weekday: 'long' })} · kb. ${service.durationMin} perc` : ''}
-                  </p>
-                  {slots.length ? (
-                    <div className="times">
-                      {slots.map((min) => {
-                        const on = min === startMin
+                  <fieldset className="block">
+                    <legend>Elvégzendő munka</legend>
+                    <div className="jobs">
+                      {SERVICES.map((item) => {
+                        const on = item.id === serviceId
                         return (
+                          <button key={item.id} type="button" aria-pressed={on} className="job" onClick={() => pickService(item.id)}>
+                            <span className="box" aria-hidden="true">
+                              {on ? '×' : ''}
+                            </span>
+                            <span className="job-name">
+                              {item.name}
+                              <small>{item.blurb}</small>
+                            </span>
+                            <span className="leader" aria-hidden="true" />
+                            <span className="job-price">
+                              {formatHuf(item.priceHuf)}
+                              <small>{item.durationMin} perc</small>
+                            </span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                    <p className="hint">
+                      Nem tudod, mi a baj?{' '}
+                      <button type="button" className="link" onClick={() => go('quote')}>
+                        Írd le, és árajánlattal hívunk
+                      </button>
+                    </p>
+                  </fieldset>
+
+                  <fieldset className="block" id="idopont" tabIndex={-1} aria-describedby={errors.idopont ? 'slot-error' : 'slot-hint'}>
+                    <legend>Leadás</legend>
+                    <div className="days">
+                      {days.map((iso) => {
+                        const closed = atMinutes(iso, 12 * 60).getDay() === 0
+                        const on = iso === date
+                        return (
+                          <button
+                            key={iso}
+                            type="button"
+                            aria-pressed={closed ? undefined : on}
+                            disabled={closed}
+                            className="day"
+                            onClick={() => pickDate(iso)}
+                          >
+                            <span>{formatDay(iso, { weekday: 'short' })}</span>
+                            <strong>{formatDay(iso, { day: 'numeric' })}</strong>
+                            <small>{closed ? 'zárva' : formatDay(iso, { month: 'short' })}</small>
+                          </button>
+                        )
+                      })}
+                    </div>
+                    <p className="hint" id="slot-hint">
+                      {date ? `${formatDay(date, { month: 'long', day: 'numeric', weekday: 'long' })}, a munka kb. ${service.durationMin} perc` : ''}
+                    </p>
+                    {slots.length ? (
+                      <div className="times">
+                        {slots.map((min) => (
                           <button
                             key={min}
                             type="button"
-                            aria-pressed={on}
-                            className={on ? 'time on' : 'time'}
+                            aria-pressed={min === startMin}
+                            className="time"
                             onClick={() => {
                               setStartMin(min)
                               setErrors((prev) => ({ ...prev, idopont: undefined }))
@@ -506,74 +543,104 @@ export default function App() {
                           >
                             {minutesToLabel(min)}
                           </button>
-                        )
-                      })}
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="empty" role="status">
+                        Erre a napra nincs olyan szabad idő, amibe ez a munka belefér. Nézd meg a következő napot.
+                      </p>
+                    )}
+                    {errors.idopont ? (
+                      <p id="slot-error" className="field-error" role="alert">
+                        {errors.idopont}
+                      </p>
+                    ) : null}
+                  </fieldset>
+
+                  <fieldset className="block">
+                    <legend>Autó és ügyfél</legend>
+                    <div className="grid2">
+                      {plateField}
+                      <Field id="car" label="Márka, típus" value={car} onChange={setCar} placeholder="pl. Opel Astra" />
+                      {contactFields}
                     </div>
-                  ) : (
-                    <p className="empty" role="status">
-                      Erre a napra nincs olyan szabad sáv, amibe ez a munka belefér.
-                    </p>
-                  )}
-                  {errors.idopont ? (
-                    <p id="slot-error" className="field-error" role="alert">
-                      {errors.idopont}
-                    </p>
-                  ) : null}
-                </fieldset>
+                  </fieldset>
 
-                <fieldset>
-                  <legend>Autó és adataid</legend>
-                  <div className="pair">
-                    {plateField}
-                    <Field id="car" label="Márka, típus" value={car} onChange={setCar} placeholder="pl. Opel Astra" />
+                  <div className="sheet-foot">
+                    <button className="submit" type="submit">
+                      Lefoglalom
+                    </button>
+                    <p>A megadott árak munkadíjak, az alkatrész külön. Fizetni a műhelyben kell.</p>
                   </div>
-                  {contactFields}
-                </fieldset>
+                </form>
+              ) : (
+                <form className="sheet" onSubmit={onQuote} noValidate>
+                  <h1 className="sheet-title">Írd le, mit csinál az autó.</h1>
+                  <p className="sheet-lede">Becsült árral hívunk vissza, mielőtt bármihez hozzányúlnánk.</p>
 
-                <button className="submit" type="submit">
-                  Lefoglalom
-                </button>
-              </form>
-            ) : (
-              <form className="sheet" onSubmit={onQuote} noValidate>
-                <h2>Árajánlatkérés</h2>
-                <p className="hint">Írd le, mit csinál az autó. Becsült árral hívunk vissza, és ha kell, adunk időpontot átnézésre.</p>
+                  <fieldset className="block">
+                    <legend>Az autó</legend>
+                    <div className="grid2">
+                      {plateField}
+                      <Field id="year" label="Évjárat" value={year} onChange={setYear} inputMode="numeric" error={errors.year} placeholder="nem kötelező" />
+                    </div>
+                    <Field id="car" label="Márka, típus" value={car} onChange={setCar} error={errors.car} placeholder="pl. Opel Astra 1.6" />
+                  </fieldset>
 
-                <fieldset>
-                  <legend>Autó</legend>
-                  <div className="pair">
-                    {plateField}
-                    <Field id="year" label="Évjárat" value={year} onChange={setYear} inputMode="numeric" error={errors.year} placeholder="nem kötelező" />
+                  <fieldset className="block">
+                    <legend>A hiba</legend>
+                    <Field
+                      id="problem"
+                      label="Mit tapasztalsz?"
+                      hint="Mikor jelentkezik, van-e hang, szag vagy figyelmeztető lámpa."
+                      value={problem}
+                      onChange={setProblem}
+                      error={errors.problem}
+                      textarea
+                      className="lined"
+                    />
+                  </fieldset>
+
+                  <fieldset className="block">
+                    <legend>Kit hívjunk?</legend>
+                    <div className="grid2">{contactFields}</div>
+                  </fieldset>
+
+                  <div className="sheet-foot">
+                    <button className="submit" type="submit">
+                      Visszahívást kérek
+                    </button>
+                    <p>Munkanapon délig hívunk. Az átnézés ingyenes, ha nálunk javíttatod.</p>
                   </div>
-                  <Field id="car" label="Márka, típus" value={car} onChange={setCar} error={errors.car} placeholder="pl. Opel Astra 1.6" />
-                </fieldset>
+                </form>
+              )}
+              {side}
+            </div>
 
-                <fieldset>
-                  <legend>A hiba</legend>
-                  <Field
-                    id="problem"
-                    label="Mit tapasztalsz?"
-                    hint="Mikor jelentkezik, van-e hang, szag, figyelmeztető lámpa."
-                    value={problem}
-                    onChange={setProblem}
-                    error={errors.problem}
-                    textarea
-                  />
-                </fieldset>
-
-                <fieldset>
-                  <legend>Kit hívjunk?</legend>
-                  {contactFields}
-                </fieldset>
-
-                <button className="submit" type="submit">
-                  Árajánlatot kérek
-                </button>
-              </form>
-            )}
-          </div>
+            <section className="warranty" aria-labelledby="vallalas">
+              <img src="/motor.webp" width="900" height="700" loading="lazy" alt="Motortér közelről, egy kék hengeres alkatrésszel" />
+              <div>
+                <h2 id="vallalas">Amit írásban vállalunk</h2>
+                <ul>
+                  {PROMISES.map((p) => (
+                    <li key={p.title}>
+                      <strong>{p.title}</strong>
+                      {p.body}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          </>
         ) : null}
       </main>
+
+      <footer className="foot">
+        <p>
+          {BUSINESS.name}, {BUSINESS.address} {BUSINESS.city}. <a href={`tel:${tel}`}>{BUSINESS.phone}</a>
+        </p>
+        <p>Kitalált vállalkozás, bemutató célra. Fotók: Lummi.</p>
+      </footer>
     </>
   )
 }
