@@ -184,7 +184,7 @@ export default function App() {
         Ugrás a menühöz
       </a>
       <p className="banner" role="status">
-        <strong>Bemutató projekt</strong> — saját kezdeményezés. Nem élő étterem.
+        <strong>Bemutató projekt</strong> — saját kezdeményezés. Nem élő étterem. Készítette: <a href="https://rizmajerdev.com/" style={{ color: 'inherit', textDecoration: 'underline' }}>Rizmajer Máté</a>
       </p>
       <header className="mast">
         <p className="where">

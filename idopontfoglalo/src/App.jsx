@@ -147,7 +147,7 @@ export default function App() {
         Ugrás a foglaláshoz
       </a>
       <p className="banner" role="status">
-        <strong>Bemutató projekt</strong> — saját kezdeményezés. A foglalás csak ebben a böngészőben marad, e-mail nem megy ki.
+        <strong>Bemutató projekt</strong> — saját kezdeményezés. A foglalás csak ebben a böngészőben marad, e-mail nem megy ki. Készítette: <a href="https://rizmajerdev.com/" style={{ color: 'inherit', textDecoration: 'underline' }}>Rizmajer Máté</a>
       </p>
 
       <header className="top">
