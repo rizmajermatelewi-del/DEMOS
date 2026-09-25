@@ -9,6 +9,7 @@ kezdeményezés, kitalált mintaadatokkal — nem ügyfélmunka.
 | [`napi-menu/`](napi-menu) | Napi menü büfének — mai tábla, heti nézet, szerkesztő | https://demo-napi-menu.vercel.app |
 | [`bemutatkozo/`](bemutatkozo) | Egyoldalas bemutatkozó villanyszerelőnek — gyors, keretrendszer nélkül | https://demo-bemutatkozo.vercel.app |
 | [`autoszerviz/`](autoszerviz) | Autószerviz — időpontfoglalás rendszámmal + árajánlatkérés, műhely nézet | https://demo-szerviz.vercel.app |
+| [`cukraszda/`](cukraszda) | Cukrászda — torta- és tálca-előrendelés felirattal, napi kapacitással, pult nézet | https://demo-cukraszda.vercel.app |
 
 Mindegyik mappa önálló Vite projekt, saját `package.json`-nal és README-vel
 (probléma + döntések).
