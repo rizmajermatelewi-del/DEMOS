@@ -15,20 +15,24 @@ mint amit a tartalma indokol.
 ## Mit csinál
 
 - Egy oldal: mit vállal, hol dolgozik, mikor érhető el, hívás gomb
-- Ajánlatkérő űrlap, mezőnként megnevezett hibával
+- Ajánlatkérő, ahol a munkát kismegszakítók felkapcsolásával választod ki egy
+  DIN-sínes elosztótáblán; a felkapcsolt kör leírása kigyullad
+- Fejléc-LED a valódi nyitvatartásból: zöld, ha most hívható, különben piros a
+  következő időponttal (`status.js`, tesztelve)
+- Mezőnként megnevezett hiba; egy felkapcsolt munka kiváltja a leírást
 - `Electrician` típusú schema.org adat (cím, nyitvatartás, kiszállási terület)
   a helyi kereséshez
 
 ## Mérés
 
-Lighthouse, mobil emuláció, 2026-09-24, három futásból a stabil érték:
+Lighthouse, mobil emuláció, 2026-09-26, az újratervezés után:
 
 | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|
 | 99 | 100 | 100 | 100 |
 
-A hiányzó pont az első festésé: a Google Fonts stíluslap blokkolja a
-renderelést (Lighthouse becslés: ~810 ms). Saját hosztolt font a következő lépés.
+A fontok saját hosztolásúak (@fontsource: Saira + Martian Mono), a hajtás
+feletti fájlok előtöltve.
 
 ## Döntések
 

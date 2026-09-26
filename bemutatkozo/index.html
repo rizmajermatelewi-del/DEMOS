@@ -3,25 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23e8b923%27/><path d=%27M11 23 L16 7 L21 23 Z%27 fill=%27%230a0d12%27/></svg>" />
-    <title>Kovács Villanyszerelés — bemutató</title>
+    <meta name="theme-color" content="#d3d6d1" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%231f2326%27/><rect x=%2712%27 y=%276%27 width=%278%27 height=%2712%27 rx=%272%27 fill=%27%23e9ebe7%27/><circle cx=%2716%27 cy=%2724%27 r=%273%27 fill=%27%2322c55e%27/></svg>" />
+    <title>Kovács Villanyszerelés: bemutató</title>
     <meta
       name="description"
-      content="Bemutató egyoldalas oldal egy debreceni villanyszerelőnek. Az űrlap nem küld üzenetet."
+      content="Bemutató egyoldalas oldal egy debreceni villanyszerelőnek. Az ajánlatkérőben kismegszakítókkal választod ki a munkát. Az űrlap nem küld üzenetet."
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/src/style.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Electrician",
         "name": "Kovács Villanyszerelés",
-        "description": "Bemutató egyoldalas oldal — saját portfólió-projekt, nem élő vállalkozás.",
+        "description": "Bemutató egyoldalas oldal, saját portfólió-projekt, nem élő vállalkozás.",
         "url": "https://demo-bemutatkozo.vercel.app",
         "telephone": "+36 30 555 0187",
         "address": {
@@ -44,64 +38,151 @@
   <body>
     <a class="skip" href="#tartalom">Ugrás a tartalomhoz</a>
     <p class="banner" role="status">
-      <strong>Bemutató projekt</strong> — saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette: <a href="https://rizmajerdev.com/" style="color:inherit;text-decoration:underline">Rizmajer Máté</a>
-         <a class="banner-cta" href="https://rizmajerdev.com/?demo=bemutatkozo#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
-      </p>
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=bemutatkozo#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
 
     <header class="top">
-      <p class="mark">Kovács Villanyszerelés</p>
-      <a class="phone" href="tel:+36305550187">+36 30 555 0187</a>
+      <p class="mark">Kovács <span>Villanyszerelés</span></p>
+      <a class="status" id="status" href="tel:+36305550187">
+        <span class="led" aria-hidden="true"></span>
+        <span class="status-text">+36 30 555 0187</span>
+      </a>
     </header>
 
     <main id="tartalom">
       <section class="hero">
-        <p class="eyebrow">Debrecen · villanyszerelő</p>
-        <h1>Kovács<br />Villanyszerelés</h1>
-        <p class="lede">
-          Lakásfelújítás, biztosítékcsere, hibaelhárítás — visszahívok, és előre megmondom az árat.
-        </p>
-        <div class="actions">
-          <a class="btn primary" href="#ajanlat">Ajánlatot kérek</a>
-          <a class="btn" href="tel:+36305550187">Azonnali hívás</a>
+        <div class="hero-copy">
+          <h1 class="power">
+            <span>Ha nincs áram,</span>
+            <span>hívj, és</span>
+            <span>lesz.</span>
+          </h1>
+          <p class="lede">Debreceni villanyszerelő. Visszahívok, és mielőtt hozzányúlok, megmondom az árat.</p>
+          <div class="actions">
+            <a class="btn primary" href="#ajanlat"><span class="dot" aria-hidden="true"></span>Ajánlatot kérek</a>
+            <a class="btn" href="tel:+36305550187">+36 30 555 0187</a>
+          </div>
         </div>
+        <figure class="hero-photo">
+          <img
+            src="/src/assets/meres.webp"
+            srcset="/src/assets/meres-480.webp 480w, /src/assets/meres.webp 820w"
+            sizes="(max-width: 860px) 90vw, 30rem"
+            alt="Villanyszerelő műszerrel méri egy kapcsolószekrény kismegszakítóit"
+            width="820"
+            height="964"
+          />
+        </figure>
       </section>
 
-      <section class="work" aria-labelledby="work-title">
-        <p class="eyebrow">Mit vállalok</p>
-        <h2 id="work-title">Négy dolog. Naponta.</h2>
-        <p class="lede">Nincs tizenkét pontos listám. Ezeket csinálom jól.</p>
-        <ol>
-          <li>
-            <h3>Lakossági szerelés</h3>
-            <p>Új vezeték, kapcsoló, konnektor, lámpa — felújításkor vagy utána.</p>
-          </li>
-          <li>
-            <h3>Biztosítéktábla</h3>
-            <p>Csere, bővítés, FI-relé — átlátható árajánlattal, mielőtt hozzáfogok.</p>
-          </li>
-          <li>
-            <h3>Hibaelhárítás</h3>
-            <p>Zárlat, kieső automata, melegedő csatlakozó. Hétköznap 8–17.</p>
-          </li>
-          <li>
-            <h3>Okosotthon-alap</h3>
-            <p>Wi-Fi kapcsoló, termosztát bekötés — ha a meglévő hálózat bírja.</p>
-          </li>
-        </ol>
+      <section class="ask" id="ajanlat" aria-labelledby="ask-title">
+        <h2 id="ask-title">Mit kapcsoljunk fel?</h2>
+        <p class="lede">Ez az ajánlatkérő. Kapcsold fel a táblán, ami kell, írd meg, hol vagy, és visszahívlak.</p>
+        <form id="contact-form" novalidate>
+          <fieldset class="panel">
+            <legend class="sr">Milyen munka kell?</legend>
+            <div class="panel-head">
+              <span class="panel-title">Elosztótábla</span>
+              <output class="lcd" id="count" aria-live="polite">0 kör bekapcsolva</output>
+            </div>
+            <div class="rail">
+              <label class="breaker">
+                <input type="checkbox" name="services" value="lakas" />
+                <span class="led" aria-hidden="true"></span>
+                <span class="body" aria-hidden="true">
+                  <span class="rating">C16</span>
+                  <span class="window"><span class="lever"></span></span>
+                  <span class="io"><b>I</b><b>0</b></span>
+                </span>
+                <span class="strip">Lakossági szerelés</span>
+              </label>
+              <label class="breaker">
+                <input type="checkbox" name="services" value="tabla" />
+                <span class="led" aria-hidden="true"></span>
+                <span class="body" aria-hidden="true">
+                  <span class="rating">C32</span>
+                  <span class="window"><span class="lever"></span></span>
+                  <span class="io"><b>I</b><b>0</b></span>
+                </span>
+                <span class="strip">Biztosítéktábla</span>
+              </label>
+              <label class="breaker">
+                <input type="checkbox" name="services" value="hiba" />
+                <span class="led" aria-hidden="true"></span>
+                <span class="body" aria-hidden="true">
+                  <span class="rating">B10</span>
+                  <span class="window"><span class="lever"></span></span>
+                  <span class="io"><b>I</b><b>0</b></span>
+                </span>
+                <span class="strip">Hibaelhárítás</span>
+              </label>
+              <label class="breaker">
+                <input type="checkbox" name="services" value="okos" />
+                <span class="led" aria-hidden="true"></span>
+                <span class="body" aria-hidden="true">
+                  <span class="rating">B6</span>
+                  <span class="window"><span class="lever"></span></span>
+                  <span class="io"><b>I</b><b>0</b></span>
+                </span>
+                <span class="strip">Okosotthon</span>
+              </label>
+            </div>
+            <ol class="legend">
+              <li data-for="lakas"><b>Lakossági szerelés.</b> Új vezeték, kapcsoló, konnektor, lámpa, felújításkor vagy utána.</li>
+              <li data-for="tabla"><b>Biztosítéktábla.</b> Csere, bővítés, FI-relé, átlátható árajánlattal, mielőtt hozzáfogok.</li>
+              <li data-for="hiba"><b>Hibaelhárítás.</b> Zárlat, kieső automata, melegedő csatlakozó. Hétköznap 8-17.</li>
+              <li data-for="okos"><b>Okosotthon.</b> Wi-Fi kapcsoló, termosztát bekötése, ha a meglévő hálózat bírja.</li>
+            </ol>
+          </fieldset>
+
+          <div class="fields">
+            <label>
+              Név
+              <input id="name" name="name" autocomplete="name" required minlength="2" />
+              <span class="error" id="name-error" hidden></span>
+            </label>
+            <label>
+              Telefon
+              <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+              <span class="error" id="phone-error" hidden></span>
+            </label>
+            <label>
+              Település
+              <input id="city" name="city" autocomplete="address-level2" required minlength="2" />
+              <span class="error" id="city-error" hidden></span>
+            </label>
+            <label class="wide">
+              Mi a helyzet? (ha a táblán nincs meg)
+              <textarea id="job" name="job" rows="3"></textarea>
+              <span class="error" id="job-error" hidden></span>
+            </label>
+          </div>
+          <div class="send">
+            <button class="btn primary" type="submit"><span class="dot" aria-hidden="true"></span>Elküldöm</button>
+            <p id="form-status" role="status" hidden></p>
+          </div>
+        </form>
       </section>
 
       <section class="where" aria-labelledby="where-title">
-        <p class="eyebrow">Hol dolgozom</p>
-        <h2 id="where-title">Debrecen + 25 km</h2>
-        <p class="lede">Hajdúböszörmény, Balmazújváros, Hajdúsámson. Városban a kiszállás díjmentes.</p>
+        <h2 id="where-title">Debrecen, és 25 km körbe.</h2>
+        <p class="lede">Városon belül a kiszállás díjmentes.</p>
+        <ul class="tags">
+          <li>Debrecen</li>
+          <li>Hajdúböszörmény</li>
+          <li>Balmazújváros</li>
+          <li>Hajdúsámson</li>
+        </ul>
         <dl>
           <div>
             <dt>Cím</dt>
             <dd>4029 Debrecen, Csapó utca 12.</dd>
           </div>
           <div>
-            <dt>Idő</dt>
-            <dd>Hétfő–péntek 8:00–17:00</dd>
+            <dt>Hívható</dt>
+            <dd>Hétfő-péntek 8:00-17:00</dd>
           </div>
           <div>
             <dt>Telefon</dt>
@@ -109,41 +190,9 @@
           </div>
         </dl>
       </section>
-
-      <section class="ask" id="ajanlat" aria-labelledby="ask-title">
-        <p class="eyebrow">Kapcsolat</p>
-        <h2 id="ask-title">Írj — visszahívlak</h2>
-        <p class="lede">A bemutatóban az űrlap nem küld e-mailt. Élesben egy űrlapszolgáltatás menne ide.</p>
-        <form id="contact-form" novalidate>
-          <label>
-            Név
-            <input id="name" name="name" autocomplete="name" required minlength="2" />
-            <span class="error" id="name-error" hidden></span>
-          </label>
-          <label>
-            Telefon
-            <input id="phone" name="phone" type="tel" autocomplete="tel" required />
-            <span class="error" id="phone-error" hidden></span>
-          </label>
-          <label>
-            Település
-            <input id="city" name="city" autocomplete="address-level2" required minlength="2" />
-            <span class="error" id="city-error" hidden></span>
-          </label>
-          <label>
-            Mire lenne szükséged?
-            <textarea id="job" name="job" rows="4" required minlength="8"></textarea>
-            <span class="error" id="job-error" hidden></span>
-          </label>
-          <button class="btn primary" type="submit">Elküldöm</button>
-          <p id="form-status" role="status" hidden></p>
-        </form>
-      </section>
     </main>
 
-    <footer>
-      Kovács Villanyszerelés · bemutató · nem élő vállalkozás
-    </footer>
+    <footer>Kovács Villanyszerelés, bemutató, nem élő vállalkozás.</footer>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
