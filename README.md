@@ -14,6 +14,7 @@ kezdeményezés, kitalált mintaadatokkal — nem ügyfélmunka.
 | [`konyvelo/`](konyvelo) | Könyvelőiroda: havidíj-kalkulátor számolószalagra nyomtatva, NAV-határidő tépőnaptár | https://demo-konyvelo.vercel.app |
 | [`viragbolt/`](viragbolt) | Virágbolt: csokorkötő élő SVG-csokorral, készlettel, kártyával és átvételi nappal | https://demo-viragbolt.vercel.app |
 | [`masszazs/`](masszazs) | Masszázsstúdió: „Hol fáj?” testtérkép, kezelésajánlás, első szabad időpontok | https://demo-masszazs.vercel.app |
+| [`asztalos/`](asztalos) | Asztalosműhely: szekrény húzással méretezve a rajzon, faanyag, becsült ár és szabásjegyzék | https://demo-asztalos.vercel.app |
 
 Mindegyik mappa önálló Vite projekt, saját `package.json`-nal és README-vel
 (probléma + döntések).

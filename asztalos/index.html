@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#e8e6df" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><path d=%27M0 5 5 0h22l5 5v22l-5 5H5l-5-5Z%27 fill=%27%2326282a%27/><rect x=%2710%27 y=%277%27 width=%2712%27 height=%2718%27 fill=%27none%27 stroke=%27%23e8e6df%27 stroke-width=%272%27/><path d=%27M10 16h12%27 stroke=%27%232f5bd3%27 stroke-width=%272%27/></svg>" />
+    <title>Szálirány Asztalosműhely: bemutató</title>
+    <meta
+      name="description"
+      content="Bemutató oldal egy kiskunlacházi asztalosnak: a szekrényt a rajzon húzod méretre, választasz faanyagot, és azonnal látod a becsült árat és a szabásjegyzéket. Nem küld ajánlatkérést."
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HomeAndConstructionBusiness",
+        "name": "Szálirány Asztalosműhely",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.",
+        "url": "https://demo-asztalos.vercel.app",
+        "telephone": "+36 20 555 0833",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Ipartelep utca 4.",
+          "addressLocality": "Kiskunlacháza",
+          "postalCode": "2340",
+          "addressCountry": "HU"
+        },
+        "openingHoursSpecification": [{
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "07:00",
+          "closes": "16:00"
+        }]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#tartalom">Ugrás a tartalomhoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=asztalos#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <p class="mark">Szálirány <span>asztalosműhely</span></p>
+      <a class="phone" href="tel:+36205550833">+36 20 555 0833</a>
+    </header>
+
+    <main id="tartalom">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1>Bútor méretre, <span>centire pontosan.</span></h1>
+          <p class="lede">Asztalosműhely Kiskunlacházán. Szekrény, konyha, lépcső, ablakjavítás. Rajzold meg, mekkora kell, és látod, mennyibe kerül.</p>
+          <div class="actions">
+            <a class="cut cut-ink" href="#meretre">Megrajzolom a szekrényt</a>
+            <a class="cut" href="tel:+36205550833">Felhívom a műhelyt</a>
+          </div>
+        </div>
+        <figure class="hero-photo">
+          <img
+            src="/src/assets/muhely.webp"
+            srcset="/src/assets/muhely-520.webp 520w, /src/assets/muhely.webp 900w"
+            sizes="(max-width: 860px) 92vw, 34rem"
+            alt="Mosolygó asztalos gyalulja a deszkát a műhelyben, körülötte faanyag"
+            width="900"
+            height="600"
+          />
+        </figure>
+      </section>
+
+      <section class="config" id="meretre" aria-labelledby="config-title">
+        <div class="board">
+          <svg id="drawing" class="drawing" viewBox="0 0 400 360" role="img" aria-labelledby="drawing-desc">
+            <desc id="drawing-desc">A szekrény elölnézeti rajza méretekkel</desc>
+            <defs>
+              <pattern id="grain" width="14" height="80" patternUnits="userSpaceOnUse">
+                <rect width="14" height="80" id="grain-base" />
+                <path id="grain-line" d="M3 0q2 20 0 40t0 40M10 0q-2 25 0 45t0 35" fill="none" stroke-width="1" />
+              </pattern>
+            </defs>
+            <line class="floor" x1="20" y1="310" x2="380" y2="310" />
+            <g id="cabinet"></g>
+            <g id="dims" class="dims"></g>
+            <circle id="handle-w" class="handle" r="9" />
+            <circle id="handle-h" class="handle" r="9" />
+          </svg>
+          <p class="board-note">Húzd a kék pöttyöket, vagy írd be a méretet.</p>
+        </div>
+
+        <div class="controls">
+          <h2 id="config-title">Mekkora legyen?</h2>
+          <form id="spec" class="spec">
+            <label>Szélesség <span class="unit"><input id="w" name="w" type="number" min="40" max="240" value="100" inputmode="numeric" /> cm</span></label>
+            <label>Magasság <span class="unit"><input id="h" name="h" type="number" min="40" max="240" value="200" inputmode="numeric" /> cm</span></label>
+            <fieldset class="depth">
+              <legend>Mélység</legend>
+              <label><input type="radio" name="d" value="30" /><span>30</span></label>
+              <label><input type="radio" name="d" value="45" /><span>45</span></label>
+              <label><input type="radio" name="d" value="60" checked /><span>60 cm</span></label>
+            </fieldset>
+            <div class="stepper">
+              <span id="shelf-label">Polcok</span>
+              <div class="step" role="group" aria-labelledby="shelf-label">
+                <button type="button" class="cut cut-sq" data-step="-1" aria-label="Eggyel kevesebb polc">−</button>
+                <output id="shelves-out" aria-live="polite">4</output>
+                <button type="button" class="cut cut-sq" data-step="1" aria-label="Eggyel több polc">+</button>
+              </div>
+            </div>
+            <label class="check"><input type="checkbox" id="doors" name="doors" checked /> Ajtóval</label>
+            <fieldset class="woods">
+              <legend>Faanyag</legend>
+              <label><input type="radio" name="m" value="tolgy" checked /><span class="chip tolgy"></span><b>Tölgy</b></label>
+              <label><input type="radio" name="m" value="dio" /><span class="chip dio"></span><b>Dió</b></label>
+              <label><input type="radio" name="m" value="nyir" /><span class="chip nyir"></span><b>Nyír rétegelt</b></label>
+              <label><input type="radio" name="m" value="mdf" /><span class="chip mdf"></span><b>Festett MDF</b></label>
+            </fieldset>
+          </form>
+
+          <div class="estimate" aria-live="polite">
+            <p class="price">kb. <strong id="price"></strong></p>
+            <p class="price-note">Anyag, vasalat, gyártás. A beépítés és a szállítás külön, felmérés után.</p>
+          </div>
+          <details class="cutlist">
+            <summary>Szabásjegyzék</summary>
+            <table>
+              <thead><tr><th>Elem</th><th>db</th><th>Méret (mm)</th></tr></thead>
+              <tbody id="cuts"></tbody>
+            </table>
+          </details>
+          <a class="cut cut-ink" href="#ajanlat" id="to-quote">Ezzel a rajzzal kérek ajánlatot</a>
+        </div>
+      </section>
+
+      <section class="work" aria-labelledby="work-title">
+        <h2 id="work-title">Amit még csinálunk</h2>
+        <ul class="plies">
+          <li><b>Konyhabútor</b><span>Felmérés, 3D terv, beépítés. Mosogató és gép kivágása helyben.</span></li>
+          <li><b>Beépített szekrény</b><span>Ferde tetőtér, lépcső alatti hely, fülke. Ott is, ahol a bolti nem fér be.</span></li>
+          <li><b>Lépcső és korlát</b><span>Tömörfa fokok, meglévő lépcső felújítása, csiszolás és olajozás.</span></li>
+          <li><b>Ablak és üvegezés</b><span>Fa nyílászáró javítása, üvegcsere, szigetelés, zár és pánt csere.</span></li>
+        </ul>
+      </section>
+
+      <section class="quote" id="ajanlat" aria-labelledby="quote-title">
+        <h2 id="quote-title">Ajánlatkérés</h2>
+        <p class="lede">A pontos árat felmérés után adjuk. Hétköznap reggel 7 és délután 4 között visszahívunk.</p>
+        <form id="quote-form" novalidate>
+          <p class="attached" id="attached" hidden></p>
+          <label>
+            Név
+            <input id="name" name="name" autocomplete="name" required />
+            <span class="error" id="name-error" hidden></span>
+          </label>
+          <label>
+            Telefon
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+            <span class="error" id="phone-error" hidden></span>
+          </label>
+          <label>
+            Település
+            <input id="city" name="city" autocomplete="address-level2" required />
+            <span class="error" id="city-error" hidden></span>
+          </label>
+          <label class="wide">
+            Megjegyzés (nem kötelező)
+            <textarea id="note" name="note" rows="3"></textarea>
+          </label>
+          <div class="wide">
+            <button class="cut cut-ink" type="submit">Elküldöm</button>
+          </div>
+          <p id="form-status" class="form-status wide" role="status" hidden></p>
+        </form>
+      </section>
+    </main>
+
+    <footer>Szálirány Asztalosműhely, 2340 Kiskunlacháza, Ipartelep utca 4. Bemutató, nem élő vállalkozás. Az árak becslések, mintaadatok.</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
