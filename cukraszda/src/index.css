@@ -1,14 +1,23 @@
+/* Habcsók Cukrászda: an old Hungarian pastry shop front.
+   Striped raspberry awning, a neon script sign on a plum board,
+   mint as the second tube colour. Cards 18px, buttons pill, inputs 12px.
+   Light only: the shop front is the concept. */
+
 :root {
-  --cream: #fbf4ea;
-  --sheet: #fffaf4;
-  --ink: #3a2420;
-  --muted: #6b5049;
-  --line: #e7d6c6;
-  --berry: #a8274f;
-  --berry-soft: #f6dde4;
-  --leaf: #5f7340;
-  --font: 'DM Sans', 'Segoe UI', sans-serif;
-  --display: 'DM Serif Display', Georgia, serif;
+  --paper: #fff7f9;
+  --white: #ffffff;
+  --ink: #2b1630;
+  --muted: #6a4f6e;
+  --line: #ecd3dc;
+  --rasp: #b0124c;
+  --rasp-soft: #ffe1ea;
+  --mint: #a9e3d1;
+  --mint-ink: #17594a;
+  --night: #26122c;
+  --neon-core: #ffe8f0;
+  --neon-glow: #ff4f8b;
+  --font: 'Bricolage Grotesque', 'Segoe UI', sans-serif;
+  --script: 'Sacramento', cursive;
   color-scheme: light;
 }
 
@@ -18,392 +27,525 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: var(--cream);
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--font);
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-/* Faint dotted doily pattern behind everything. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: radial-gradient(circle at 12px 12px, rgb(168 39 79 / 6%) 3px, transparent 3.5px);
-  background-size: 24px 24px;
-}
+a { color: inherit; }
 
 .skip {
   position: absolute;
   left: -999px;
   top: 0.5rem;
-  background: var(--ink);
-  color: var(--sheet);
-  padding: 0.5rem 0.8rem;
   z-index: 5;
+  padding: 0.5rem 0.8rem;
+  background: var(--ink);
+  color: var(--white);
 }
 
 .skip:focus { left: 0.5rem; }
 
 :focus-visible {
-  outline: 3px solid var(--berry);
+  outline: 3px solid var(--rasp);
   outline-offset: 3px;
 }
 
 .banner {
   margin: 0;
-  padding: 0.55rem 1.25rem;
+  padding: 0.5rem 1.25rem;
   background: var(--ink);
-  color: var(--cream);
+  color: var(--paper);
+  font-size: 0.85rem;
   text-align: center;
-  font-size: 0.875rem;
 }
 
-.banner strong { font-weight: 600; }
-.banner a { color: inherit; }
+.banner .banner-cta {
+  display: inline-block;
+  margin: 0.2rem 0 0 0.5rem;
+  padding: 0.15rem 0.8rem;
+  border-radius: 999px;
+  background: var(--mint);
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
 
+.banner .banner-cta:hover { text-decoration: underline; }
+
+/* Striped awning with a scalloped edge. */
+.awning {
+  position: relative;
+  z-index: 1;
+  height: 2.6rem;
+  background: repeating-linear-gradient(90deg, var(--rasp) 0 44px, var(--white) 44px 88px);
+  box-shadow: inset 0 -3px 0 rgb(43 22 48 / 12%);
+}
+
+.awning::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -14px;
+  height: 14px;
+  background:
+    radial-gradient(circle at 22px 0, var(--rasp) 14px, transparent 14.5px) 0 0 / 88px 14px repeat-x,
+    radial-gradient(circle at 66px 0, var(--white) 14px, transparent 14.5px) 0 0 / 88px 14px repeat-x;
+  filter: drop-shadow(0 2px 0 rgb(43 22 48 / 10%));
+}
+
+/* The sign board under the awning. */
 .top {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem 1rem;
-  max-width: 72rem;
-  margin: 0 auto;
-  padding: 1.1rem 1.25rem 0;
+  gap: 0.75rem 1.5rem;
+  padding: 1.6rem max(1.25rem, calc((100% - 74rem) / 2)) 1rem;
+  background: var(--night);
 }
 
-.brand {
-  margin: 0;
-  font-family: var(--display);
-  font-size: 1.5rem;
-  line-height: 1.05;
-  color: var(--berry);
-}
+.top-links { display: flex; gap: 0.4rem; }
 
-.brand span {
-  display: block;
-  font-family: var(--font);
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.top nav { display: flex; gap: 0.35rem; }
-
-.top button,
-.day,
-.sizes button,
-.qty button,
-.add,
-.submit,
-.ghost,
-.order-list button {
-  font: inherit;
-  color: inherit;
-  background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 999px;
+.top-links button {
   min-height: 44px;
-  padding: 0.4rem 1rem;
+  padding: 0.35rem 1.1rem;
+  border: 1.5px solid rgb(255 232 240 / 35%);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--neon-core);
+  font: 600 1rem var(--font);
   cursor: pointer;
-  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
 }
 
-.top button[aria-current='page'] {
-  background: var(--ink);
-  color: var(--cream);
-  border-color: var(--ink);
+.top-links button[aria-current='page'] { background: var(--neon-core); color: var(--night); border-color: var(--neon-core); }
+
+.sign { display: flex; flex-direction: column; align-items: flex-start; margin: 0; line-height: 1; }
+
+/* Neon is the point of this design, so the glow stays; it lives only on the sign. */
+.neon {
+  font-family: var(--script);
+  font-weight: 400;
+  color: var(--neon-core);
+  text-shadow:
+    0 0 2px #fff,
+    0 0 8px var(--neon-glow),
+    0 0 20px var(--neon-glow),
+    0 0 42px #e0115f;
+  animation: switch-on 1.3s steps(1, end) both;
 }
 
-@media (hover: hover) {
-  .top button:hover,
-  .day:not(:disabled):hover,
-  .sizes button:hover,
-  .qty button:not(:disabled):hover,
-  .ghost:hover,
-  .order-list button:hover { border-color: var(--ink); }
-  .add:hover, .submit:hover { background: var(--ink); border-color: var(--ink); }
-}
+.sign .neon { font-size: 4.2rem; margin-bottom: -0.3rem; }
 
-main { max-width: 72rem; margin: 0 auto; padding: 1.5rem 1.25rem 6rem; }
-
-.layout { display: grid; gap: 2rem; }
-.layout > * { min-width: 0; }
-
-@media (min-width: 980px) {
-  .layout {
-    grid-template-columns: minmax(0, 1.2fr) minmax(22rem, 0.8fr);
-    align-items: start;
-  }
-}
-
-.eyebrow {
-  margin: 0;
-  letter-spacing: 0.16em;
+.sign-caps {
+  padding-left: 0.35rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.42em;
   text-transform: uppercase;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--berry);
+  color: var(--mint);
+  text-shadow: 0 0 10px rgb(169 227 209 / 60%);
 }
 
-h1 {
-  margin: 0.4rem 0 0;
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(2.4rem, 5.5vw, 3.9rem);
-  line-height: 1.02;
-  letter-spacing: -0.01em;
+/* The tube flickers twice when the shop "opens". */
+@keyframes switch-on {
+  0% { opacity: 0.15; }
+  12% { opacity: 1; }
+  18% { opacity: 0.3; }
+  30% { opacity: 1; }
+  36% { opacity: 0.55; }
+  44%, 100% { opacity: 1; }
 }
 
-h2 {
-  margin: 0 0 0.5rem;
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: 1.9rem;
+main { max-width: 74rem; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
+
+/* Hero: text left, the cake right. */
+.front { display: grid; gap: 2rem; align-items: center; }
+
+@media (min-width: 900px) {
+  .front { grid-template-columns: 1.05fr 0.95fr; gap: 3rem; }
 }
 
-h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 1.35rem; line-height: 1.15; }
-
-.lede { color: var(--muted); max-width: 38rem; }
-
-.intro { margin-bottom: 2rem; }
-
-.products {
-  list-style: none;
+.front h1 {
   margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 1rem;
+  font-weight: 800;
+  font-size: clamp(2.3rem, 4.2vw, 3.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  max-width: 19ch;
 }
 
-@media (min-width: 620px) {
-  .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
+.front-lede { margin: 1rem 0 1.6rem; color: var(--muted); font-size: 1.15rem; max-width: 34ch; }
 
-.product {
-  display: flex;
-  flex-direction: column;
-  background: var(--sheet);
-  border: 1px solid var(--line);
-  border-radius: 1.1rem;
-  overflow: hidden;
-}
-
-.slice {
+.front-photo {
   display: block;
   width: 100%;
-  height: 8.5rem;
-  background: var(--berry-soft);
-  padding: 0.9rem 0 0.6rem;
+  height: auto;
+  max-height: 34rem;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 2px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--mint);
 }
 
-.product-body { display: flex; flex-direction: column; gap: 0.35rem; padding: 1rem 1.1rem 1.1rem; flex: 1; }
-.product-body > p { margin: 0; color: var(--muted); font-size: 0.95rem; }
-.product-body .lead-note { color: var(--leaf); font-weight: 600; font-size: 0.85rem; }
-.product-body .single-size { color: var(--ink); font-weight: 500; }
-
-.sizes { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.2rem; }
-.sizes button { min-height: 40px; padding: 0.3rem 0.85rem; font-size: 0.93rem; }
-.sizes button[aria-pressed='true'] { background: var(--berry-soft); border-color: var(--berry); color: var(--berry); font-weight: 600; }
-
-.buy {
-  display: flex;
+.cta {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-top: auto;
-  padding-top: 0.6rem;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0.5rem 1.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--rasp);
+  color: var(--white);
+  font: 700 1.1rem var(--font);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 120ms ease;
 }
 
-.buy strong { font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.cta:hover { background: var(--ink); }
+.cta:active { transform: translateY(1px); }
+.cta-full { width: 100%; margin-top: 1.4rem; }
 
-.add, .submit {
-  background: var(--berry);
-  border-color: var(--berry);
-  color: #fff;
-  font-weight: 600;
+.pill-btn {
+  min-height: 44px;
+  padding: 0.35rem 1.1rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font: 600 1rem var(--font);
+  cursor: pointer;
 }
 
-.facts { margin: 2rem 0 0; }
+.pill-btn:hover { background: var(--rasp-soft); }
+
+.shop { display: grid; gap: 2.5rem; margin-top: 4rem; }
+.shop > * { min-width: 0; }
+
+@media (min-width: 980px) {
+  .shop { grid-template-columns: minmax(0, 1.25fr) minmax(21rem, 0.75fr); align-items: start; }
+}
+
+.menu-title { margin: 0 0 1rem; font-weight: 800; font-size: 2.2rem; letter-spacing: -0.02em; }
+
+/* Cakes: sticker-like cards with a mint offset. */
+.cakes { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.1rem; }
+
+.cake {
+  padding: 1.2rem 1.25rem 1.1rem;
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  background: var(--white);
+  box-shadow: 5px 5px 0 var(--mint);
+}
+
+.cake-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.cake h3 { margin: 0; font-weight: 800; font-size: 1.5rem; letter-spacing: -0.015em; line-height: 1.15; }
+
+.price {
+  margin: 0;
+  padding: 0.1rem 0.75rem;
+  border-radius: 999px;
+  background: var(--rasp-soft);
+  color: var(--rasp);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cake-blurb { margin: 0.35rem 0 0; color: var(--muted); font-size: 0.97rem; }
+
+.cake-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-top: 0.9rem; }
+
+.sizes { display: flex; gap: 0.35rem; }
+
+.sizes button {
+  min-height: 40px;
+  padding: 0.25rem 0.9rem;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font: 500 0.95rem var(--font);
+  cursor: pointer;
+}
+
+.sizes button[aria-pressed='true'] { border-color: var(--ink); background: var(--ink); color: var(--white); }
+
+.add {
+  min-height: 44px;
+  margin-left: auto;
+  padding: 0.35rem 1.3rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--rasp);
+  color: var(--white);
+  font: 700 1rem var(--font);
+  cursor: pointer;
+}
+
+.add:hover { background: var(--ink); }
+
+/* Trays: a changeable letter board, the other classic pastry-shop sign. */
+.letterboard {
+  margin-top: 2.5rem;
+  padding: 1.4rem 1.3rem 1rem;
+  border-radius: 18px;
+  background: var(--night);
+  color: var(--neon-core);
+  background-image: repeating-linear-gradient(transparent 0 11px, rgb(255 255 255 / 4%) 11px 12px);
+}
+
+.letterboard h2 {
+  margin: 0 0 0.6rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--mint);
+}
+
+.letterboard ul { list-style: none; margin: 0; padding: 0; }
+
+.letterboard li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-top: 1px dashed rgb(255 232 240 / 20%);
+}
+
+.lb-name { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.02em; }
+.lb-name small { display: block; font-weight: 400; font-size: 0.9rem; color: rgb(255 232 240 / 72%); letter-spacing: 0; }
+.lb-price { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.lb-add {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--mint);
+  color: var(--ink);
+  font: 800 1.4rem var(--font);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lb-add:hover { background: var(--neon-core); }
+
+.facts { margin: 2.5rem 0 0; }
 
 .facts div {
   display: grid;
-  grid-template-columns: 5.5rem 1fr;
+  grid-template-columns: 6rem 1fr;
   gap: 0.75rem;
   padding: 0.7rem 0;
-  border-top: 1px solid var(--line);
+  border-top: 1.5px solid var(--line);
 }
 
-.facts dt { color: var(--muted); font-size: 0.875rem; }
+.facts dt { color: var(--muted); font-size: 0.9rem; }
 .facts dd { margin: 0; }
-.facts a { color: var(--berry); font-weight: 600; }
+.facts a { color: var(--rasp); font-weight: 700; }
 
-.sheet {
-  background: var(--sheet);
-  border: 1px solid var(--line);
-  border-radius: 1.25rem;
-  padding: 1.35rem 1.2rem 1.5rem;
-  box-shadow: 0 12px 30px -24px rgb(58 36 32 / 45%);
-  animation: rise 380ms ease both;
+/* The basket is a cake box with a striped ribbon along the top. */
+.box {
+  position: relative;
+  overflow: hidden;
+  padding: 2.1rem 1.3rem 1.5rem;
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  background: var(--white);
 }
 
-.narrow { max-width: 42rem; }
-
-@keyframes rise {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: none; }
+.box::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 12px;
+  background: repeating-linear-gradient(-45deg, var(--rasp) 0 10px, var(--white) 10px 20px);
+  border-bottom: 2px solid var(--ink);
 }
 
-.lines, .summary, .order-list { list-style: none; margin: 0.5rem 0 0; padding: 0; }
+.box h2 { margin: 0; font-family: var(--script); font-weight: 400; font-size: 3rem; line-height: 1; color: var(--rasp); }
 
-.lines > li, .summary li {
-  padding: 0.8rem 0;
-  border-top: 1px solid var(--line);
-}
+.box-empty { margin: 0.6rem 0 0; color: var(--muted); }
+
+.lines { list-style: none; margin: 0.6rem 0 0; padding: 0; }
+.lines > li { padding: 0.8rem 0; border-top: 1.5px solid var(--line); }
 
 .line-top { display: flex; align-items: center; gap: 0.6rem; }
 .line-top > span:first-child { flex: 1; min-width: 0; }
 .line-top strong, .line-top small { display: block; }
 .line-top small { color: var(--muted); }
-.price { min-width: 5.5rem; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.line-price { min-width: 5.5rem; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
 
 .qty { display: inline-flex; align-items: center; gap: 0.2rem; }
-.qty button { width: 40px; min-height: 40px; padding: 0; font-size: 1.1rem; line-height: 1; }
+
+.qty button {
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font: 600 1.1rem var(--font);
+  cursor: pointer;
+}
+
 .qty button:disabled { opacity: 0.4; cursor: not-allowed; }
-.qty output { min-width: 1.5rem; text-align: center; font-variant-numeric: tabular-nums; font-weight: 600; }
+.qty output { min-width: 1.5rem; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
 
 .inscription { position: relative; }
-.inscription label { font-size: 0.85rem; color: var(--muted); }
-.inscription input { font-style: italic; padding-right: 3.5rem; }
-.inscription small { position: absolute; right: 0.75rem; bottom: 0.85rem; color: var(--muted); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+.inscription input { padding-right: 3.6rem; font-style: italic; }
+.inscription small { position: absolute; right: 0.8rem; bottom: 0.85rem; color: var(--muted); font-size: 0.78rem; }
 
-.lines .sum, .summary .sum {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  border-top: 2px solid var(--ink);
-  font-weight: 600;
-}
-
-.lines .sum strong { font-size: 1.2rem; font-variant-numeric: tabular-nums; }
-
-.summary li { display: flex; justify-content: space-between; gap: 1rem; }
-.summary em { display: block; color: var(--berry); font-size: 0.93rem; }
+.lines .sum { display: flex; justify-content: space-between; gap: 1rem; border-top: 2px solid var(--ink); font-weight: 700; }
+.lines .sum strong { font-size: 1.25rem; color: var(--rasp); font-variant-numeric: tabular-nums; }
 
 fieldset {
-  /* Browsers give fieldset min-width: min-content, which let the day strip
-     stretch the whole page instead of scrolling inside .days. */
+  /* Keeps the day strip from stretching the page. */
   min-width: 0;
-  border: 0;
-  margin: 1.2rem 0 0;
+  margin: 1.4rem 0 0;
   padding: 0;
+  border: 0;
 }
 
-legend, .field label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  padding: 0;
-}
+legend, .field label { display: block; margin-bottom: 0.35rem; padding: 0; font-weight: 600; font-size: 0.95rem; }
 
 .days {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 4.4rem;
+  grid-auto-columns: 4.3rem;
   gap: 0.4rem;
   overflow-x: auto;
-  margin-top: 0.4rem;
-  padding-bottom: 0.35rem;
+  padding-bottom: 0.4rem;
 }
 
 .day {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  border-radius: 0.9rem;
-  line-height: 1.15;
+  min-height: 4.4rem;
   padding: 0.45rem 0.2rem;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.15;
+  cursor: pointer;
 }
 
-.day strong { font-family: var(--display); font-weight: 400; font-size: 1.35rem; }
-.day small { font-size: 0.72rem; color: var(--muted); }
-.day:disabled { opacity: 0.45; cursor: not-allowed; }
+.day span, .day small { font-size: 0.75rem; }
+.day strong { font-weight: 800; font-size: 1.35rem; }
+.day:disabled { color: #a996a8; background: var(--paper); cursor: not-allowed; }
 .day:disabled strong { text-decoration: line-through; }
-.day.on { background: var(--berry); border-color: var(--berry); color: #fff; }
-.day.on small { color: #fde8ee; }
+.day[aria-pressed='true'] { border-color: var(--rasp); background: var(--rasp); color: var(--white); }
 
-.hint, .empty { margin: 0.45rem 0 0; color: var(--muted); font-size: 0.9rem; }
+.hint { margin: 0.4rem 0 0; color: var(--muted); font-size: 0.88rem; }
 
-.field { margin-top: 0.8rem; }
-.field label { display: block; margin-bottom: 0.3rem; }
+.field { margin-top: 0.9rem; }
 
 input, select {
   width: 100%;
-  font: inherit;
-  color: var(--ink);
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 0.75rem;
   min-height: 48px;
-  padding: 0.6rem 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
 }
 
-input::placeholder { color: #8f7a73; }
+input:focus, select:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px var(--rasp-soft); }
+input::placeholder { color: #8d7590; }
 
-.field-error { margin: 0.3rem 0 0; color: var(--berry); font-size: 0.9rem; font-weight: 500; }
-[aria-invalid='true'] { border-color: var(--berry); }
+.field-error { margin: 0.35rem 0 0; color: var(--rasp); font-size: 0.9rem; font-weight: 600; }
+[aria-invalid='true'] { border-color: var(--rasp); }
 
-.submit { width: 100%; margin-top: 1.2rem; min-height: 54px; font-size: 1.05rem; }
-.pin .submit { width: auto; padding-inline: 2rem; }
-
-.row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-.row .submit { width: auto; flex: 1; }
-.ghost { margin-top: 1.2rem; min-height: 54px; }
-
-.day-group { margin-top: 1.5rem; }
-.day-group h2 { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem; font-size: 1.4rem; }
-.day-group h2 small { font-family: var(--font); font-size: 0.85rem; color: var(--muted); }
-
-.order-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.85rem 0;
-  border-top: 1px solid var(--line);
+/* Thank-you: the sign lights up once more. */
+.thanks {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2.2rem 1.6rem 1.8rem;
+  border-radius: 18px;
+  background: var(--night);
+  color: var(--neon-core);
 }
 
+.thanks-neon { margin: 0; font-size: 4.4rem; line-height: 1; }
+.thanks h1 { margin: 0.6rem 0 0; font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.1; letter-spacing: -0.02em; }
+
+.receipt { list-style: none; margin: 1.4rem 0 0; padding: 0; }
+.receipt li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.65rem 0; border-top: 1px dashed rgb(255 232 240 / 25%); }
+.receipt em { display: block; color: var(--mint); font-size: 0.93rem; }
+.receipt .sum { font-weight: 800; border-top: 2px solid var(--neon-core); }
+
+.thanks-note { color: rgb(255 232 240 / 78%); }
+.thanks .pill-btn { background: transparent; color: var(--neon-core); border-color: rgb(255 232 240 / 45%); }
+.thanks .pill-btn:hover { background: rgb(255 232 240 / 10%); }
+
+.row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
+
+/* Counter view. */
+.board {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 1.8rem 1.4rem;
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  background: var(--white);
+}
+
+.board h1 { margin: 0; font-weight: 800; font-size: 2.6rem; letter-spacing: -0.02em; }
+.board-lede { color: var(--muted); }
+
+.day-group { margin-top: 1.6rem; }
+.day-group h2 { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.5rem; margin: 0; font-size: 1.3rem; }
+.day-group h2 small { font-weight: 600; font-size: 0.9rem; color: var(--rasp); }
+
+.order-list { list-style: none; margin: 0.4rem 0 0; padding: 0; }
+.order-list li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.85rem 0; border-top: 1.5px solid var(--line); }
 .order-list li > div { min-width: 0; }
 .order-list strong, .order-list span { display: block; }
-.order-list span { font-size: 0.93rem; color: var(--muted); margin-top: 0.15rem; overflow-wrap: anywhere; }
-.order-list em { color: var(--berry); }
-.order-list a { color: inherit; }
-.order-list button { flex-shrink: 0; }
+.order-list span { margin-top: 0.15rem; color: var(--muted); font-size: 0.93rem; overflow-wrap: anywhere; }
+.order-list em { color: var(--rasp); }
+.order-list .pill-btn { flex-shrink: 0; }
 
-/* Phone: a bar that jumps to the basket once something is in it. */
+.pin { max-width: 22rem; }
+.pin .cta { margin-top: 1.1rem; }
+
+.foot { max-width: 74rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; border-top: 1.5px solid var(--line); color: var(--muted); font-size: 0.88rem; }
+.foot p { margin: 0.2rem 0; }
+
+/* Phone: a bar that jumps to the box once something is in it. */
 .cart-bar {
   position: fixed;
   left: 1rem;
   right: 1rem;
   bottom: 1rem;
+  z-index: 3;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
   min-height: 54px;
-  padding: 0.6rem 1.2rem;
+  padding: 0.6rem 1.3rem;
   border-radius: 999px;
-  background: var(--ink);
-  color: var(--cream);
+  background: var(--night);
+  color: var(--neon-core);
   text-decoration: none;
-  font-weight: 500;
-  box-shadow: 0 10px 30px -10px rgb(58 36 32 / 60%);
-  animation: rise 240ms ease both;
+  font-weight: 600;
+  box-shadow: 0 10px 30px -10px rgb(38 18 44 / 70%);
 }
 
 @media (min-width: 980px) {
@@ -412,33 +554,6 @@ input::placeholder { color: #8f7a73; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-
-  .sheet,
-  .cart-bar,
-  .top button,
-  .day,
-  .sizes button,
-  .qty button,
-  .add,
-  .submit,
-  .ghost,
-  .order-list button {
-    animation: none;
-    transition: none;
-  }
+  .neon { animation: none; }
+  .cta { transition: none; }
 }
-
-/* One clear next step for a visitor who likes the demo. */
-.banner .banner-cta {
-  display: inline-block;
-  margin: 0.2rem 0 0 0.5rem;
-  padding: 0.2rem 0.8rem;
-  border-radius: 999px;
-  background: var(--cream);
-  color: var(--ink);
-  font-weight: 700;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.banner .banner-cta:hover { text-decoration: underline; }

@@ -47,4 +47,13 @@ npm test      # átvételi nap, kapacitás, végösszeg, tárolás
 npm run dev
 ```
 
-React 19 + Vite, Vitest. Betűk: DM Serif Display + DM Sans (latin-ext).
+## Dizájn
+
+Régi magyar cukrászda portálja: csíkos málnaszínű napellenző, alatta szilvaszínű
+cégtábla neon írott "Habcsók" felirattal, ami betöltéskor kétszer felvillan. A
+torták matricaszerű kártyák menta árnyékkal, a tálcák egy cserélhető betűs
+árlista-táblán, a kosár egy csíkos szalagos tortásdoboz. Kutatás: Awwwards
+(Bernice Bakery, Nine Times Bakery), a barna-krém pékségpaletta ellenpéldának.
+
+React 19 + Vite, Vitest. Betűk: Sacramento (neon) + Bricolage Grotesque,
+helyben (@fontsource). Fotó: Lummi (szabad felhasználás).

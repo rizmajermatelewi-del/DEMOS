@@ -4,11 +4,11 @@ export const BUSINESS = {
   city: 'Szigetszentmiklós',
   address: 'Gyári út 21.',
   phone: '+36 20 544 9160',
-  hours: 'Kedd–vasárnap 9:00–18:00 · hétfő zárva',
+  hours: 'Kedd-vasárnap 9:00-18:00, hétfő zárva',
   adminPin: '2468',
 }
 
-/** leadDays: how many days ahead the kitchen needs. colors: the slice drawing, top to bottom. */
+/** leadDays: how many days ahead the kitchen needs. */
 export const PRODUCTS = [
   {
     id: 'eszterhazy',
@@ -20,7 +20,6 @@ export const PRODUCTS = [
       { id: '12', label: '12 szelet', priceHuf: 16900 },
       { id: '16', label: '16 szelet', priceHuf: 21900 },
     ],
-    colors: ['#fbf7ef', '#d9b98f', '#f3e6cf', '#d9b98f', '#f3e6cf'],
   },
   {
     id: 'csoki',
@@ -32,7 +31,6 @@ export const PRODUCTS = [
       { id: '12', label: '12 szelet', priceHuf: 15900 },
       { id: '16', label: '16 szelet', priceHuf: 20900 },
     ],
-    colors: ['#3b221c', '#7a4a3a', '#4e2c23', '#7a4a3a'],
   },
   {
     id: 'malna',
@@ -44,7 +42,6 @@ export const PRODUCTS = [
       { id: '12', label: '12 szelet', priceHuf: 17900 },
       { id: '16', label: '16 szelet', priceHuf: 22900 },
     ],
-    colors: ['#c23a62', '#fbf3ea', '#f1d9a8', '#fbf3ea', '#f1d9a8'],
   },
   {
     id: 'somloi',
@@ -53,7 +50,6 @@ export const PRODUCTS = [
     blurb: '8 adag, csokoládéöntettel és tejszínhabbal külön dobozban.',
     leadDays: 1,
     sizes: [{ id: '8', label: '8 adag', priceHuf: 8900 }],
-    colors: ['#6b3f2e', '#f7efe2', '#caa06d', '#8a5a3c'],
   },
   {
     id: 'pogacsa',
@@ -62,7 +58,6 @@ export const PRODUCTS = [
     blurb: '40 darab, reggel sütve. Rendezvényre, irodába.',
     leadDays: 1,
     sizes: [{ id: '40', label: '40 db', priceHuf: 7900 }],
-    colors: ['#e0b26b', '#c98f45', '#e0b26b'],
   },
   {
     id: 'vegyes',
@@ -71,7 +66,6 @@ export const PRODUCTS = [
     blurb: '20 darab: krémes, zserbó, isler, mignon. A válogatás napi.',
     leadDays: 1,
     sizes: [{ id: '20', label: '20 db', priceHuf: 12900 }],
-    colors: ['#f4d9e0', '#fbf3ea', '#5a3528', '#f1d9a8'],
   },
 ]
 
