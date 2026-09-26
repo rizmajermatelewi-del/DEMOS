@@ -54,3 +54,25 @@ export function slotsForDate(iso, durationMin, bookings, now = new Date()) {
 
   return slots
 }
+
+/**
+ * One comb tooth per half hour of the opening window. A tooth is 'past',
+ * 'taken' (overlaps a booking), 'start' (the whole service fits from here)
+ * or 'free' (open, but the service would run into a booking or closing).
+ */
+export function combTeeth(iso, slots, bookings, now = new Date()) {
+  const window = OPEN_WINDOWS[atMinutes(iso, 12 * 60).getDay()]
+  if (!window) return []
+  const starts = new Set(slots)
+  const dayBookings = bookings.filter((b) => b.date === iso)
+  const teeth = []
+  for (let min = window.start; min < window.end; min += SLOT_STEP_MIN) {
+    const taken = dayBookings.some((b) => min < b.startMin + b.durationMin && min + SLOT_STEP_MIN > b.startMin)
+    let state = 'free'
+    if (atMinutes(iso, min).getTime() <= now.getTime()) state = 'past'
+    else if (taken) state = 'taken'
+    else if (starts.has(min)) state = 'start'
+    teeth.push({ min, state })
+  }
+  return teeth
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { atMinutes, isoLocal, slotsForDate } from './slots.js'
+import { atMinutes, combTeeth, isoLocal, slotsForDate } from './slots.js'
 
 const TUE = '2026-09-22'
 
@@ -60,5 +60,27 @@ describe('isoLocal', () => {
     const late = new Date(2026, 8, 22, 23, 30, 0)
     expect(isoLocal(late)).toBe('2026-09-22')
     expect(atMinutes('2026-09-22', 9 * 60).getHours()).toBe(9)
+  })
+})
+
+describe('combTeeth', () => {
+  it('marks each half hour as past, taken, start or free', () => {
+    const now = new Date('2026-09-22T09:10:00')
+    const bookings = [{ id: 'a', date: TUE, startMin: 11 * 60, durationMin: 60 }]
+    const slots = slotsForDate(TUE, 90, bookings, now)
+    const teeth = combTeeth(TUE, slots, bookings, now)
+    const at = (h, m = 0) => teeth.find((t) => t.min === h * 60 + m).state
+    expect(teeth).toHaveLength(18)
+    expect(at(9)).toBe('past')
+    expect(at(9, 30)).toBe('start')
+    expect(at(10)).toBe('free') // 90 min from 10:00 would hit the 11:00 booking
+    expect(at(11)).toBe('taken')
+    expect(at(11, 30)).toBe('taken')
+    expect(at(12)).toBe('start')
+    expect(at(17)).toBe('free') // 90 min would run past 18:00
+  })
+
+  it('has no teeth on Sunday', () => {
+    expect(combTeeth('2026-09-27', [], [])).toEqual([])
   })
 })

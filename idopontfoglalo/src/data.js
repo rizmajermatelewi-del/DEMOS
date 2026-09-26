@@ -5,7 +5,7 @@ export const BUSINESS = {
   address: 'Szabadság tér 8.',
   phone: '+36 70 412 8831',
   email: 'foglalas@szalka-fodraszat.demo',
-  hours: 'Hétfő–péntek 9:00–18:00 · szombat 9:00–14:00',
+  hours: 'Hétfő-péntek 9:00-18:00, szombat 9:00-14:00',
   adminPin: '2468',
 }
 
@@ -36,7 +36,7 @@ export const SERVICES = [
     name: 'Alkalmi frizura',
     durationMin: 60,
     priceHuf: 9800,
-    blurb: 'Esküvő, ballagás, fotózás — tartós formázás.',
+    blurb: 'Esküvő, ballagás, fotózás. Tartós formázás.',
   },
 ]
 

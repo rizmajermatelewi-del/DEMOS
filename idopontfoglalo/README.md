@@ -41,4 +41,6 @@ npm test      # sávszámítás + tárolás
 npm run dev
 ```
 
-React 19 + Vite, Vitest.
+React 19 + Vite, Vitest. Betű: Syne + Instrument Sans (@fontsource, latin-ext).
+Az időpontválasztó egy fésű: fél óránként egy fog, a foglalt fog letört
+(`combTeeth` a `slots.js`-ben, tesztelve).

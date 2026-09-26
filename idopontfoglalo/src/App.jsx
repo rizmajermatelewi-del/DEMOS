@@ -1,12 +1,59 @@
 import { useMemo, useState } from 'react'
 import { BUSINESS, SERVICES, formatHuf, minutesToLabel } from './data.js'
-import { atMinutes, nextDays, slotsForDate } from './slots.js'
+import { atMinutes, combTeeth, nextDays, slotsForDate } from './slots.js'
 import { createBooking, deleteBooking, loadBookings } from './storage.js'
+import drying from './assets/szaritas.webp'
+import dryingSmall from './assets/szaritas-480.webp'
+import colouring from './assets/festes.webp'
 
 const DAY_COUNT = 14
 
 function formatDay(iso, opts) {
   return new Intl.DateTimeFormat('hu-HU', opts).format(atMinutes(iso, 12 * 60))
+}
+
+const inRange = (min, from, duration) => from != null && min >= from && min < from + duration
+
+function Comb({ teeth, duration, value, onPick }) {
+  const [hover, setHover] = useState(null)
+  const preview = hover ?? value
+  return (
+    <div className="comb-wrap">
+      <div className="comb" onMouseLeave={() => setHover(null)}>
+        <span className="comb-spine" aria-hidden="true" />
+        {teeth.map(({ min, state }) => {
+          const cls = ['tooth', state, inRange(min, value, duration) ? 'chosen' : '', inRange(min, hover, duration) ? 'lift' : ''].join(' ')
+          const label = min % 60 === 0 ? String(min / 60).padStart(2, '0') : ''
+          if (state !== 'start')
+            return (
+              <span key={min} className={cls} aria-hidden="true">
+                <i />
+                <b>{label}</b>
+              </span>
+            )
+          return (
+            <button
+              key={min}
+              type="button"
+              className={cls}
+              aria-pressed={value === min}
+              aria-label={`${minutesToLabel(min)} és ${minutesToLabel(min + duration)} között`}
+              onMouseEnter={() => setHover(min)}
+              onFocus={() => setHover(min)}
+              onBlur={() => setHover(null)}
+              onClick={() => onPick(min)}
+            >
+              <i />
+              <b>{label}</b>
+            </button>
+          )
+        })}
+      </div>
+      <p className="comb-read" aria-hidden="true">
+        {preview != null ? `${minutesToLabel(preview)} - ${minutesToLabel(preview + duration)}` : 'Vidd a fogak fölé'}
+      </p>
+    </div>
+  )
 }
 
 function Field({ id, label, value, onChange, type = 'text', autoComplete, error }) {
@@ -55,6 +102,7 @@ export default function App() {
     () => (service && date ? slotsForDate(date, service.durationMin, bookings) : []),
     [service, date, bookings],
   )
+  const teeth = useMemo(() => (date ? combTeeth(date, slots, bookings) : []), [date, slots, bookings])
 
   function pickDate(iso) {
     setDate(iso)
@@ -71,7 +119,7 @@ export default function App() {
     if (name.trim().length < 2) next.name = 'Írd be a neved.'
     if (phone.replace(/\D/g, '').length < 8) next.phone = 'Egy hívható szám kell.'
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) next.email = 'Ez nem e-mail cím.'
-    if (startMin == null) next.slot = 'Válassz időpontot.'
+    if (startMin == null) next.slot = 'Válassz időpontot a fésűn.'
     return next
   }
 
@@ -111,6 +159,7 @@ export default function App() {
     }
     setBooking(result.booking)
     setView('done')
+    window.scrollTo({ top: 0 })
     requestAnimationFrame(() => document.getElementById('kesz-cim')?.focus())
   }
 
@@ -140,21 +189,27 @@ export default function App() {
   }
 
   const sorted = [...bookings].sort((a, b) => a.date.localeCompare(b.date) || a.startMin - b.startMin)
+  const tel = `tel:${BUSINESS.phone.replace(/\s/g, '')}`
 
   return (
     <>
-      <a className="skip" href="#tartalom">
+      <a className="skip" href="#foglalas">
         Ugrás a foglaláshoz
       </a>
       <p className="banner" role="status">
-        <strong>Bemutató projekt</strong> — saját kezdeményezés. A foglalás csak ebben a böngészőben marad, e-mail nem megy ki. Készítette: <a href="https://rizmajerdev.com/" style={{ color: 'inherit', textDecoration: 'underline' }}>Rizmajer Máté</a>
-        {' '}<a className="banner-cta" href="https://rizmajerdev.com/?demo=idopontfoglalo#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+        <strong>Bemutató projekt</strong>, saját kezdeményezés. A foglalás csak ebben a böngészőben marad, e-mail nem megy ki. Készítette:{' '}
+        <a href="https://rizmajerdev.com/">Rizmajer Máté</a>{' '}
+        <a className="banner-cta" href="https://rizmajerdev.com/?demo=idopontfoglalo#kapcsolat">
+          Ilyet kérek a vállalkozásomnak →
+        </a>
       </p>
 
       <header className="top">
         <p className="brand">
+          <span className="brand-dot" aria-hidden="true">
+            Sz
+          </span>
           {BUSINESS.name}
-          <span>{BUSINESS.city}</span>
         </p>
         <nav aria-label="Nézet">
           <button type="button" aria-current={view !== 'admin' ? 'page' : undefined} onClick={() => setView(booking ? 'done' : 'book')}>
@@ -168,7 +223,7 @@ export default function App() {
 
       <main id="tartalom">
         {view === 'admin' ? (
-          <section className="sheet admin">
+          <section className="panel admin">
             <h1>Naptár</h1>
             <p className="lede">A szalon ezt a listát látná. A bemutató PIN-je nyilvános: {BUSINESS.adminPin}.</p>
             {adminOk ? (
@@ -176,30 +231,30 @@ export default function App() {
                 <ul className="book-list">
                   {sorted.map((b) => (
                     <li key={b.id}>
+                      <p className="book-time">
+                        <strong>{minutesToLabel(b.startMin)}</strong>
+                        <span>{formatDay(b.date, { month: 'short', day: 'numeric', weekday: 'short' })}</span>
+                      </p>
                       <div>
-                        <strong>
-                          {formatDay(b.date, { month: 'long', day: 'numeric', weekday: 'long' })} · {minutesToLabel(b.startMin)}
-                        </strong>
+                        <strong>{b.serviceName}</strong>
                         <span>
-                          {b.serviceName} · {b.name}
+                          {b.name}, <a href={`tel:${b.phone.replace(/\s/g, '')}`}>{b.phone}</a>
                         </span>
-                        <span>
-                          {b.phone} · {b.email}
-                        </span>
+                        <span>{b.email}</span>
                       </div>
-                      <button type="button" onClick={() => remove(b.id)}>
+                      <button type="button" className="btn ghost" onClick={() => remove(b.id)}>
                         {pendingDelete === b.id ? 'Biztos, törlöm' : 'Törlés'}
                       </button>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p>Még nincs foglalás.</p>
+                <p className="empty">Még nincs foglalás. Foglalj egyet a Foglalás oldalon, és itt megjelenik.</p>
               )
             ) : (
               <form className="pin" onSubmit={tryPin}>
                 <Field id="pin" label="PIN" value={pin} onChange={setPin} type="password" autoComplete="off" error={pinError ? 'Nem ez a PIN.' : undefined} />
-                <button className="submit" type="submit">
+                <button className="btn" type="submit">
                   Megnyitás
                 </button>
               </form>
@@ -208,32 +263,37 @@ export default function App() {
         ) : null}
 
         {view === 'done' && booking ? (
-          <section className="sheet done">
-            <p className="eyebrow">Beírva</p>
-            <h1 id="kesz-cim" tabIndex={-1}>
-              Megvan az időpontod.
-            </h1>
-            <dl>
-              <div>
-                <dt>Kezelés</dt>
-                <dd>{booking.serviceName}</dd>
+          <section className="done">
+            <div className="card">
+              <div className="card-inner">
+                <div className="card-face card-front" aria-hidden="true">
+                  <span className="brand-dot big">Sz</span>
+                  <span>{BUSINESS.name}</span>
+                </div>
+                <div className="card-face card-back">
+                  <h1 id="kesz-cim" tabIndex={-1}>
+                    Megvan az időpontod.
+                  </h1>
+                  <p className="card-when">
+                    {formatDay(booking.date, { month: 'long', day: 'numeric', weekday: 'long' })}
+                    <strong>{minutesToLabel(booking.startMin)}</strong>
+                  </p>
+                  <dl>
+                    <div>
+                      <dt>Kezelés</dt>
+                      <dd>{booking.serviceName}</dd>
+                    </div>
+                    <div>
+                      <dt>Ár</dt>
+                      <dd>{formatHuf(booking.priceHuf)}</dd>
+                    </div>
+                  </dl>
+                </div>
               </div>
-              <div>
-                <dt>Mikor</dt>
-                <dd>
-                  {formatDay(booking.date, { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}
-                  {' · '}
-                  {minutesToLabel(booking.startMin)}
-                </dd>
-              </div>
-              <div>
-                <dt>Ár</dt>
-                <dd>{formatHuf(booking.priceHuf)}</dd>
-              </div>
-            </dl>
-            <p className="lede">Élesben erről e-mail menne neked és a szalonnak. Itt nem megy.</p>
+            </div>
+            <p className="lede">Élesben erről e-mail menne neked és a szalonnak. Itt nem megy, de a Naptár nézetben látod, mit lát a szalon.</p>
             <button
-              className="submit"
+              className="btn"
               type="button"
               onClick={() => {
                 setBooking(null)
@@ -247,55 +307,50 @@ export default function App() {
         ) : null}
 
         {view === 'book' ? (
-          <div className="layout">
-            <section className="intro">
-              <p className="eyebrow">{BUSINESS.city}</p>
-              <h1>{BUSINESS.name}</h1>
-              <p className="lede">Pontos időpont, nyugodt szalon. Foglalj online — Kecskeméten, a tér mellett.</p>
-              <dl className="facts">
-                <div>
-                  <dt>Nyitva</dt>
-                  <dd>{BUSINESS.hours}</dd>
-                </div>
-                <div>
-                  <dt>Cím</dt>
-                  <dd>
-                    {BUSINESS.address}, {BUSINESS.city}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Telefon</dt>
-                  <dd>
-                    <a href={`tel:${BUSINESS.phone.replace(/\s/g, '')}`}>{BUSINESS.phone}</a>
-                  </dd>
-                </div>
-              </dl>
+          <>
+            <section className="hero">
+              <h1 className="cut">
+                  <span className="sr">{BUSINESS.name}</span>
+                  <span className="cut-half cut-top" aria-hidden="true">
+                    Szálka
+                    <br />
+                    Fodrászat
+                  </span>
+                  <span className="cut-half cut-bottom" aria-hidden="true">
+                    Szálka
+                    <br />
+                    Fodrászat
+                  </span>
+                </h1>
+              <div className="hero-copy">
+                
+                <p className="lede">Kecskemét, a Szabadság téren. Válassz kezelést, és foglalj a fésűn: minden fog fél óra.</p>
+                <a className="btn" href="#foglalas">
+                  Időpontot foglalok
+                </a>
+              </div>
+              <figure className="hero-photo">
+                <img src={drying} srcSet={`${dryingSmall} 480w, ${drying} 900w`} sizes="(max-width: 860px) 78vw, 24rem" alt="Fodrász hajszárítóval és körkefével formázza egy vendég haját" width="900" height="900" />
+              </figure>
             </section>
 
-            <form className="sheet" onSubmit={onSubmit} noValidate>
-              <h2>Foglalás</h2>
-
-              <fieldset>
-                <legend>Szolgáltatás</legend>
-                <div className="choices">
+            <form id="foglalas" className="booking" onSubmit={onSubmit} noValidate>
+              <fieldset className="services">
+                <legend>Mit csinálunk?</legend>
+                <div className="service-list">
                   {SERVICES.map((item) => {
                     const on = item.id === serviceId
                     return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        aria-pressed={on}
-                        className={on ? 'choice on' : 'choice'}
-                        onClick={() => pickService(item.id)}
-                      >
-                        <span>
+                      <button key={item.id} type="button" aria-pressed={on} className="service" onClick={() => pickService(item.id)}>
+                        <span className="service-min">
+                          {item.durationMin}
+                          <small>perc</small>
+                        </span>
+                        <span className="service-name">
                           <strong>{item.name}</strong>
                           <em>{item.blurb}</em>
                         </span>
-                        <span className="meta">
-                          {formatHuf(item.priceHuf)}
-                          <small>{item.durationMin} perc</small>
-                        </span>
+                        <span className="service-price">{formatHuf(item.priceHuf)}</span>
                       </button>
                     )
                   })}
@@ -303,22 +358,17 @@ export default function App() {
               </fieldset>
 
               <fieldset>
-                <legend>Nap</legend>
+                <legend>Melyik nap?</legend>
                 <div className="days">
                   {days.map((iso) => {
                     const closed = atMinutes(iso, 12 * 60).getDay() === 0
                     const on = iso === date
                     return (
-                      <button
-                        key={iso}
-                        type="button"
-                        aria-pressed={closed ? undefined : on}
-                        disabled={closed}
-                        className={on ? 'day on' : 'day'}
-                        onClick={() => pickDate(iso)}
-                      >
+                      <button key={iso} type="button" aria-pressed={closed ? undefined : on} disabled={closed} className="day" onClick={() => pickDate(iso)}>
                         <span>{formatDay(iso, { weekday: 'short' })}</span>
-                        <strong>{formatDay(iso, { day: 'numeric' })}</strong>
+                        <strong>
+                          <span className="flip">{formatDay(iso, { day: 'numeric' })}</span>
+                        </strong>
                         <small>{closed ? 'zárva' : formatDay(iso, { month: 'short' })}</small>
                       </button>
                     )
@@ -327,37 +377,30 @@ export default function App() {
               </fieldset>
 
               <fieldset id="idopont" tabIndex={-1} aria-describedby={errors.slot ? 'slot-error' : 'slot-hint'}>
-                <legend>Időpont</legend>
+                <legend>Hánykor?</legend>
                 <p className="hint" id="slot-hint">
-                  {date
-                    ? `${formatDay(date, { month: 'long', day: 'numeric', weekday: 'long' })} · ${service.durationMin} perc`
-                    : ''}
+                  {date ? `${formatDay(date, { month: 'long', day: 'numeric', weekday: 'long' })}, ${service.name.toLowerCase()}, ${service.durationMin} perc` : ''}
                 </p>
                 {slots.length ? (
-                  <div className="times">
-                    {slots.map((min) => {
-                      const on = min === startMin
-                      return (
-                        <button
-                          key={min}
-                          type="button"
-                          aria-pressed={on}
-                          className={on ? 'time on' : 'time'}
-                          onClick={() => {
-                            setStartMin(min)
-                            setErrors((prev) => ({ ...prev, slot: undefined }))
-                          }}
-                        >
-                          {minutesToLabel(min)}
-                        </button>
-                      )
-                    })}
-                  </div>
+                  <Comb
+                    teeth={teeth}
+                    duration={service.durationMin}
+                    value={startMin}
+                    onPick={(min) => {
+                      setStartMin(min)
+                      setErrors((prev) => ({ ...prev, slot: undefined }))
+                    }}
+                  />
                 ) : (
                   <p className="empty" role="status">
-                    Erre a napra nem maradt idő, ami befér.
+                    Erre a napra nem maradt idő, ami befér. Nézz egy másik napot.
                   </p>
                 )}
+                <p className="legend" aria-hidden="true">
+                  <span className="lg start">szabad</span>
+                  <span className="lg taken">foglalt</span>
+                  <span className="lg free">nem fér bele</span>
+                </p>
                 {errors.slot ? (
                   <p id="slot-error" className="field-error" role="alert">
                     {errors.slot}
@@ -365,22 +408,56 @@ export default function App() {
                 ) : null}
               </fieldset>
 
-              <fieldset>
-                <legend>Adataid</legend>
-                <Field id="name" label="Név" value={name} onChange={setName} autoComplete="name" error={errors.name} />
-                <Field id="phone" label="Telefon" value={phone} onChange={setPhone} type="tel" autoComplete="tel" error={errors.phone} />
-                <Field id="email" label="E-mail" value={email} onChange={setEmail} type="email" autoComplete="email" error={errors.email} />
-                <div className="field">
-                  <label htmlFor="note">Megjegyzés, ha van</label>
-                  <textarea id="note" name="note" rows={3} value={note} onChange={(e) => setNote(e.target.value)} />
+              <fieldset className="details">
+                <legend>Kinek írjuk be?</legend>
+                <div className="details-grid">
+                  <Field id="name" label="Név" value={name} onChange={setName} autoComplete="name" error={errors.name} />
+                  <Field id="phone" label="Telefon" value={phone} onChange={setPhone} type="tel" autoComplete="tel" error={errors.phone} />
+                  <Field id="email" label="E-mail" value={email} onChange={setEmail} type="email" autoComplete="email" error={errors.email} />
+                  <div className="field">
+                    <label htmlFor="note">Megjegyzés, ha van</label>
+                    <textarea id="note" name="note" rows={2} value={note} onChange={(e) => setNote(e.target.value)} />
+                  </div>
                 </div>
               </fieldset>
 
-              <button className="submit" type="submit">
-                Lefoglalom
-              </button>
+              <div className="submit-row">
+                <p className="summary">
+                  {service.name}
+                  {startMin != null ? `, ${formatDay(date, { weekday: 'long' })} ${minutesToLabel(startMin)}` : ''}
+                  <strong>{formatHuf(service.priceHuf)}</strong>
+                </p>
+                <button className="btn big" type="submit">
+                  Lefoglalom
+                </button>
+              </div>
             </form>
-          </div>
+
+            <section className="visit" aria-labelledby="hol">
+              <img src={colouring} alt="Fodrász ecsettel festéket visz fel egy fóliára terített hajtincsre" width="1200" height="800" loading="lazy" />
+              <div className="visit-text">
+                <h2 id="hol">A téren, az emeleten.</h2>
+                <dl>
+                  <div>
+                    <dt>Cím</dt>
+                    <dd>
+                      {BUSINESS.address}, {BUSINESS.city}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Nyitva</dt>
+                    <dd>{BUSINESS.hours}</dd>
+                  </div>
+                  <div>
+                    <dt>Telefon</dt>
+                    <dd>
+                      <a href={tel}>{BUSINESS.phone}</a>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </section>
+          </>
         ) : null}
       </main>
     </>
