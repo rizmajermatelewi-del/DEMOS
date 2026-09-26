@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#e9edf1" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%274%27 fill=%27%231b2a41%27/><rect x=%279%27 y=%275%27 width=%2714%27 height=%2722%27 fill=%27%23fbfcf8%27/><rect x=%2711%27 y=%2720%27 width=%2710%27 height=%272%27 fill=%27%23d62828%27/></svg>" />
+    <title>Pálfi Könyvelőiroda: bemutató</title>
+    <meta
+      name="description"
+      content="Bemutató oldal egy dunaharaszti könyvelőirodának: havidíj-kalkulátor, ami számolószalagra nyomtat, és tépőnaptár a következő NAV-határidőkkel. Az űrlap nem küld üzenetet."
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "AccountingService",
+        "name": "Pálfi Könyvelőiroda",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.",
+        "url": "https://demo-konyvelo.vercel.app",
+        "telephone": "+36 24 555 0341",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Fő út 58.",
+          "addressLocality": "Dunaharaszti",
+          "postalCode": "2330",
+          "addressCountry": "HU"
+        },
+        "openingHoursSpecification": [{
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+          "opens": "08:30",
+          "closes": "16:30"
+        }, {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Friday",
+          "opens": "08:30",
+          "closes": "13:00"
+        }]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#tartalom">Ugrás a tartalomhoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=konyvelo#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <p class="mark"><span class="mono-mark" aria-hidden="true">P</span>Pálfi <b>Könyvelőiroda</b></p>
+      <nav aria-label="Oldal">
+        <a class="hl" href="#havidij">Havidíj</a>
+        <a class="hl" href="#munkak">Mit vállalunk</a>
+        <a class="hl" href="#kapcsolat">Kapcsolat</a>
+      </nav>
+    </header>
+
+    <main id="tartalom">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1>Ön vállalkozik. <em>A könyvelést mi visszük.</em></h1>
+          <p class="lede">Könyvelés, bérszámfejtés és bevallások egyéni vállalkozóknak és kft.-knek Dunaharasztin. A havidíjat előre, fix áron mondjuk meg.</p>
+          <div class="actions">
+            <a class="key key-dark" href="#havidij">Kiszámolom a havidíjat</a>
+            <a class="key" href="#kapcsolat">Időpontot kérek</a>
+          </div>
+        </div>
+
+        <figure class="pad" aria-labelledby="pad-title">
+          <figcaption class="pad-head">
+            <span id="pad-title">Határidőnapló</span>
+            <button class="pad-next hl" id="pad-next" type="button">Következő lap</button>
+          </figcaption>
+          <div class="pad-rings" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <ol class="sheets" id="sheets" aria-live="polite"></ol>
+        </figure>
+      </section>
+
+      <section class="calc" id="havidij" aria-labelledby="calc-title">
+        <div class="calc-controls">
+          <h2 id="calc-title">Mennyi lenne havonta?</h2>
+          <p class="lede">Állítsa be, amit tudunk a cégéről. A gép azonnal kinyomtatja a havidíjat.</p>
+
+          <form id="calc" class="calc-form">
+            <fieldset>
+              <legend>Cégforma</legend>
+              <div class="seg">
+                <label><input type="radio" name="form" value="atalany" checked /><span>Átalányadós ev.</span></label>
+                <label><input type="radio" name="form" value="ev" /><span>Vállalkozói szja</span></label>
+                <label><input type="radio" name="form" value="kft" /><span>Kft. / Bt.</span></label>
+              </div>
+            </fieldset>
+
+            <label class="range">
+              <span class="range-head">Bizonylat havonta <output id="docs-out" for="docs">30</output></span>
+              <input id="docs" name="docs" type="range" min="0" max="200" step="5" value="30" />
+              <span class="hint">Számlák és bankkivonat-tételek. 20 benne van az alapdíjban.</span>
+            </label>
+
+            <div class="stepper">
+              <span id="emp-label">Alkalmazottak</span>
+              <div class="step" role="group" aria-labelledby="emp-label">
+                <button class="key key-sq" type="button" data-step="-1" aria-label="Eggyel kevesebb">−</button>
+                <output id="emp-out" aria-live="polite">0 fő</output>
+                <button class="key key-sq" type="button" data-step="1" aria-label="Eggyel több">+</button>
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" name="vat" id="vat" />
+              <span class="track" aria-hidden="true"></span>
+              Havi ÁFA-bevallás kell
+            </label>
+          </form>
+        </div>
+
+        <div class="machine">
+          <div class="tape-slot">
+            <div class="tape" id="tape" aria-live="polite" aria-label="Kinyomtatott havidíj"></div>
+          </div>
+          <div class="machine-body" aria-hidden="true">
+            <span class="machine-name">PK-12 PRINT</span>
+            <div class="keys">
+              <i>7</i><i>8</i><i>9</i><i class="op">÷</i>
+              <i>4</i><i>5</i><i>6</i><i class="op">×</i>
+              <i>1</i><i>2</i><i>3</i><i class="op">−</i>
+              <i>0</i><i>00</i><i>,</i><i class="op plus">+</i>
+            </div>
+          </div>
+          <button class="key key-dark tear" id="tear" type="button">Letépem és csatolom</button>
+        </div>
+      </section>
+
+      <section class="work" id="munkak" aria-labelledby="work-title">
+        <h2 id="work-title">Amit leveszünk a válláról</h2>
+        <div class="work-grid">
+          <article>
+            <h3><span class="hl-text">Könyvelés</span></h3>
+            <p>Egyszeres vagy kettős könyvvitel. A bizonylatokat fotón, e-mailben vagy dobozban is elhozhatja.</p>
+          </article>
+          <article>
+            <h3><span class="hl-text">Bérszámfejtés</span></h3>
+            <p>Bejelentés, havi bér, járulékok, kilépő papírok. A bérpapírt a dolgozó e-mailben kapja.</p>
+          </article>
+          <article>
+            <h3><span class="hl-text">Bevallások</span></h3>
+            <p>ÁFA, szja, társasági adó, iparűzési adó. Minden határidőt mi figyelünk, Önnek csak jóvá kell hagynia.</p>
+          </article>
+          <article>
+            <h3><span class="hl-text">NAV-levelek</span></h3>
+            <p>Ha levél jön az adóhivataltól, továbbítja, és mi válaszolunk rá, meghatalmazással.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact" id="kapcsolat" aria-labelledby="contact-title">
+        <div>
+          <h2 id="contact-title">Egy első beszélgetés ingyenes.</h2>
+          <p class="lede">Fél óra, személyesen vagy telefonon. Átnézzük, mi kell a cégének, és mennyibe kerülne.</p>
+          <dl class="facts">
+            <div><dt>Cím</dt><dd>2330 Dunaharaszti, Fő út 58., I. emelet</dd></div>
+            <div><dt>Nyitva</dt><dd>H-Cs 8:30-16:30, P 8:30-13:00</dd></div>
+            <div><dt>Telefon</dt><dd><a class="hl" href="tel:+36245550341">+36 24 555 0341</a></dd></div>
+          </dl>
+        </div>
+
+        <form id="contact-form" class="contact-form" novalidate>
+          <div class="stub" id="stub" hidden>
+            <span>Csatolt számítás</span>
+            <strong id="stub-total"></strong>
+            <button class="hl" type="button" id="stub-remove">Levesz</button>
+          </div>
+          <label>
+            Név
+            <input id="name" name="name" autocomplete="name" required />
+            <span class="error" id="name-error" hidden></span>
+          </label>
+          <label>
+            E-mail vagy telefon
+            <input id="contact" name="contact" autocomplete="email" required />
+            <span class="error" id="contact-error" hidden></span>
+          </label>
+          <label>
+            Üzenet (nem kötelező)
+            <textarea id="message" name="message" rows="3"></textarea>
+          </label>
+          <button class="key key-dark" type="submit">Időpontot kérek</button>
+          <p id="form-status" class="form-status" role="status" hidden></p>
+        </form>
+      </section>
+    </main>
+
+    <footer>Pálfi Könyvelőiroda, bemutató, nem élő vállalkozás. Az árak mintaárak, ÁFA nélkül.</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
