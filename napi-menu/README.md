@@ -38,4 +38,6 @@ npm test      # tárolás + ellenőrzés
 npm run dev
 ```
 
-React 19 + Vite, `node --test`.
+React 19 + Vite, `node --test`. Betű: Sofia Sans Condensed + Figtree (@fontsource,
+latin-ext). A menü betűtáblán jelenik meg; a szerkesztő mellett élőben látszik,
+hogyan kerül ki a táblára. Hétvégén a tábla már a hétfői menüt mutatja.

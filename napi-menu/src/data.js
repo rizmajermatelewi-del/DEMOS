@@ -3,17 +3,23 @@ export const BUSINESS = {
   city: 'Szeged',
   address: 'Tisza Lajos krt. 42.',
   phone: '+36 62 555 0142',
-  hours: 'Hétfő–péntek 11:00–15:00',
+  hours: 'Hétfő-péntek 11:00-15:00',
   adminPassword: 'menu2026',
 }
 
 export function formatHuf(n) {
-  if (!Number.isFinite(Number(n))) return '—'
+  if (!Number.isFinite(Number(n))) return '-'
   return new Intl.NumberFormat('hu-HU', {
     style: 'currency',
     currency: 'HUF',
     maximumFractionDigits: 0,
   }).format(n)
+}
+
+/** How prices are pinned on a letterboard: 2 390,- */
+export function boardPrice(n) {
+  if (!Number.isFinite(Number(n)) || String(n).trim() === '') return '?'
+  return `${new Intl.NumberFormat('hu-HU').format(Number(n))},-`
 }
 
 export function isoLocal(date) {
