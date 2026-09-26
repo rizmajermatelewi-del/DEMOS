@@ -13,6 +13,7 @@ kezdeményezés, kitalált mintaadatokkal — nem ügyfélmunka.
 | [`bolt/`](bolt) | Helyi vas-műszaki bolt — katalógus élő készlettel, nyitva/zárva jelzés, félretétel | https://demo-vasbolt.vercel.app |
 | [`konyvelo/`](konyvelo) | Könyvelőiroda: havidíj-kalkulátor számolószalagra nyomtatva, NAV-határidő tépőnaptár | https://demo-konyvelo.vercel.app |
 | [`viragbolt/`](viragbolt) | Virágbolt: csokorkötő élő SVG-csokorral, készlettel, kártyával és átvételi nappal | https://demo-viragbolt.vercel.app |
+| [`masszazs/`](masszazs) | Masszázsstúdió: „Hol fáj?” testtérkép, kezelésajánlás, első szabad időpontok | https://demo-masszazs.vercel.app |
 
 Mindegyik mappa önálló Vite projekt, saját `package.json`-nal és README-vel
 (probléma + döntések).

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1c2226" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%2712%27 fill=%27%231c2226%27/><ellipse cx=%2716%27 cy=%2717%27 rx=%279%27 ry=%277.5%27 fill=%27%23e07a55%27/><ellipse cx=%2716%27 cy=%2717%27 rx=%274%27 ry=%273%27 fill=%27%23eee4d6%27/></svg>" />
+    <title>Oldó Masszázsstúdió: bemutató</title>
+    <meta
+      name="description"
+      content="Bemutató oldal egy gyömrői masszázsstúdiónak: a testtérképen megjelölöd, hol fáj, az oldal kezelést, időtartamot és szabad időpontot ajánl. Nem küld foglalást."
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HealthAndBeautyBusiness",
+        "name": "Oldó Masszázsstúdió",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.",
+        "url": "https://demo-masszazs.vercel.app",
+        "telephone": "+36 30 555 0619",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Szent István út 7.",
+          "addressLocality": "Gyömrő",
+          "postalCode": "2230",
+          "addressCountry": "HU"
+        },
+        "openingHoursSpecification": [{
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "10:00",
+          "closes": "19:00"
+        }, {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "10:00",
+          "closes": "15:00"
+        }]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#tartalom">Ugrás a tartalomhoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=masszazs#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <p class="mark"><span class="pebble-mark" aria-hidden="true"></span>oldó <span>masszázsstúdió</span></p>
+      <nav aria-label="Oldal">
+        <a href="#hol-faj">Hol fáj?</a>
+        <a href="#arak">Árak</a>
+        <a href="#foglalas">Foglalás</a>
+      </nav>
+    </header>
+
+    <main id="tartalom">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1>Mutassa meg, hol fáj. <span>A többit mi tudjuk.</span></h1>
+          <p class="lede">Masszázsstúdió Gyömrőn. Jelölje meg a testtérképen, hol feszül, és megmondjuk, melyik kezelés segít.</p>
+          <div class="actions">
+            <a class="pebble pebble-warm" href="#hol-faj">Megmutatom, hol fáj</a>
+            <a class="pebble" href="#arak">Árak</a>
+          </div>
+        </div>
+        <figure class="breath" aria-hidden="true">
+          <span class="ring"></span>
+          <span class="ring ring-2"></span>
+          <img
+            src="/src/assets/kez.webp"
+            srcset="/src/assets/kez-460.webp 460w, /src/assets/kez.webp 720w"
+            sizes="(max-width: 860px) 70vw, 24rem"
+            alt=""
+            width="720"
+            height="1080"
+          />
+          <figcaption class="breath-cue" id="cue">Belégzés</figcaption>
+        </figure>
+      </section>
+
+      <section class="map" id="hol-faj" aria-labelledby="map-title">
+        <div class="figure-wrap">
+          <svg class="body" id="body" viewBox="0 0 200 420" aria-hidden="true">
+            <defs>
+              <radialGradient id="heat">
+                <stop offset="0" stop-color="#ffb08f" />
+                <stop offset="1" stop-color="#e07a55" />
+              </radialGradient>
+            </defs>
+            <g class="zone" data-zone="fej"><ellipse cx="100" cy="40" rx="25" ry="29" /></g>
+            <g class="zone" data-zone="nyak"><rect x="88" y="66" width="24" height="22" rx="9" /></g>
+            <g class="zone" data-zone="vall"><rect x="46" y="86" width="108" height="28" rx="14" /></g>
+            <g class="zone" data-zone="kar"><rect x="22" y="96" width="22" height="150" rx="11" /><rect x="156" y="96" width="22" height="150" rx="11" /></g>
+            <g class="zone" data-zone="hat"><rect x="56" y="116" width="88" height="66" rx="20" /></g>
+            <g class="zone" data-zone="derek"><rect x="60" y="184" width="80" height="44" rx="18" /></g>
+            <g class="zone" data-zone="csipo"><rect x="56" y="230" width="88" height="42" rx="21" /></g>
+            <g class="zone" data-zone="lab"><rect x="61" y="274" width="36" height="110" rx="17" /><rect x="103" y="274" width="36" height="110" rx="17" /></g>
+            <g class="zone" data-zone="talp"><ellipse cx="79" cy="396" rx="19" ry="10" /><ellipse cx="121" cy="396" rx="19" ry="10" /></g>
+          </svg>
+          <p class="map-note">Hátulnézet. Koppintson rá, ahol fáj.</p>
+        </div>
+
+        <div class="map-side">
+          <h2 id="map-title">Hol fáj?</h2>
+          <fieldset class="chips" id="chips">
+            <legend class="sr">Fájó testrészek</legend>
+          </fieldset>
+          <fieldset class="level">
+            <legend>Mennyire?</legend>
+            <label><input type="radio" name="level" value="1" checked /><span>Feszül</span></label>
+            <label><input type="radio" name="level" value="2" /><span>Fáj</span></label>
+            <label><input type="radio" name="level" value="3" /><span>Nagyon fáj</span></label>
+          </fieldset>
+
+          <article class="rec" id="rec" aria-live="polite">
+            <p class="rec-label">Ezt ajánljuk</p>
+            <h3 id="rec-name"></h3>
+            <p class="rec-why" id="rec-why"></p>
+            <p class="rec-meta"><span id="rec-min"></span><span id="rec-price"></span></p>
+            <a class="pebble pebble-warm" href="#foglalas" id="rec-book">Ezt foglalom</a>
+          </article>
+          <p class="disclaimer">Friss sérülés, gyulladás vagy terhesség esetén előbb kérdezze az orvosát.</p>
+        </div>
+      </section>
+
+      <section class="prices" id="arak" aria-labelledby="prices-title">
+        <h2 id="prices-title">Kezelések és árak</h2>
+        <ul class="menu" id="menu"></ul>
+      </section>
+
+      <section class="booking" id="foglalas" aria-labelledby="booking-title">
+        <h2 id="booking-title">Első szabad időpontok</h2>
+        <form id="booking-form" novalidate>
+          <label class="wide">
+            Kezelés
+            <select id="treatment" name="treatment"></select>
+          </label>
+          <fieldset class="wide slots-field">
+            <legend>Időpont</legend>
+            <div class="slots" id="slots"></div>
+            <span class="error" id="slot-error" hidden></span>
+          </fieldset>
+          <label>
+            Név
+            <input id="name" name="name" autocomplete="name" required />
+            <span class="error" id="name-error" hidden></span>
+          </label>
+          <label>
+            Telefon
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+            <span class="error" id="phone-error" hidden></span>
+          </label>
+          <div class="wide send">
+            <button class="pebble pebble-warm" type="submit">Lefoglalom</button>
+            <p class="hint">Lemondás díjmentesen, 24 órával előtte.</p>
+          </div>
+          <p id="form-status" class="form-status wide" role="status" hidden></p>
+        </form>
+      </section>
+
+      <section class="visit" aria-labelledby="visit-title">
+        <h2 id="visit-title">Szent István út 7., udvari bejárat.</h2>
+        <p class="lede">Kedd-péntek 10:00-19:00, szombat 10:00-15:00. Parkolni az udvarban lehet. Telefon: <a href="tel:+36305550619">+36 30 555 0619</a></p>
+      </section>
+    </main>
+
+    <footer>Oldó Masszázsstúdió, bemutató, nem élő vállalkozás. Az árak és időpontok mintaadatok.</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
