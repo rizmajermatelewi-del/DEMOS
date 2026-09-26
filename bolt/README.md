@@ -48,5 +48,6 @@ npm test      # nyitvatartás, félretétel, keresés, készlet
 npm run dev
 ```
 
-React 19 + Vite, Vitest. Betű: Archivo (latin-ext). A félretétel natív
+React 19 + Vite, Vitest. Betű: Barlow Condensed + Space Grotesk (@fontsource, latin-ext),
+ikonok: Phosphor. A félretétel natív
 `<dialog>` elemben nyílik.
