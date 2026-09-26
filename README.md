@@ -12,6 +12,7 @@ kezdeményezés, kitalált mintaadatokkal — nem ügyfélmunka.
 | [`cukraszda/`](cukraszda) | Cukrászda — torta- és tálca-előrendelés felirattal, napi kapacitással, pult nézet | https://demo-cukraszda.vercel.app |
 | [`bolt/`](bolt) | Helyi vas-műszaki bolt — katalógus élő készlettel, nyitva/zárva jelzés, félretétel | https://demo-vasbolt.vercel.app |
 | [`konyvelo/`](konyvelo) | Könyvelőiroda: havidíj-kalkulátor számolószalagra nyomtatva, NAV-határidő tépőnaptár | https://demo-konyvelo.vercel.app |
+| [`viragbolt/`](viragbolt) | Virágbolt: csokorkötő élő SVG-csokorral, készlettel, kártyával és átvételi nappal | https://demo-viragbolt.vercel.app |
 
 Mindegyik mappa önálló Vite projekt, saját `package.json`-nal és README-vel
 (probléma + döntések).

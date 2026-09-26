@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#e3e8da" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%2710%27 fill=%27%231f2b1f%27/><circle cx=%2716%27 cy=%2714%27 r=%277%27 fill=%27%23d9432b%27/><circle cx=%2716%27 cy=%2714%27 r=%272.4%27 fill=%27%231f2b1f%27/><path d=%27M16 21v6%27 stroke=%27%237f9d86%27 stroke-width=%272%27/></svg>" />
+    <title>Pipacs Virágkötészet: bemutató</title>
+    <meta
+      name="description"
+      content="Bemutató oldal egy dabasi virágboltnak: a csokrot szálanként rakod össze a mai készletből, élőben látod, kártyát írsz hozzá, és kiválasztod az átvétel napját. Nem küld rendelést."
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Florist",
+        "name": "Pipacs Virágkötészet",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.",
+        "url": "https://demo-viragbolt.vercel.app",
+        "telephone": "+36 29 555 0472",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Bartók Béla út 21.",
+          "addressLocality": "Dabas",
+          "postalCode": "2370",
+          "addressCountry": "HU"
+        },
+        "openingHoursSpecification": [{
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "08:00",
+          "closes": "18:00"
+        }, {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "08:00",
+          "closes": "13:00"
+        }]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#tartalom">Ugrás a tartalomhoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=viragbolt#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <p class="mark">Pipacs <i>virágkötészet</i></p>
+      <a class="phone" href="tel:+36295550472">+36 29 555 0472</a>
+    </header>
+
+    <main id="tartalom">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1>Csokor, szálanként <em>összeválogatva.</em></h1>
+          <p class="lede">Dabasi virágkötészet. Rakd össze a csokrot a mai vödrökből, mi megkötjük, és a boltban átveheted.</p>
+          <div class="actions">
+            <a class="leaf leaf-solid" href="#csokor">Összerakom a csokrom</a>
+            <a class="leaf" href="tel:+36295550472">Felhívom a boltot</a>
+          </div>
+        </div>
+        <figure class="hero-photo">
+          <img
+            src="/src/assets/bolt.webp"
+            srcset="/src/assets/bolt-480.webp 480w, /src/assets/bolt.webp 760w"
+            sizes="(max-width: 860px) 90vw, 26rem"
+            alt="Virágkötő a pult mögött, körülötte cserepes növények és rózsák"
+            width="760"
+            height="951"
+          />
+        </figure>
+      </section>
+
+      <section class="builder" id="csokor" aria-labelledby="builder-title">
+        <div class="buckets">
+          <h2 id="builder-title">A mai vödrök</h2>
+          <p class="lede">Hány szál legyen? Ami fogy, azt a készlet mutatja. Egy csokorba legfeljebb 35 szál fér.</p>
+          <ul class="stock" id="stock"></ul>
+          <p class="error" id="stems-error" hidden></p>
+        </div>
+
+        <div class="stage">
+          <svg class="bouquet" id="bouquet" viewBox="0 70 300 310" role="img" aria-labelledby="bouquet-desc">
+            <desc id="bouquet-desc">A csokor előnézete</desc>
+            <g id="stems"></g>
+            <g id="wrap"></g>
+            <g id="tag" class="tag"></g>
+          </svg>
+          <p class="empty" id="empty">Még üres. Válassz a vödrökből.</p>
+
+          <fieldset class="wraps">
+            <legend>Csomagolás</legend>
+            <label><input type="radio" name="wrap" value="kraft" checked /><span>Kraftpapír</span></label>
+            <label><input type="radio" name="wrap" value="selyem" /><span>Selyempapír <small>+400 Ft</small></span></label>
+            <label><input type="radio" name="wrap" value="doboz" /><span>Kalapdoboz <small>+2 400 Ft</small></span></label>
+          </fieldset>
+
+          <dl class="sum" id="sum" aria-live="polite"></dl>
+        </div>
+      </section>
+
+      <section class="order" id="rendeles" aria-labelledby="order-title">
+        <h2 id="order-title">Mikor jössz érte?</h2>
+        <form id="order-form" novalidate>
+          <fieldset class="days">
+            <legend>Átvétel napja</legend>
+            <div class="day-row" id="days"></div>
+            <span class="error" id="day-error" hidden></span>
+          </fieldset>
+          <fieldset class="slots">
+            <legend>Napszak</legend>
+            <label><input type="radio" name="slot" value="de" checked /><span>Délelőtt</span></label>
+            <label><input type="radio" name="slot" value="du" /><span>Délután</span></label>
+          </fieldset>
+          <label class="wide">
+            Kártya szövege <span class="count" id="card-count">0 / 80</span>
+            <input id="card" name="card" maxlength="80" autocomplete="off" />
+            <span class="hint">A cédulán rögtön látod a csokron.</span>
+            <span class="error" id="card-error" hidden></span>
+          </label>
+          <label>
+            Név
+            <input id="name" name="name" autocomplete="name" required />
+            <span class="error" id="name-error" hidden></span>
+          </label>
+          <label>
+            Telefon
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+            <span class="error" id="phone-error" hidden></span>
+          </label>
+          <div class="send">
+            <button class="leaf leaf-solid" type="submit">Megrendelem</button>
+            <p class="pay">Fizetés átvételkor, a boltban.</p>
+          </div>
+          <p id="form-status" class="form-status" role="status" hidden></p>
+        </form>
+      </section>
+
+      <section class="visit" aria-labelledby="visit-title">
+        <h2 id="visit-title">Bartók Béla út 21., a piac mellett.</h2>
+        <dl>
+          <div><dt>Hétköznap</dt><dd>8:00-18:00</dd></div>
+          <div><dt>Szombat</dt><dd>8:00-13:00</dd></div>
+          <div><dt>Vasárnap</dt><dd>zárva</dd></div>
+        </dl>
+        <p class="lede">Esküvőre, ballagásra, temetésre egyedi rendelés telefonon: <a href="tel:+36295550472">+36 29 555 0472</a>.</p>
+      </section>
+    </main>
+
+    <footer>Pipacs Virágkötészet, bemutató, nem élő vállalkozás. Az árak és a készlet mintaadatok.</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
