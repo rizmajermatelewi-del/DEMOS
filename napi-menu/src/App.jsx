@@ -218,11 +218,11 @@ export default function App() {
   const [weekDay, setWeekDay] = useState(todayDay >= 1 && todayDay <= 5 ? todayDay : 1)
   const [editDay, setEditDay] = useState(todayDay >= 1 && todayDay <= 5 ? todayDay : 1)
 
-  const monday = mondayOf(today)
   const tel = `tel:${BUSINESS.phone.replace(/\s/g, '')}`
   // On the weekend the board already shows Monday, like a real board left out on Friday.
   const weekend = todayDay === 0 || todayDay === 6
-  const boardDate = weekend ? addDays(monday, 7) : today
+  const monday = addDays(mondayOf(today), weekend ? 7 : 0)
+  const boardDate = weekend ? monday : today
   const boardHeading = weekend ? 'Hétfőn ez lesz' : `Ma, ${weekdayName(todayDay)}`
   const todayMenu = dayMenu(week, boardDate)
   const weekDate = addDays(monday, weekDay - 1)
