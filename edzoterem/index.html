@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#efefeb" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 fill=%27%23161616%27/><rect x=%274%27 y=%2715%27 width=%2724%27 height=%272%27 fill=%27%23efefeb%27/><rect x=%277%27 y=%278%27 width=%274%27 height=%2716%27 fill=%27%23d62d20%27/><rect x=%2721%27 y=%278%27 width=%274%27 height=%2716%27 fill=%27%23d62d20%27/></svg>" />
+    <title>Súlypont Edzőterem: bemutató</title>
+    <meta
+      name="description"
+      content="Bemutató oldal egy monori edzőteremnek: a bérletet súlytárcsákként pakolod a rúdra, a mai órákra helyet foglalsz, az első edzés ingyenes. Nem küld jelentkezést."
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ExerciseGym",
+        "name": "Súlypont Edzőterem",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.",
+        "url": "https://demo-edzoterem.vercel.app",
+        "telephone": "+36 29 555 0915",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Kossuth Lajos utca 88.",
+          "addressLocality": "Monor",
+          "postalCode": "2200",
+          "addressCountry": "HU"
+        },
+        "openingHoursSpecification": [{
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "06:00",
+          "closes": "22:00"
+        }, {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Saturday", "Sunday"],
+          "opens": "08:00",
+          "closes": "20:00"
+        }]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#tartalom">Ugrás a tartalomhoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=edzoterem#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <p class="mark">Súlypont</p>
+      <nav aria-label="Oldal">
+        <a href="#berlet">Bérlet</a>
+        <a href="#orak">Mai órák</a>
+        <a href="#proba">Első edzés</a>
+      </nav>
+    </header>
+
+    <main id="tartalom">
+      <section class="hero">
+        <h1 class="lift"><span>Rakd össze</span> <span>a bérleted.</span></h1>
+        <div class="hero-side">
+          <p class="lede">Edzőterem Monoron, hétköznap reggel 6-tól este 10-ig. Csak azért fizetsz, amit tényleg használsz.</p>
+          <div class="actions">
+            <a class="slam slam-red" href="#berlet">Összerakom</a>
+            <a class="slam" href="#proba">Első edzés ingyen</a>
+          </div>
+        </div>
+        <figure class="hero-photo">
+          <img
+            src="/src/assets/tarcsa.webp"
+            srcset="/src/assets/tarcsa-520.webp 520w, /src/assets/tarcsa.webp 900w"
+            sizes="(max-width: 860px) 100vw, 1140px"
+            alt="Felülnézet: valaki felhúzásra készül a gumipadlón, a rúdon két fekete tárcsa, a padlón krétanyomok"
+            width="900"
+            height="600"
+          />
+        </figure>
+      </section>
+
+      <section class="builder" id="berlet" aria-labelledby="builder-title">
+        <h2 id="builder-title">Minden extra egy tárcsa a rúdon.</h2>
+        <p class="lede">Az alapbérlet a rúd: gépterem és öltöző. Tegyél rá, amit kérsz. Amit leveszel, azt nem fizeted.</p>
+
+        <div class="rack">
+          <svg class="barbell" id="barbell" viewBox="0 0 800 220" role="img" aria-labelledby="barbell-desc">
+            <desc id="barbell-desc">A rúd a felrakott tárcsákkal</desc>
+            <rect class="sleeve" x="30" y="100" width="212" height="20" />
+            <rect class="sleeve" x="558" y="100" width="212" height="20" />
+            <rect class="shaft" x="242" y="104" width="316" height="12" />
+            <rect class="collar" x="236" y="88" width="12" height="44" />
+            <rect class="collar" x="552" y="88" width="12" height="44" />
+            <g id="plates-left"></g>
+            <g id="plates-right"></g>
+          </svg>
+          <p class="readout" aria-live="polite"><b id="kg">20 kg</b> <span>=</span> <strong id="price">12 900 Ft</strong><span class="per">/ hó</span></p>
+        </div>
+
+        <form id="builder" class="builder-form">
+          <fieldset class="plates">
+            <legend class="sr">Extrák</legend>
+            <div id="plate-picks" class="plate-picks"></div>
+          </fieldset>
+          <fieldset class="terms">
+            <legend>Hűség</legend>
+            <label><input type="radio" name="term" value="havi" checked /><span>Havonta mondható fel</span></label>
+            <label><input type="radio" name="term" value="felev" /><span>6 hónap, −10%</span></label>
+            <label><input type="radio" name="term" value="ev" /><span>12 hónap, −20%</span></label>
+          </fieldset>
+        </form>
+      </section>
+
+      <section class="classes" id="orak" aria-labelledby="classes-title">
+        <h2 id="classes-title">Ma az órákon</h2>
+        <p class="lede" id="classes-day"></p>
+        <ol class="timetable" id="timetable"></ol>
+      </section>
+
+      <section class="trial" id="proba" aria-labelledby="trial-title">
+        <div>
+          <h2 id="trial-title">Az első edzés ingyen van.</h2>
+          <p class="lede">Körbevezetünk, megmutatjuk a gépeket, és egy edző összerak veled egy első tervet. Nem kell bérletet venni hozzá.</p>
+          <dl class="facts">
+            <div><dt>Cím</dt><dd>2200 Monor, Kossuth Lajos utca 88.</dd></div>
+            <div><dt>Hétköznap</dt><dd>6:00-22:00</dd></div>
+            <div><dt>Hétvégén</dt><dd>8:00-20:00</dd></div>
+          </dl>
+        </div>
+        <form id="trial-form" class="trial-form" novalidate>
+          <p class="attached" id="attached" hidden></p>
+          <label>
+            Név
+            <input id="name" name="name" autocomplete="name" required />
+            <span class="error" id="name-error" hidden></span>
+          </label>
+          <label>
+            Telefon
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+            <span class="error" id="phone-error" hidden></span>
+          </label>
+          <label>
+            Mikor jönnél?
+            <select id="when" name="when">
+              <option>Reggel, munka előtt</option>
+              <option>Napközben</option>
+              <option>Este, munka után</option>
+              <option>Hétvégén</option>
+            </select>
+          </label>
+          <button class="slam slam-red" type="submit">Jelentkezem</button>
+          <p id="form-status" class="form-status" role="status" hidden></p>
+        </form>
+      </section>
+    </main>
+
+    <footer>Súlypont Edzőterem, bemutató, nem élő vállalkozás. Az árak és az órarend mintaadatok.</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

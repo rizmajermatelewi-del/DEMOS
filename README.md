@@ -15,6 +15,8 @@ kezdeményezés, kitalált mintaadatokkal — nem ügyfélmunka.
 | [`viragbolt/`](viragbolt) | Virágbolt: csokorkötő élő SVG-csokorral, készlettel, kártyával és átvételi nappal | https://demo-viragbolt.vercel.app |
 | [`masszazs/`](masszazs) | Masszázsstúdió: „Hol fáj?” testtérkép, kezelésajánlás, első szabad időpontok | https://demo-masszazs.vercel.app |
 | [`asztalos/`](asztalos) | Asztalosműhely: szekrény húzással méretezve a rajzon, faanyag, becsült ár és szabásjegyzék | https://demo-asztalos.vercel.app |
+| [`edzoterem/`](edzoterem) | Edzőterem: bérlet súlytárcsákként a rúdon, mai órák szabad hellyel, ingyenes első edzés | https://demo-edzoterem.vercel.app |
+| [`fogaszat/`](fogaszat) | Fogászat: VITA fogszín-skála fehérítési tervvel, sürgősségi időpont, visszahíváskérés | https://demo-fogaszat.vercel.app |
 
 Mindegyik mappa önálló Vite projekt, saját `package.json`-nal és README-vel
 (probléma + döntések).
