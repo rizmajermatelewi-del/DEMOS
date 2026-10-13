@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { beforeEach, describe, it } from 'node:test'
-import { loadWeek, normalizeMenu, saveDay } from './storage.js'
+import { addOrder, loadOrders, loadWeek, normalizeAllergens, normalizeMenu, saveDay, setOrderStatus } from './storage.js'
 
 const memory = new Map()
 
@@ -51,5 +51,32 @@ describe('saveDay', () => {
     localStorage.setItem('kispipa-week-v2', JSON.stringify(raw))
     assert.equal(loadWeek()[1].soup, 'Újházi tyúkhúsleves')
     assert.equal(loadWeek()[2].note, 'Kifogyott a galuska.')
+  })
+})
+
+describe('allergens', () => {
+  it('keeps known codes once, in legend order, and drops the rest', () => {
+    assert.deepEqual(normalizeAllergens(['l', 'G', 'x', 'G']), ['G', 'L'])
+    assert.deepEqual(normalizeMenu({ ...tuesday, soupAllergens: ['Z', 'q'] }).soupAllergens, ['Z'])
+    assert.deepEqual(loadWeek()[5].mains[0].allergens, ['H'])
+  })
+})
+
+describe('orders', () => {
+  const order = { lines: [{ id: 'soup', name: 'Gulyásleves', price: 990, qty: 1 }], slot: '12:00', name: 'Kiss Anna', phone: '06 30 123 4567', total: 990 }
+
+  it('numbers the day from 1 and moves a ticket through its statuses', () => {
+    assert.equal(addOrder('2026-10-13', order).no, 1)
+    assert.equal(addOrder('2026-10-13', order).no, 2)
+    setOrderStatus('2026-10-13', 1, 'kesz')
+    assert.deepEqual(loadOrders('2026-10-13').map((o) => o.status), ['kesz', 'uj'])
+    setOrderStatus('2026-10-13', 2, 'eltunt')
+    assert.equal(loadOrders('2026-10-13')[1].status, 'uj')
+  })
+
+  it("does not carry yesterday's tickets into today", () => {
+    addOrder('2026-10-12', order)
+    assert.deepEqual(loadOrders('2026-10-13'), [])
+    assert.equal(addOrder('2026-10-13', order).no, 1)
   })
 })

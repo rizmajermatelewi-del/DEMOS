@@ -198,7 +198,8 @@ main { overflow-x: clip; }
   gap: 1.2rem;
   font-size: clamp(1.15rem, 2.2vw, 1.55rem);
 }
-.row .letters:last-child { flex: none; }
+.row > .letters { flex: none; }
+.dish { min-width: 0; }
 .letters .set { display: inline; }
 .w { display: inline-block; white-space: nowrap; margin-right: 0.4em; }
 .w:last-child { margin-right: 0; }
@@ -304,6 +305,16 @@ footer {
   .row:hover .l { animation: wobble 0.5s ease-in-out; animation-delay: calc(var(--i) * 8ms); }
   .today-copy { transition: transform 0.3s; }
   .today-copy:hover { transform: rotate(0deg); }
+  /* A dish you add slides onto the slip; a new slip drops onto the rail */
+  .ticket-lines li { animation: slip-in 0.25s ease-out backwards; }
+  .slip { animation: hang 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) backwards; }
+  .pick li:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+}
+@keyframes slip-in {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+@keyframes hang {
+  from { opacity: 0; transform: translateY(-24px) rotate(-6deg); }
 }
 @keyframes press {
   from { opacity: 0; transform: translateY(-18px) rotate(calc(var(--r) * 6)) scale(1.3); }
@@ -315,11 +326,229 @@ footer {
   70% { transform: rotate(calc(var(--r) * 2)) translateY(var(--y)); }
 }
 
+/* Allergen stickers after a dish, and the legend under the board */
+.alg {
+  display: inline-block;
+  margin-left: 0.45em;
+  padding: 0 0.3em;
+  border-radius: 2px;
+  background: var(--sun);
+  color: var(--ink);
+  font: 700 0.62em/1.5 var(--text);
+  letter-spacing: 0.06em;
+  vertical-align: 0.25em;
+}
+.board-legend { display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; margin: 1rem 0 0; color: #cfccc2; font-size: 0.85rem; }
+.board-legend b { color: var(--sun); }
+.today-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+.dish-group { display: grid; gap: 0.6rem; }
+.alg-field input { max-width: 12rem; }
+
+/* Takeaway order: dishes on the left, the counter slip on the right */
+.order { padding: 4rem 1.25rem 1rem; }
+.order-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+.order h2 { margin: 0; font: 800 clamp(2rem, 4vw, 2.8rem) / 1 var(--board-font); text-transform: uppercase; }
+.order-copy > p { margin: 0.7rem 0 1.4rem; max-width: 34rem; }
+.order-closed { font-weight: 700; padding: 1rem 1.2rem; border: 2px dashed var(--ink); border-radius: var(--radius); }
+.pick { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; }
+.pick li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+}
+.pick li.picked { background: #fff6d6; }
+.pick-name { display: grid; font-weight: 700; }
+.pick-name .alg { justify-self: start; margin: 0.2rem 0 0; font-size: 0.7rem; }
+.pick-name small { font-weight: 500; color: var(--ink-soft); }
+.stepper { display: flex; align-items: center; gap: 0.35rem; flex: none; }
+.stepper button {
+  width: 2.75rem;
+  height: 2.75rem;
+  font: 800 1.4rem/1 var(--board-font);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--felt);
+  color: var(--letter);
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--ink);
+  transition: transform 0.1s, box-shadow 0.1s, background 0.2s;
+}
+.stepper button:hover:not(:disabled) { background: #34343a; }
+.stepper button:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
+.stepper button:disabled { opacity: 0.35; cursor: not-allowed; }
+.stepper output { min-width: 1.6rem; text-align: center; font: 800 1.5rem var(--board-font); }
+
+/* The slip: thermal-paper white, torn zigzag top and bottom */
+.ticket {
+  position: sticky;
+  top: 1rem;
+  padding: 1.6rem 1.4rem 1.8rem;
+  background: #fff;
+  color: var(--ink);
+  font-size: 0.95rem;
+  filter: drop-shadow(0 12px 18px rgb(29 29 31 / 0.25));
+  -webkit-mask: linear-gradient(#000 0 0) 0 12px / 100% calc(100% - 24px) no-repeat, conic-gradient(from 135deg at top, #000 90deg, #0000 0) 0 0 / 16px 12px repeat-x, conic-gradient(from -45deg at bottom, #000 90deg, #0000 0) 0 100% / 16px 12px repeat-x;
+  mask: linear-gradient(#000 0 0) 0 12px / 100% calc(100% - 24px) no-repeat, conic-gradient(from 135deg at top, #000 90deg, #0000 0) 0 0 / 16px 12px repeat-x, conic-gradient(from -45deg at bottom, #000 90deg, #0000 0) 0 100% / 16px 12px repeat-x;
+}
+.ticket-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0 0 0.8rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px dashed var(--ink);
+  font: 800 1.5rem/1 var(--board-font);
+  text-transform: uppercase;
+}
+.ticket-head span { font: 700 0.8rem var(--text); letter-spacing: 0.12em; }
+.ticket-lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.ticket-lines li { display: flex; justify-content: space-between; gap: 0.8rem; font-variant-numeric: tabular-nums; }
+.ticket-empty { margin: 0; color: var(--ink-soft); }
+.ticket-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.9rem 0 1rem;
+  padding-top: 0.6rem;
+  border-top: 2px dashed var(--ink);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.ticket form { display: grid; gap: 0.9rem; }
+.ticket-done { display: grid; gap: 0.6rem; }
+.ticket-done p { margin: 0; }
+.ticket-no { font: 800 3rem/1 var(--board-font); }
+.slots { border: 0; margin: 0; padding: 0; }
+.slots legend { font-weight: 700; margin-bottom: 0.5rem; padding: 0; }
+.slots div { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.slots label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.2rem;
+  min-height: 2.75rem;
+  padding: 0 0.6rem;
+  font: 700 0.95rem var(--text);
+  font-variant-numeric: tabular-nums;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--napkin);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.slots label:hover { background: #fff1bf; }
+.slots label.on { background: var(--ink); color: var(--sun); }
+.slots input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.slots label:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 2px; }
+.field { display: grid; gap: 0.3rem; font-weight: 600; }
+.field input {
+  font: 500 1rem var(--text);
+  padding: 0.65rem 0.8rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--napkin);
+  color: var(--ink);
+  min-width: 0;
+}
+.field input:focus { outline: 3px solid var(--sun); outline-offset: 0; }
+.field .error { font-size: 0.9rem; }
+
+/* The counter rail: today's slips hang from a steel bar */
+.counter-hint { margin: 1rem auto 0; }
+.counter-empty { margin: 1.5rem auto 0; font-weight: 700; }
+.rail {
+  list-style: none;
+  margin: 2rem auto 0;
+  padding: 1.8rem 0.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  align-items: flex-start;
+  background: linear-gradient(#9aa0a6, #5f656b) 0 0.55rem / 100% 8px no-repeat;
+}
+.slip {
+  position: relative;
+  width: min(100%, 15.5rem);
+  padding: 1.4rem 1rem 1rem;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: 4px 4px 0 var(--ink);
+  transform: rotate(var(--tilt, -1deg));
+  transition: opacity 0.3s, transform 0.2s;
+}
+.slip:nth-child(even) { --tilt: 1.2deg; }
+.slip::before {
+  content: "";
+  position: absolute;
+  top: -1.45rem;
+  left: 50%;
+  width: 0.9rem;
+  height: 2rem;
+  translate: -50% 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #6b7178, #c7ccd1 45%, #6b7178);
+}
+.slip p { margin: 0 0 0.5rem; }
+.slip .ticket-no { font-size: 2rem; }
+.slip-top { display: flex; justify-content: space-between; align-items: baseline; }
+.slip-time { font: 800 1.4rem var(--board-font); background: var(--sun); padding: 0 0.4rem; border-radius: 2px; }
+.slip-who { font-size: 0.9rem; }
+.slip .btn { width: 100%; text-align: center; font-size: 0.95rem; padding: 0.6rem 0.8rem; }
+.slip.kesz { background: #fff6d6; }
+.slip.atadva { opacity: 0.5; }
+.slip.atadva .ticket-total span:first-child { text-decoration: line-through; }
+
+/* QR card for the counter */
+.qr {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2rem;
+  align-items: center;
+  margin-top: 2.5rem;
+  padding: 1.6rem;
+  background: var(--napkin);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.qr-poster { width: 15rem; padding: 1rem; background: var(--napkin); border: 2px solid var(--ink); border-radius: var(--radius); text-align: center; }
+.qr-title { margin: 0 0 0.6rem; font: 800 1.5rem/1 var(--board-font); text-transform: uppercase; }
+.qr-code svg { display: block; width: 100%; height: auto; }
+.qr-foot { display: grid; gap: 0.2rem; margin: 0.6rem 0 0; font-weight: 700; font-size: 0.9rem; }
+.qr-foot span { font-weight: 500; color: var(--ink-soft); }
+.qr-side h2 { margin: 0 0 0.5rem; font: 800 2rem/1 var(--board-font); text-transform: uppercase; }
+.qr-side .btn { margin-top: 1rem; }
+
+@media print {
+  body * { visibility: hidden; }
+  .qr-poster, .qr-poster * { visibility: visible; }
+  .qr-poster { position: absolute; left: 50%; top: 2cm; translate: -50% 0; width: 12cm; border-width: 3px; }
+  .qr-title { font-size: 2.2rem; }
+}
+
 @media (max-width: 900px) {
   .today-grid,
   .edit-grid { grid-template-columns: 1fr; }
   .today-copy { transform: none; }
   .preview { position: static; }
+  .order-inner { grid-template-columns: 1fr; }
+  .ticket { position: static; }
+  .qr { grid-template-columns: 1fr; justify-items: start; }
 }
 @media (max-width: 520px) {
   .felt { padding: 1.1rem 1rem 1.3rem; }
