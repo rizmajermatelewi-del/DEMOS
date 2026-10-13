@@ -424,6 +424,56 @@ button.tooth { cursor: pointer; }
 .book-time strong { font: 800 1.9rem/1 var(--display); color: var(--pink); }
 .book-time span { font-size: 0.85rem; color: var(--mint-soft); }
 
+/* Stylist picker: initials in pink discs, the chosen one fills */
+.staff-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 0.6rem; }
+.stylist {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.7rem 1rem 0.7rem 0.7rem;
+  border: 1.5px solid var(--green-3);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--mint);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.stylist strong { display: block; font: 700 1.05rem var(--display); }
+.stylist em { font-style: normal; font-size: 0.88rem; color: var(--mint-soft); }
+.stylist-dot {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--pink);
+  color: var(--pink);
+  font: 800 1.1rem var(--display);
+  transition: background 0.25s, color 0.25s, transform 0.25s;
+}
+.stylist:hover { border-color: var(--pink); }
+.stylist[aria-pressed='true'] { background: var(--green-2); border-color: var(--pink); }
+.stylist[aria-pressed='true'] .stylist-dot { background: var(--pink); color: var(--green); }
+.staff-filter { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.5rem; }
+.staff-filter button {
+  font: 600 0.95rem var(--text);
+  min-height: 2.75rem;
+  padding: 0.4rem 1.1rem;
+  border: 1.5px solid var(--green-3);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--mint);
+  cursor: pointer;
+}
+.staff-filter button[aria-pressed='true'] { background: var(--pink); border-color: var(--pink); color: var(--green); }
+.book-staff { margin-left: 0.5rem; font-style: normal; font-weight: 600; font-size: 0.85rem; color: var(--pink); }
+@media (prefers-reduced-motion: no-preference) {
+  .stylist:hover .stylist-dot { transform: rotate(-8deg) scale(1.06); }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   /* The name arrives in two pieces that meet along the cut */
   .cut-top { animation: cut-left 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }

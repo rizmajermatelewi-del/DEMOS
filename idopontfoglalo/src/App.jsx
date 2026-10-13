@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { BUSINESS, SERVICES, formatHuf, minutesToLabel } from './data.js'
-import { atMinutes, combTeeth, nextDays, slotsForDate } from './slots.js'
+import { atMinutes, nextDays } from './slots.js'
+import { ANY, STAFF, availability, staffFor, staffName, teethFor } from './staff.js'
 import { createBooking, deleteBooking, loadBookings } from './storage.js'
 import drying from './assets/szaritas.webp'
 import dryingSmall from './assets/szaritas-480.webp'
@@ -82,6 +83,8 @@ function Field({ id, label, value, onChange, type = 'text', autoComplete, error 
 export default function App() {
   const [view, setView] = useState('book')
   const [serviceId, setServiceId] = useState(SERVICES[0].id)
+  const [staffId, setStaffId] = useState(ANY)
+  const [adminStaff, setAdminStaff] = useState('all')
   const [date, setDate] = useState(() => nextDays(DAY_COUNT).find((iso) => atMinutes(iso, 12 * 60).getDay() !== 0))
   const [startMin, setStartMin] = useState(null)
   const [name, setName] = useState('')
@@ -98,11 +101,14 @@ export default function App() {
 
   const service = SERVICES.find((s) => s.id === serviceId)
   const days = useMemo(() => nextDays(DAY_COUNT), [])
+  const eligible = staffFor(serviceId)
+  const staffKey = staffId === ANY ? eligible.map((s) => s.id).join(',') : staffId
+  const staffIds = useMemo(() => staffKey.split(','), [staffKey])
   const slots = useMemo(
-    () => (service && date ? slotsForDate(date, service.durationMin, bookings) : []),
-    [service, date, bookings],
+    () => (service && date ? availability(date, service.durationMin, bookings, staffIds).slots : []),
+    [service, date, bookings, staffIds],
   )
-  const teeth = useMemo(() => (date ? combTeeth(date, slots, bookings) : []), [date, slots, bookings])
+  const teeth = useMemo(() => (date ? teethFor(date, slots, bookings, staffIds) : []), [date, slots, bookings, staffIds])
 
   function pickDate(iso) {
     setDate(iso)
@@ -111,6 +117,13 @@ export default function App() {
 
   function pickService(id) {
     setServiceId(id)
+    setStartMin(null)
+    // A stylist who does not take the new service falls back to "anyone".
+    if (staffId !== ANY && !staffFor(id).some((s) => s.id === staffId)) setStaffId(ANY)
+  }
+
+  function pickStaff(id) {
+    setStaffId(id)
     setStartMin(null)
   }
 
@@ -149,6 +162,7 @@ export default function App() {
       phone: phone.trim(),
       email: email.trim(),
       note: note.trim(),
+      staffId,
     })
     setBookings(result.bookings)
     if (!result.ok) {
@@ -188,7 +202,9 @@ export default function App() {
     setPendingDelete(null)
   }
 
-  const sorted = [...bookings].sort((a, b) => a.date.localeCompare(b.date) || a.startMin - b.startMin)
+  const sorted = [...bookings]
+    .filter((b) => adminStaff === 'all' || b.staffId === adminStaff)
+    .sort((a, b) => a.date.localeCompare(b.date) || a.startMin - b.startMin)
   const tel = `tel:${BUSINESS.phone.replace(/\s/g, '')}`
 
   return (
@@ -227,6 +243,15 @@ export default function App() {
             <h1>Naptár</h1>
             <p className="lede">A szalon ezt a listát látná. A bemutató PIN-je nyilvános: {BUSINESS.adminPin}.</p>
             {adminOk ? (
+              <div className="staff-filter" role="group" aria-label="Kinek a naptára">
+                {[{ id: 'all', name: 'Mindenki' }, ...STAFF].map((s) => (
+                  <button key={s.id} type="button" aria-pressed={adminStaff === s.id} onClick={() => setAdminStaff(s.id)}>
+                    {s.name}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            {adminOk ? (
               sorted.length ? (
                 <ul className="book-list">
                   {sorted.map((b) => (
@@ -236,7 +261,10 @@ export default function App() {
                         <span>{formatDay(b.date, { month: 'short', day: 'numeric', weekday: 'short' })}</span>
                       </p>
                       <div>
-                        <strong>{b.serviceName}</strong>
+                        <strong>
+                          {b.serviceName}
+                          {b.staffId ? <em className="book-staff">{staffName(b.staffId)}</em> : null}
+                        </strong>
                         <span>
                           {b.name}, <a href={`tel:${b.phone.replace(/\s/g, '')}`}>{b.phone}</a>
                         </span>
@@ -249,7 +277,9 @@ export default function App() {
                   ))}
                 </ul>
               ) : (
-                <p className="empty">Még nincs foglalás. Foglalj egyet a Foglalás oldalon, és itt megjelenik.</p>
+                <p className="empty">
+                  {adminStaff === 'all' ? 'Még nincs foglalás. Foglalj egyet a Foglalás oldalon, és itt megjelenik.' : `${staffName(adminStaff)} naptárában még nincs foglalás.`}
+                </p>
               )
             ) : (
               <form className="pin" onSubmit={tryPin}>
@@ -283,6 +313,12 @@ export default function App() {
                       <dt>Kezelés</dt>
                       <dd>{booking.serviceName}</dd>
                     </div>
+                    {booking.staffId ? (
+                      <div>
+                        <dt>Fodrász</dt>
+                        <dd>{staffName(booking.staffId)}</dd>
+                      </div>
+                    ) : null}
                     <div>
                       <dt>Ár</dt>
                       <dd>{formatHuf(booking.priceHuf)}</dd>
@@ -357,6 +393,24 @@ export default function App() {
                 </div>
               </fieldset>
 
+              <fieldset className="staff">
+                <legend>Kihez?</legend>
+                <p className="hint">Mindenkinek saját naptára van. Ha mindegy, a fésűn azt látod, amikor bárki ráér.</p>
+                <div className="staff-list">
+                  {[{ id: ANY, name: 'Bárkihez', role: 'Aki épp ráér' }, ...eligible].map((s) => (
+                    <button key={s.id} type="button" className="stylist" aria-pressed={staffId === s.id} onClick={() => pickStaff(s.id)}>
+                      <span className="stylist-dot" aria-hidden="true">
+                        {s.id === ANY ? '*' : s.name[0]}
+                      </span>
+                      <span>
+                        <strong>{s.name}</strong>
+                        <em>{s.role}</em>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+
               <fieldset>
                 <legend>Melyik nap?</legend>
                 <div className="days">
@@ -379,7 +433,7 @@ export default function App() {
               <fieldset id="idopont" tabIndex={-1} aria-describedby={errors.slot ? 'slot-error' : 'slot-hint'}>
                 <legend>Hánykor?</legend>
                 <p className="hint" id="slot-hint">
-                  {date ? `${formatDay(date, { month: 'long', day: 'numeric', weekday: 'long' })}, ${service.name.toLowerCase()}, ${service.durationMin} perc` : ''}
+                  {date ? `${formatDay(date, { month: 'long', day: 'numeric', weekday: 'long' })}, ${service.name.toLowerCase()}, ${service.durationMin} perc, ${staffId === ANY ? 'bárkinél' : staffName(staffId)}` : ''}
                 </p>
                 {slots.length ? (
                   <Comb
@@ -424,6 +478,7 @@ export default function App() {
               <div className="submit-row">
                 <p className="summary">
                   {service.name}
+                  {staffId !== ANY ? `, ${staffName(staffId)}` : ''}
                   {startMin != null ? `, ${formatDay(date, { weekday: 'long' })} ${minutesToLabel(startMin)}` : ''}
                   <strong>{formatHuf(service.priceHuf)}</strong>
                 </p>
