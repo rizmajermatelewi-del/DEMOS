@@ -748,7 +748,7 @@ export default function App() {
 
       <footer className="foot">
         <p>
-          <strong>Szálka Fodrászat</strong>, kitalált szalon. Fotók: Unsplash. Betűk: Clash Display és Satoshi, Indian Type Foundry (Fontshare).
+          <strong>Szálka Fodrászat</strong>, kitalált szalon. Fotók: Unsplash. Betűk: Bricolage Grotesque és Figtree (SIL OFL).
         </p>
         <button type="button" className="link-btn" onClick={openAdmin}>
           Naptár (a szalon nézete)
