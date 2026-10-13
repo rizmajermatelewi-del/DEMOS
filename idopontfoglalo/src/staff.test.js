@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { ANY, availability, busyFor, sampleBusy, staffFor, teethFor } from './staff.js'
+import { ANY, availability, busyFor, firstFree, sampleBusy, staffFor, teethFor } from './staff.js'
 import { createBooking, loadBookings } from './storage.js'
 
 const TUE = '2026-09-22'
@@ -75,5 +75,19 @@ describe('createBooking with a stylist', () => {
     const busy = sampleBusy(TUE, 'reka')[0]
     const draft = { serviceId: 'noi-vagas', serviceName: 'Női hajvágás', durationMin: 30, priceHuf: 6500, date: TUE, startMin: busy.startMin, name: 'Anna', phone: '06301234567', email: 'a@b.hu', note: '', staffId: 'reka' }
     expect(createBooking(draft, morning).ok).toBe(false)
+  })
+})
+
+describe('firstFree', () => {
+  it('skips a closed Sunday and returns the first open start', () => {
+    const SUN = '2026-09-20'
+    const MON = '2026-09-21'
+    const hit = firstFree([SUN, MON], 30, [], ['bence'], new Date('2026-09-20T10:00:00'))
+    expect(hit.date).toBe(MON)
+    expect(hit.startMin).toBe(availability(MON, 30, [], ['bence'], new Date('2026-09-20T10:00:00')).slots[0])
+  })
+
+  it('returns null when nothing fits', () => {
+    expect(firstFree(['2026-09-20'], 30, [], ['bence'])).toBeNull()
   })
 })

@@ -3,9 +3,9 @@ import { atMinutes, combTeeth, slotsForDate } from './slots.js'
 
 /** Three stylists, each with the services they take and their own calendar. */
 export const STAFF = [
-  { id: 'reka', name: 'Réka', role: 'Női haj, festés', services: ['noi-vagas', 'festes', 'alkalmi'] },
-  { id: 'bence', name: 'Bence', role: 'Férfi és női vágás', services: ['ferfi-vagas', 'noi-vagas'] },
-  { id: 'dora', name: 'Dóra', role: 'Alkalmi frizura, festés', services: ['alkalmi', 'festes', 'noi-vagas'] },
+  { id: 'reka', name: 'Réka', role: 'Festés, balayage', bio: 'Tizenkét éve fest. Ha nem tudod, mit szeretnél, vele érdemes kezdeni.', services: ['noi-vagas', 'festes', 'balayage', 'alkalmi', 'apolas'] },
+  { id: 'bence', name: 'Bence', role: 'Férfi és női vágás', bio: 'Rövid hajak, éles kontúrok. Gépre és ollóra egyformán.', services: ['ferfi-vagas', 'noi-vagas'] },
+  { id: 'dora', name: 'Dóra', role: 'Alkalmi frizura, ápolás', bio: 'Esküvők és ballagások. Próbafrizurát is vállal, egy héttel előtte.', services: ['alkalmi', 'festes', 'noi-vagas', 'balayage', 'apolas'] },
 ]
 
 /** "Whoever is free": the union of the eligible stylists' calendars. */
@@ -73,4 +73,14 @@ export function teethFor(iso, slots, bookings, staffIds, now = new Date()) {
     const allTaken = per.every((teeth) => teeth[i].state === 'taken')
     return { min, state: allTaken ? 'taken' : 'free' }
   })
+}
+
+/** The earliest free start across the given days, or null. Feeds the
+    "next free" lines in the hero and under each stylist. */
+export function firstFree(days, durationMin, bookings, staffIds, now = new Date()) {
+  for (const iso of days) {
+    const [startMin] = availability(iso, durationMin, bookings, staffIds, now).slots
+    if (startMin != null) return { date: iso, startMin }
+  }
+  return null
 }

@@ -1,16 +1,78 @@
 import { useMemo, useState } from 'react'
+import { LazyMotion, domAnimation, m, useReducedMotion } from 'motion/react'
+import { ArrowRight } from '@phosphor-icons/react/dist/csr/ArrowRight'
+import { Clock } from '@phosphor-icons/react/dist/csr/Clock'
+import { MapPin } from '@phosphor-icons/react/dist/csr/MapPin'
+import { Phone } from '@phosphor-icons/react/dist/csr/Phone'
+import { Plus } from '@phosphor-icons/react/dist/csr/Plus'
+import { Scissors } from '@phosphor-icons/react/dist/csr/Scissors'
 import { BUSINESS, SERVICES, formatHuf, minutesToLabel } from './data.js'
 import { atMinutes, nextDays } from './slots.js'
-import { ANY, STAFF, availability, staffFor, staffName, teethFor } from './staff.js'
+import { ANY, STAFF, availability, firstFree, staffFor, staffName, teethFor } from './staff.js'
 import { createBooking, deleteBooking, loadBookings } from './storage.js'
-import drying from './assets/szaritas.webp'
-import dryingSmall from './assets/szaritas-480.webp'
-import colouring from './assets/festes.webp'
+import hero from './assets/foto/hero.webp'
+import salon from './assets/foto/szalon.webp'
+import reka from './assets/foto/reka.webp'
+import bence from './assets/foto/bence.webp'
+import dora from './assets/foto/dora.webp'
+import noiVagas from './assets/foto/noi-vagas.webp'
+import ferfiVagas from './assets/foto/ferfi-vagas.webp'
+import festes from './assets/foto/festes.webp'
+import balayage from './assets/foto/balayage.webp'
+import alkalmi from './assets/foto/alkalmi.webp'
+import apolas from './assets/foto/apolas.webp'
+import g1 from './assets/foto/g1.webp'
+import g2 from './assets/foto/g2.webp'
+import g3 from './assets/foto/g3.webp'
+import g4 from './assets/foto/g4.webp'
+import g5 from './assets/foto/g5.webp'
+import g6 from './assets/foto/g6.webp'
 
 const DAY_COUNT = 14
+const CTA = 'Időpontot foglalok'
+
+const SERVICE_PHOTO = {
+  'noi-vagas': [noiVagas, 'Fodrász ollóval vágja egy vendég nedves haját'],
+  'ferfi-vagas': [ferfiVagas, 'Borbély ollóval igazítja egy férfi haját'],
+  festes: [festes, 'Festék felvitele fóliára terített hajtincsekre'],
+  balayage: [balayage, 'Hamvas szőke balayage hullámos hajon'],
+  alkalmi: [alkalmi, 'Fodrász csavarókkal készít alkalmi frizurát'],
+  apolas: [apolas, 'Hajmosás és ápoló pakolás a mosótálnál'],
+}
+const STAFF_PHOTO = { reka, bence, dora }
+
+const WORK = [
+  [g1, 'Két szőke, hosszú, hullámos frizura hátulról'],
+  [g2, 'Vörösesréz haj, lazán csomóba tekerve'],
+  [g3, 'Hamvas balayage hullámokkal'],
+  [g4, 'Egyenes, tompa vágású bubi'],
+  [g5, 'Szürkésbarna, göndörített középhosszú haj'],
+  [g6, 'Hosszú, karamellszínű hullámos haj'],
+]
+
+const REVIEWS = [
+  { text: 'Réka elsőre eltalálta a színt, pedig csak egy elmosódott fotót mutattam neki.', who: 'Kovács Eszter', what: 'balayage' },
+  { text: 'Este foglaltam a telefonon, másnap reggel már ott ültem. Bence tíz perc alatt rendbe tett.', who: 'Szabó Márton', what: 'férfi hajvágás' },
+  { text: 'A ballagásra Dóra csinálta a hajam, a buli végéig kitartott.', who: 'Tóth Lili', what: 'alkalmi frizura' },
+]
+
+const FAQ = [
+  ['Mennyivel előtte mondhatom le?', 'Legkésőbb 24 órával előtte, telefonon vagy a visszaigazoló e-mailből. Utána a kezelés díjának felét felszámoljuk.'],
+  ['Hogyan fizethetek?', 'Készpénzzel vagy kártyával a szalonban. Előleg nincs.'],
+  ['Hol tudok parkolni?', 'A Szabadság téren fizetős, a Petőfi utcában hétköznap 18 óra után ingyenes.'],
+  ['Mit hozzak festésre?', 'Egy fotót arról, amit szeretnél, és ha van, a régi festék nevét. Két napig ne moss hajat előtte.'],
+  ['Gyereket is vállaltok?', 'Igen, 12 éves kor alatt a férfi vágás árán, bármelyik fodrásznál.'],
+]
 
 function formatDay(iso, opts) {
   return new Intl.DateTimeFormat('hu-HU', opts).format(atMinutes(iso, 12 * 60))
+}
+
+/** "ma 15:30", "holnap 9:00" or "csütörtök 10:30" for a free slot. */
+function whenLabel(slot, days) {
+  if (!slot) return 'két hétig minden foglalt'
+  const prefix = slot.date === days[0] ? 'ma' : slot.date === days[1] ? 'holnap' : formatDay(slot.date, { weekday: 'long' })
+  return `${prefix} ${minutesToLabel(slot.startMin)}`
 }
 
 const inRange = (min, from, duration) => from != null && min >= from && min < from + duration
@@ -51,7 +113,7 @@ function Comb({ teeth, duration, value, onPick }) {
         })}
       </div>
       <p className="comb-read" aria-hidden="true">
-        {preview != null ? `${minutesToLabel(preview)} - ${minutesToLabel(preview + duration)}` : 'Vidd a fogak fölé'}
+        {preview != null ? `${minutesToLabel(preview)} - ${minutesToLabel(preview + duration)}` : 'Válassz egy fogat'}
       </p>
     </div>
   )
@@ -80,12 +142,83 @@ function Field({ id, label, value, onChange, type = 'text', autoComplete, error 
   )
 }
 
+/** Fades a section in once as it enters the viewport; static under reduced motion. */
+function Reveal({ className, children, ...rest }) {
+  const reduce = useReducedMotion()
+  return (
+    <m.section
+      className={className}
+      initial={reduce ? false : { opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      {...rest}
+    >
+      {children}
+    </m.section>
+  )
+}
+
+/** The swatch ring: one strand per service, fanned from a single pin.
+    Picking a strand swings it forward and opens its card. */
+function SwatchRing({ activeId, onActive, onBook }) {
+  const active = SERVICES.find((s) => s.id === activeId)
+  const [src, alt] = SERVICE_PHOTO[active.id]
+  const mid = (SERVICES.length - 1) / 2
+  return (
+    <div className="ring">
+      <div className="ring-fan" role="radiogroup" aria-label="Szolgáltatások">
+        <span className="ring-pin" aria-hidden="true" />
+        {SERVICES.map((s, i) => {
+          const on = s.id === activeId
+          return (
+            <button
+              key={s.id}
+              type="button"
+              role="radio"
+              aria-checked={on}
+              className={`strand${on ? ' on' : ''}`}
+              style={{ '--shade': s.shade, '--a': `${(i - mid) * 15}deg` }}
+              onClick={() => onActive(s.id)}
+            >
+              <span className="strand-hair" aria-hidden="true" />
+              <span className="strand-tag">
+                <strong>{s.name}</strong>
+                <em>{formatHuf(s.priceHuf)}</em>
+              </span>
+            </button>
+          )
+        })}
+      </div>
+      <article className="ring-card" aria-live="polite">
+        <img src={src} alt={alt} width="700" height="900" loading="lazy" />
+        <div className="ring-card-text">
+          <h3>{active.name}</h3>
+          <p>{active.blurb}</p>
+          <p className="ring-facts">
+            <span>
+              <Clock size={18} weight="bold" aria-hidden="true" /> {active.durationMin} perc
+            </span>
+            <strong>{formatHuf(active.priceHuf)}</strong>
+          </p>
+          <button type="button" className="btn" onClick={() => onBook(active.id)}>
+            Ezt kérem <ArrowRight size={18} weight="bold" aria-hidden="true" />
+          </button>
+        </div>
+      </article>
+    </div>
+  )
+}
+
 export default function App() {
+  const reduce = useReducedMotion()
   const [view, setView] = useState('book')
   const [serviceId, setServiceId] = useState(SERVICES[0].id)
+  const [ringId, setRingId] = useState(SERVICES[3].id)
   const [staffId, setStaffId] = useState(ANY)
   const [adminStaff, setAdminStaff] = useState('all')
-  const [date, setDate] = useState(() => nextDays(DAY_COUNT).find((iso) => atMinutes(iso, 12 * 60).getDay() !== 0))
+  // Opens on the first day that still has room, so the comb never starts empty.
+  const [date, setDate] = useState(() => firstFree(nextDays(DAY_COUNT), SERVICES[0].durationMin, loadBookings(), staffFor(SERVICES[0].id).map((s) => s.id))?.date ?? nextDays(DAY_COUNT)[1])
   const [startMin, setStartMin] = useState(null)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -98,6 +231,7 @@ export default function App() {
   const [adminOk, setAdminOk] = useState(false)
   const [pinError, setPinError] = useState(false)
   const [pendingDelete, setPendingDelete] = useState(null)
+  const [openWork, setOpenWork] = useState(0)
 
   const service = SERVICES.find((s) => s.id === serviceId)
   const days = useMemo(() => nextDays(DAY_COUNT), [])
@@ -109,6 +243,18 @@ export default function App() {
     [service, date, bookings, staffIds],
   )
   const teeth = useMemo(() => (date ? teethFor(date, slots, bookings, staffIds) : []), [date, slots, bookings, staffIds])
+
+  // Live "next free" lines, from the same calendars the comb reads.
+  const heroNext = useMemo(() => firstFree(days, 30, bookings, STAFF.map((s) => s.id)), [days, bookings])
+  const staffNext = useMemo(
+    () => Object.fromEntries(STAFF.map((s) => [s.id, firstFree(days, 30, bookings, [s.id])])),
+    [days, bookings],
+  )
+
+  function goBook() {
+    setView(booking ? 'done' : 'book')
+    requestAnimationFrame(() => document.getElementById('foglalas')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }))
+  }
 
   function pickDate(iso) {
     setDate(iso)
@@ -125,6 +271,7 @@ export default function App() {
   function pickStaff(id) {
     setStaffId(id)
     setStartMin(null)
+    if (id !== ANY && !staffFor(serviceId).some((s) => s.id === id)) setServiceId(STAFF.find((s) => s.id === id).services[0])
   }
 
   function validate() {
@@ -180,6 +327,7 @@ export default function App() {
   function openAdmin() {
     setView('admin')
     setPinError(false)
+    window.scrollTo({ top: 0 })
   }
 
   function tryPin(event) {
@@ -208,7 +356,7 @@ export default function App() {
   const tel = `tel:${BUSINESS.phone.replace(/\s/g, '')}`
 
   return (
-    <>
+    <LazyMotion features={domAnimation} strict>
       <a className="skip" href="#foglalas">
         Ugrás a foglaláshoz
       </a>
@@ -221,20 +369,18 @@ export default function App() {
       </p>
 
       <header className="top">
-        <p className="brand">
-          <span className="brand-dot" aria-hidden="true">
-            Sz
-          </span>
-          {BUSINESS.name}
-        </p>
-        <nav aria-label="Nézet">
-          <button type="button" aria-current={view !== 'admin' ? 'page' : undefined} onClick={() => setView(booking ? 'done' : 'book')}>
-            Foglalás
-          </button>
-          <button type="button" aria-current={view === 'admin' ? 'page' : undefined} onClick={openAdmin}>
-            Naptár
-          </button>
+        <button type="button" className="brand" onClick={() => { setView('book'); window.scrollTo({ top: 0 }) }}>
+          Szálka
+        </button>
+        <nav aria-label="Fő menü" className="menu">
+          <a href="#arak" onClick={() => setView('book')}>Árak</a>
+          <a href="#csapat" onClick={() => setView('book')}>Csapat</a>
+          <a href="#munkak" onClick={() => setView('book')}>Munkáink</a>
+          <a href="#kapcsolat" onClick={() => setView('book')}>Kapcsolat</a>
         </nav>
+        <button type="button" className="btn small" onClick={goBook}>
+          {CTA}
+        </button>
       </header>
 
       <main id="tartalom">
@@ -278,7 +424,7 @@ export default function App() {
                 </ul>
               ) : (
                 <p className="empty">
-                  {adminStaff === 'all' ? 'Még nincs foglalás. Foglalj egyet a Foglalás oldalon, és itt megjelenik.' : `${staffName(adminStaff)} naptárában még nincs foglalás.`}
+                  {adminStaff === 'all' ? 'Még nincs foglalás. Foglalj egyet a főoldalon, és itt megjelenik.' : `${staffName(adminStaff)} naptárában még nincs foglalás.`}
                 </p>
               )
             ) : (
@@ -294,40 +440,32 @@ export default function App() {
 
         {view === 'done' && booking ? (
           <section className="done">
-            <div className="card">
-              <div className="card-inner">
-                <div className="card-face card-front" aria-hidden="true">
-                  <span className="brand-dot big">Sz</span>
-                  <span>{BUSINESS.name}</span>
+            <div className="ticket">
+              <h1 id="kesz-cim" tabIndex={-1}>
+                Megvan az időpontod.
+              </h1>
+              <p className="ticket-when">
+                {formatDay(booking.date, { month: 'long', day: 'numeric', weekday: 'long' })}
+                <strong>{minutesToLabel(booking.startMin)}</strong>
+              </p>
+              <dl>
+                <div>
+                  <dt>Kezelés</dt>
+                  <dd>{booking.serviceName}</dd>
                 </div>
-                <div className="card-face card-back">
-                  <h1 id="kesz-cim" tabIndex={-1}>
-                    Megvan az időpontod.
-                  </h1>
-                  <p className="card-when">
-                    {formatDay(booking.date, { month: 'long', day: 'numeric', weekday: 'long' })}
-                    <strong>{minutesToLabel(booking.startMin)}</strong>
-                  </p>
-                  <dl>
-                    <div>
-                      <dt>Kezelés</dt>
-                      <dd>{booking.serviceName}</dd>
-                    </div>
-                    {booking.staffId ? (
-                      <div>
-                        <dt>Fodrász</dt>
-                        <dd>{staffName(booking.staffId)}</dd>
-                      </div>
-                    ) : null}
-                    <div>
-                      <dt>Ár</dt>
-                      <dd>{formatHuf(booking.priceHuf)}</dd>
-                    </div>
-                  </dl>
+                {booking.staffId ? (
+                  <div>
+                    <dt>Fodrász</dt>
+                    <dd>{staffName(booking.staffId)}</dd>
+                  </div>
+                ) : null}
+                <div>
+                  <dt>Ár</dt>
+                  <dd>{formatHuf(booking.priceHuf)}</dd>
                 </div>
-              </div>
+              </dl>
             </div>
-            <p className="lede">Élesben erről e-mail menne neked és a szalonnak. Itt nem megy, de a Naptár nézetben látod, mit lát a szalon.</p>
+            <p className="lede">Élesben erről e-mail menne neked és a szalonnak. Itt nem megy, de a lap alján, a Naptár nézetben látod, mit lát a szalon.</p>
             <button
               className="btn"
               type="button"
@@ -345,176 +483,277 @@ export default function App() {
         {view === 'book' ? (
           <>
             <section className="hero">
-              <h1 className="cut">
-                  <span className="sr">{BUSINESS.name}</span>
-                  <span className="cut-half cut-top" aria-hidden="true">
-                    Szálka
-                    <br />
-                    Fodrászat
-                  </span>
-                  <span className="cut-half cut-bottom" aria-hidden="true">
-                    Szálka
-                    <br />
-                    Fodrászat
-                  </span>
-                </h1>
               <div className="hero-copy">
-                
-                <p className="lede">Kecskemét, a Szabadság téren. Válassz kezelést, és foglalj a fésűn: minden fog fél óra.</p>
-                <a className="btn" href="#foglalas">
-                  Időpontot foglalok
-                </a>
+                <h1>
+                  Szálka Fodrászat
+                  <svg className="strand-line" viewBox="0 0 600 60" aria-hidden="true" preserveAspectRatio="none">
+                    <m.path
+                      d="M4 38 C 90 6, 150 58, 240 30 S 390 8, 470 34 S 560 44, 596 18"
+                      initial={reduce ? false : { pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ duration: 1.6, ease: [0.65, 0, 0.35, 1], delay: 0.2 }}
+                    />
+                  </svg>
+                </h1>
+                <p className="lede">Vágás, festés, balayage Kecskeméten, a Szabadság téren. Foglalj most, harminc másodperc.</p>
+                <div className="hero-actions">
+                  <button type="button" className="btn big" onClick={goBook}>
+                    {CTA} <ArrowRight size={20} weight="bold" aria-hidden="true" />
+                  </button>
+                  <p className="next-free" role="status">
+                    <span className="live" aria-hidden="true" />
+                    Legközelebb szabad: <strong>{whenLabel(heroNext, days)}</strong>
+                  </p>
+                </div>
               </div>
               <figure className="hero-photo">
-                <img src={drying} srcSet={`${dryingSmall} 480w, ${drying} 900w`} sizes="(max-width: 860px) 78vw, 24rem" alt="Fodrász hajszárítóval és körkefével formázza egy vendég haját" width="900" height="900" />
+                <img src={hero} alt="Fodrász ollóval vágja egy vendég nedves, sötét haját" width="1400" height="1600" fetchPriority="high" />
               </figure>
             </section>
 
-            <form id="foglalas" className="booking" onSubmit={onSubmit} noValidate>
-              <fieldset className="services">
-                <legend>Mit csinálunk?</legend>
-                <div className="service-list">
-                  {SERVICES.map((item) => {
-                    const on = item.id === serviceId
-                    return (
-                      <button key={item.id} type="button" aria-pressed={on} className="service" onClick={() => pickService(item.id)}>
-                        <span className="service-min">
-                          {item.durationMin}
-                          <small>perc</small>
-                        </span>
-                        <span className="service-name">
-                          <strong>{item.name}</strong>
-                          <em>{item.blurb}</em>
-                        </span>
-                        <span className="service-price">{formatHuf(item.priceHuf)}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </fieldset>
+            <Reveal className="services" id="arak" aria-labelledby="arak-cim">
+              <h2 id="arak-cim">Válassz egy tincset.</h2>
+              <p className="section-lede">Mint a festékkártya a szalonban: minden szál egy kezelés, ár és idő együtt.</p>
+              <SwatchRing
+                activeId={ringId}
+                onActive={setRingId}
+                onBook={(id) => {
+                  pickService(id)
+                  goBook()
+                }}
+              />
+            </Reveal>
 
-              <fieldset className="staff">
-                <legend>Kihez?</legend>
-                <p className="hint">Mindenkinek saját naptára van. Ha mindegy, a fésűn azt látod, amikor bárki ráér.</p>
-                <div className="staff-list">
-                  {[{ id: ANY, name: 'Bárkihez', role: 'Aki épp ráér' }, ...eligible].map((s) => (
-                    <button key={s.id} type="button" className="stylist" aria-pressed={staffId === s.id} onClick={() => pickStaff(s.id)}>
-                      <span className="stylist-dot" aria-hidden="true">
-                        {s.id === ANY ? '*' : s.name[0]}
-                      </span>
-                      <span>
-                        <strong>{s.name}</strong>
-                        <em>{s.role}</em>
-                      </span>
+            <Reveal className="team" id="csapat" aria-labelledby="csapat-cim">
+              <h2 id="csapat-cim">Hárman vagyunk.</h2>
+              <p className="section-lede">Mindenkinek saját naptára van. Alattuk látod, nála mikor van legközelebb hely.</p>
+              <ul className="mirrors">
+                {STAFF.map((s) => (
+                  <li key={s.id} className="mirror">
+                    <div className="mirror-glass">
+                      <img src={STAFF_PHOTO[s.id]} alt={`${s.name} portréja`} width="600" height="600" loading="lazy" />
+                    </div>
+                    <h3>{s.name}</h3>
+                    <p className="mirror-role">{s.role}</p>
+                    <p>{s.bio}</p>
+                    <p className="mirror-next">
+                      <Clock size={16} weight="bold" aria-hidden="true" /> Nála legközelebb: <strong>{whenLabel(staffNext[s.id], days)}</strong>
+                    </p>
+                    <button
+                      type="button"
+                      className="link-btn"
+                      onClick={() => {
+                        pickStaff(s.id)
+                        goBook()
+                      }}
+                    >
+                      Hozzá foglalok <ArrowRight size={16} weight="bold" aria-hidden="true" />
                     </button>
-                  ))}
-                </div>
-              </fieldset>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
 
-              <fieldset>
-                <legend>Melyik nap?</legend>
-                <div className="days">
-                  {days.map((iso) => {
-                    const closed = atMinutes(iso, 12 * 60).getDay() === 0
-                    const on = iso === date
-                    return (
-                      <button key={iso} type="button" aria-pressed={closed ? undefined : on} disabled={closed} className="day" onClick={() => pickDate(iso)}>
-                        <span>{formatDay(iso, { weekday: 'short' })}</span>
-                        <strong>
-                          <span className="flip">{formatDay(iso, { day: 'numeric' })}</span>
-                        </strong>
-                        <small>{closed ? 'zárva' : formatDay(iso, { month: 'short' })}</small>
+            <Reveal className="work" id="munkak" aria-labelledby="munkak-cim">
+              <h2 id="munkak-cim">A múlt hét a székből.</h2>
+              <ul className="strips">
+                {WORK.map(([src, alt], i) => (
+                  <li key={alt} className={`strip${openWork === i ? ' open' : ''}`}>
+                    <button type="button" aria-pressed={openWork === i} aria-label={alt} onMouseEnter={() => setOpenWork(i)} onFocus={() => setOpenWork(i)} onClick={() => setOpenWork(i)}>
+                      <img src={src} alt="" width="900" height="1200" loading="lazy" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+
+            <section id="foglalas" className="booking-wrap" aria-labelledby="foglalas-cim">
+              <h2 id="foglalas-cim">Foglalás a fésűn.</h2>
+              <p className="section-lede">Minden fog fél óra. A világos fogak szabadok.</p>
+              <form className="booking" onSubmit={onSubmit} noValidate>
+                <fieldset className="services-pick">
+                  <legend>Mit csinálunk?</legend>
+                  <div className="chips">
+                    {SERVICES.map((item) => (
+                      <button key={item.id} type="button" aria-pressed={item.id === serviceId} className="chip" style={{ '--shade': item.shade }} onClick={() => pickService(item.id)}>
+                        <span className="chip-swatch" aria-hidden="true" />
+                        {item.name}
+                        <small>{item.durationMin} perc</small>
                       </button>
-                    )
-                  })}
-                </div>
-              </fieldset>
-
-              <fieldset id="idopont" tabIndex={-1} aria-describedby={errors.slot ? 'slot-error' : 'slot-hint'}>
-                <legend>Hánykor?</legend>
-                <p className="hint" id="slot-hint">
-                  {date ? `${formatDay(date, { month: 'long', day: 'numeric', weekday: 'long' })}, ${service.name.toLowerCase()}, ${service.durationMin} perc, ${staffId === ANY ? 'bárkinél' : staffName(staffId)}` : ''}
-                </p>
-                {slots.length ? (
-                  <Comb
-                    teeth={teeth}
-                    duration={service.durationMin}
-                    value={startMin}
-                    onPick={(min) => {
-                      setStartMin(min)
-                      setErrors((prev) => ({ ...prev, slot: undefined }))
-                    }}
-                  />
-                ) : (
-                  <p className="empty" role="status">
-                    Erre a napra nem maradt idő, ami befér. Nézz egy másik napot.
-                  </p>
-                )}
-                <p className="legend" aria-hidden="true">
-                  <span className="lg start">szabad</span>
-                  <span className="lg taken">foglalt</span>
-                  <span className="lg free">nem fér bele</span>
-                </p>
-                {errors.slot ? (
-                  <p id="slot-error" className="field-error" role="alert">
-                    {errors.slot}
-                  </p>
-                ) : null}
-              </fieldset>
-
-              <fieldset className="details">
-                <legend>Kinek írjuk be?</legend>
-                <div className="details-grid">
-                  <Field id="name" label="Név" value={name} onChange={setName} autoComplete="name" error={errors.name} />
-                  <Field id="phone" label="Telefon" value={phone} onChange={setPhone} type="tel" autoComplete="tel" error={errors.phone} />
-                  <Field id="email" label="E-mail" value={email} onChange={setEmail} type="email" autoComplete="email" error={errors.email} />
-                  <div className="field">
-                    <label htmlFor="note">Megjegyzés, ha van</label>
-                    <textarea id="note" name="note" rows={2} value={note} onChange={(e) => setNote(e.target.value)} />
+                    ))}
                   </div>
+                </fieldset>
+
+                <fieldset className="staff">
+                  <legend>Kihez?</legend>
+                  <div className="chips">
+                    {[{ id: ANY, name: 'Bárkihez' }, ...eligible].map((s) => (
+                      <button key={s.id} type="button" className="chip person" aria-pressed={staffId === s.id} onClick={() => pickStaff(s.id)}>
+                        {s.id === ANY ? (
+                          <span className="chip-face any" aria-hidden="true">
+                            <Scissors size={16} weight="bold" />
+                          </span>
+                        ) : (
+                          <img className="chip-face" src={STAFF_PHOTO[s.id]} alt="" width="32" height="32" />
+                        )}
+                        {s.name}
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Melyik nap?</legend>
+                  <div className="days">
+                    {days.map((iso) => {
+                      const closed = atMinutes(iso, 12 * 60).getDay() === 0
+                      const on = iso === date
+                      return (
+                        <button key={iso} type="button" aria-pressed={closed ? undefined : on} disabled={closed} className="day" onClick={() => pickDate(iso)}>
+                          <span>{formatDay(iso, { weekday: 'short' })}</span>
+                          <strong>{formatDay(iso, { day: 'numeric' })}</strong>
+                          <small>{closed ? 'zárva' : formatDay(iso, { month: 'short' })}</small>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </fieldset>
+
+                <fieldset id="idopont" tabIndex={-1} aria-describedby={errors.slot ? 'slot-error' : 'slot-hint'}>
+                  <legend>Hánykor?</legend>
+                  <p className="hint" id="slot-hint">
+                    {date ? `${formatDay(date, { month: 'long', day: 'numeric', weekday: 'long' })}, ${service.name.toLowerCase()}, ${service.durationMin} perc, ${staffId === ANY ? 'bárkinél' : staffName(staffId)}` : ''}
+                  </p>
+                  {slots.length ? (
+                    <Comb
+                      teeth={teeth}
+                      duration={service.durationMin}
+                      value={startMin}
+                      onPick={(min) => {
+                        setStartMin(min)
+                        setErrors((prev) => ({ ...prev, slot: undefined }))
+                      }}
+                    />
+                  ) : (
+                    <p className="empty" role="status">
+                      Erre a napra nem maradt idő, ami befér. Nézz egy másik napot.
+                    </p>
+                  )}
+                  <p className="legend" aria-hidden="true">
+                    <span className="lg start">szabad</span>
+                    <span className="lg taken">foglalt</span>
+                    <span className="lg free">nem fér bele</span>
+                  </p>
+                  {errors.slot ? (
+                    <p id="slot-error" className="field-error" role="alert">
+                      {errors.slot}
+                    </p>
+                  ) : null}
+                </fieldset>
+
+                <fieldset className="details">
+                  <legend>Kinek írjuk be?</legend>
+                  <div className="details-grid">
+                    <Field id="name" label="Név" value={name} onChange={setName} autoComplete="name" error={errors.name} />
+                    <Field id="phone" label="Telefon" value={phone} onChange={setPhone} type="tel" autoComplete="tel" error={errors.phone} />
+                    <Field id="email" label="E-mail" value={email} onChange={setEmail} type="email" autoComplete="email" error={errors.email} />
+                    <div className="field">
+                      <label htmlFor="note">Megjegyzés, ha van</label>
+                      <textarea id="note" name="note" rows={2} value={note} onChange={(e) => setNote(e.target.value)} />
+                    </div>
+                  </div>
+                </fieldset>
+
+                <div className="submit-row">
+                  <p className="summary">
+                    {service.name}
+                    {staffId !== ANY ? `, ${staffName(staffId)}` : ''}
+                    {startMin != null ? `, ${formatDay(date, { weekday: 'long' })} ${minutesToLabel(startMin)}` : ''}
+                    <strong>{formatHuf(service.priceHuf)}</strong>
+                  </p>
+                  <button className="btn big" type="submit">
+                    Lefoglalom
+                  </button>
                 </div>
-              </fieldset>
+              </form>
+            </section>
 
-              <div className="submit-row">
-                <p className="summary">
-                  {service.name}
-                  {staffId !== ANY ? `, ${staffName(staffId)}` : ''}
-                  {startMin != null ? `, ${formatDay(date, { weekday: 'long' })} ${minutesToLabel(startMin)}` : ''}
-                  <strong>{formatHuf(service.priceHuf)}</strong>
-                </p>
-                <button className="btn big" type="submit">
-                  Lefoglalom
-                </button>
+            <Reveal className="reviews" aria-labelledby="velemeny-cim">
+              <h2 id="velemeny-cim" className="sr">Vélemények</h2>
+              <figure className="quote-main">
+                <blockquote>„{REVIEWS[0].text}”</blockquote>
+                <figcaption>
+                  {REVIEWS[0].who}, {REVIEWS[0].what}
+                </figcaption>
+              </figure>
+              <div className="quote-side">
+                {REVIEWS.slice(1).map((r) => (
+                  <figure key={r.who}>
+                    <blockquote>„{r.text}”</blockquote>
+                    <figcaption>
+                      {r.who}, {r.what}
+                    </figcaption>
+                  </figure>
+                ))}
+                <p className="fine">Kitalált minta-vélemények, a bemutató része.</p>
               </div>
-            </form>
+            </Reveal>
 
-            <section className="visit" aria-labelledby="hol">
-              <img src={colouring} alt="Fodrász ecsettel festéket visz fel egy fóliára terített hajtincsre" width="1200" height="800" loading="lazy" />
+            <Reveal className="faq" aria-labelledby="gyik-cim">
+              <h2 id="gyik-cim">Mielőtt jössz</h2>
+              <div className="faq-list">
+                {FAQ.map(([q, a]) => (
+                  <details key={q}>
+                    <summary>
+                      {q}
+                      <Plus size={20} weight="bold" aria-hidden="true" />
+                    </summary>
+                    <p>{a}</p>
+                  </details>
+                ))}
+              </div>
+            </Reveal>
+
+            <Reveal className="visit" id="kapcsolat" aria-labelledby="hol">
+              <img src={salon} alt="A szalon belülről: piros fodrászszék a tükrök előtt" width="1200" height="800" loading="lazy" />
               <div className="visit-text">
                 <h2 id="hol">A téren, az emeleten.</h2>
-                <dl>
-                  <div>
-                    <dt>Cím</dt>
-                    <dd>
+                <ul className="visit-list">
+                  <li>
+                    <MapPin size={22} weight="bold" aria-hidden="true" />
+                    <span>
                       {BUSINESS.address}, {BUSINESS.city}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Nyitva</dt>
-                    <dd>{BUSINESS.hours}</dd>
-                  </div>
-                  <div>
-                    <dt>Telefon</dt>
-                    <dd>
-                      <a href={tel}>{BUSINESS.phone}</a>
-                    </dd>
-                  </div>
-                </dl>
+                      <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${BUSINESS.address} ${BUSINESS.city}`)}`} target="_blank" rel="noreferrer">
+                        Útvonal
+                      </a>
+                    </span>
+                  </li>
+                  <li>
+                    <Clock size={22} weight="bold" aria-hidden="true" />
+                    <span>{BUSINESS.hours}</span>
+                  </li>
+                  <li>
+                    <Phone size={22} weight="bold" aria-hidden="true" />
+                    <a href={tel}>{BUSINESS.phone}</a>
+                  </li>
+                </ul>
+                <button type="button" className="btn" onClick={goBook}>
+                  {CTA}
+                </button>
               </div>
-            </section>
+            </Reveal>
           </>
         ) : null}
       </main>
-    </>
+
+      <footer className="foot">
+        <p>
+          <strong>Szálka Fodrászat</strong>, kitalált szalon. Fotók: Unsplash. Betűk: Clash Display és Satoshi, Indian Type Foundry (Fontshare).
+        </p>
+        <button type="button" className="link-btn" onClick={openAdmin}>
+          Naptár (a szalon nézete)
+        </button>
+      </footer>
+    </LazyMotion>
   )
 }
