@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ALLERGENS, BUSINESS, DAY_COPY, boardPrice, dayMenu, formatDay, formatHuf, isoLocal, weekdayName } from './data.js'
-import { clampQty, menuItems, orderLines, orderTotal, pickupSlots, validateOrder } from './order.js'
-import { addOrder, isLoggedIn, loadOrders, loadWeek, login, logout, saveDay, setOrderStatus } from './storage.js'
+import { clampQty, fitsDiet, menuItems, orderLines, orderTotal, pickupSlots, shopStatus, validateOrder } from './order.js'
+import { CARD_SIZE, addOrder, addStamp, isLoggedIn, loadOrders, loadStamps, loadWeek, login, logout, saveDay, setOrderStatus } from './storage.js'
 import soupPhoto from './assets/leves.webp'
+import rantottPhoto from './assets/rantott.webp'
+import toltottPhoto from './assets/toltott.webp'
+import palacsintaPhoto from './assets/palacsinta.webp'
 
 const SITE_URL = 'https://demo-napi-menu.vercel.app/'
 
@@ -68,9 +71,10 @@ function AllergenTags({ codes }) {
   )
 }
 
-function Row({ name, price, allergens, seed, start }) {
+function Row({ name, price, allergens, seed, start, out = false }) {
   return (
-    <li className="row">
+    <li className={out ? 'row out' : 'row'}>
+      {out ? <span className="sr">Nem fér bele a szűrésbe:</span> : null}
       <span className="dish">
         <Letters text={name} seed={seed} start={start} />
         <AllergenTags codes={allergens} />
@@ -81,7 +85,7 @@ function Row({ name, price, allergens, seed, start }) {
 }
 
 /** The felt letterboard in its oak frame. */
-function Letterboard({ menu, heading, seed = 1, compact = false }) {
+function Letterboard({ menu, heading, seed = 1, compact = false, avoid = [] }) {
   if (menu.closed) {
     return (
       <figure className={compact ? 'board compact' : 'board'}>
@@ -106,17 +110,17 @@ function Letterboard({ menu, heading, seed = 1, compact = false }) {
         </p>
         <p className="board-label">Leves</p>
         <ul>
-          <Row name={menu.soup} price={menu.soupPrice} allergens={menu.soupAllergens} seed={seed + 11} start={4} />
+          <Row name={menu.soup} price={menu.soupPrice} allergens={menu.soupAllergens} seed={seed + 11} start={4} out={!fitsDiet(menu.soupAllergens, avoid)} />
         </ul>
         <p className="board-label">Főétel</p>
         <ul>
           {menu.mains.map((item, index) => (
-            <Row key={index} name={item.name} price={item.price} allergens={item.allergens} seed={seed + 20 + index} start={10 + index * 6} />
+            <Row key={index} name={item.name} price={item.price} allergens={item.allergens} seed={seed + 20 + index} start={10 + index * 6} out={!fitsDiet(item.allergens, avoid)} />
           ))}
         </ul>
         <p className="board-label">Desszert</p>
         <ul>
-          <Row name={menu.dessert} price={menu.dessertPrice} allergens={menu.dessertAllergens} seed={seed + 40} start={24} />
+          <Row name={menu.dessert} price={menu.dessertPrice} allergens={menu.dessertAllergens} seed={seed + 40} start={24} out={!fitsDiet(menu.dessertAllergens, avoid)} />
         </ul>
         {menu.note ? <p className="board-note">{menu.note}</p> : null}
         {legend.length ? (
@@ -263,7 +267,7 @@ function Editor({ day, menu, onSave }) {
 
 /** Takeaway pre-order: pick dishes, a pickup time, leave a name and number.
     The ticket on the right fills in as you choose, like the counter slip. */
-function OrderPanel({ menu, now, dateIso }) {
+function OrderPanel({ menu, now, dateIso, onStamp }) {
   const slots = useMemo(() => pickupSlots(now), [now])
   const items = useMemo(() => menuItems(menu), [menu])
   const [qty, setQty] = useState({})
@@ -292,7 +296,10 @@ function OrderPanel({ menu, now, dateIso }) {
     const found = validateOrder({ lines, slot, name, phone }, slots)
     setErrors(found)
     if (Object.keys(found).length) return
-    setPlaced(addOrder(dateIso, { lines, slot, name: name.trim(), phone: phone.trim(), total }))
+    const order = addOrder(dateIso, { lines, slot, name: name.trim(), phone: phone.trim(), total })
+    const stamp = addStamp()
+    onStamp(stamp)
+    setPlaced({ ...order, stamp })
   }
 
   function again() {
@@ -370,6 +377,7 @@ function OrderPanel({ menu, now, dateIso }) {
                 <span>Összesen</span>
                 <span>{formatHuf(placed.total)}</span>
               </p>
+              <p className="ticket-stamp">{placed.stamp.free ? 'Ez volt a tizedik pecsét: a következő ebéd ingyen van.' : `Pecsét a kártyán: ${placed.stamp.count} / ${CARD_SIZE}`}</p>
               <p className="hint">Ebben a böngészőben mentve. A Pult fülön látod, ahogy a konyha látná.</p>
               <button type="button" className="btn ghost" onClick={again}>
                 Új rendelés
@@ -567,6 +575,140 @@ function LoginForm({ title, intro, password, setPassword, pinError, onLogin }) {
   )
 }
 
+
+/** "Mit nem ehetsz?" chips. Dishes with an avoided allergen get a marker line on the board. */
+function DietFilter({ avoid, onToggle }) {
+  return (
+    <div className="diet" role="group" aria-label="Mit nem ehetsz?">
+      <span className="diet-label">Mit nem ehetsz?</span>
+      {Object.entries(ALLERGENS).map(([code, name]) => (
+        <button key={code} type="button" aria-pressed={avoid.includes(code)} onClick={() => onToggle(code)}>
+          <b>{code}</b> {name}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+/** The loyalty card on the counter: one stamp per takeaway order, the tenth meal is free. */
+function StampCard({ count, fresh }) {
+  return (
+    <section className="stamps" aria-labelledby="pecset">
+      <div className="stamp-card">
+        <div className="stamp-text">
+          <h2 id="pecset">Tíz ebéd, a tizedik a miénk.</h2>
+          <p>Minden elviteles rendelés egy pecsét. A kártya a telefonodon van, nem veszhet el a tárcádban.</p>
+          <p className="stamp-count" aria-live="polite">
+            {count} / {CARD_SIZE} pecsét
+          </p>
+        </div>
+        <ol className="stamp-grid" aria-hidden="true">
+          {Array.from({ length: CARD_SIZE }, (_, i) => (
+            <li key={i} className={i < count ? (i === count - 1 && fresh ? 'on fresh' : 'on') : undefined}>
+              {i === CARD_SIZE - 1 ? 'Ingyen' : i + 1}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}
+
+/** The week as a tear-off pad: the top sheet is the next open day, tear it to see the one after. */
+function TearPad({ week, monday, startDay }) {
+  const days = [1, 2, 3, 4, 5].filter((d) => d >= startDay)
+  const [torn, setTorn] = useState(0)
+  const [tearing, setTearing] = useState(false)
+  const left = days.slice(torn)
+
+  function tear() {
+    setTearing(true)
+    setTimeout(() => {
+      setTearing(false)
+      setTorn((t) => t + 1)
+    }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 450)
+  }
+
+  return (
+    <section className="pad-wrap" aria-labelledby="het">
+      <h2 id="het">A hét, lapról lapra.</h2>
+      <div className="pad">
+        {left.length ? (
+          left
+            .slice(0, 3)
+            .reverse()
+            .map((day, i, arr) => {
+              const top = i === arr.length - 1
+              const menu = dayMenu(week, addDays(monday, day - 1))
+              return (
+                <article key={day} className={`sheet${top ? ' top' : ''}${top && tearing ? ' tearing' : ''}`} aria-hidden={top ? undefined : 'true'}>
+                  <p className="sheet-day">{weekdayName(day)}</p>
+                  {menu.closed ? (
+                    <p>Zárva</p>
+                  ) : (
+                    <ul>
+                      <li>{menu.soup}</li>
+                      {menu.mains.map((m) => (
+                        <li key={m.name}>{m.name}</li>
+                      ))}
+                      <li>{menu.dessert}</li>
+                    </ul>
+                  )}
+                </article>
+              )
+            })
+        ) : (
+          <article className="sheet top empty">
+            <p className="sheet-day">Ennyi volt a hét</p>
+            <p>Hétfőn új lapot kezdünk.</p>
+          </article>
+        )}
+      </div>
+      {left.length ? (
+        <button type="button" className="btn" onClick={tear} disabled={tearing}>
+          {left.length > 1 ? 'Letépem, jöhet a következő nap' : 'Letépem az utolsót'}
+        </button>
+      ) : (
+        <button type="button" className="btn ghost" onClick={() => setTorn(0)}>
+          Elölről
+        </button>
+      )}
+    </section>
+  )
+}
+
+const FOOD = [
+  [rantottPhoto, 'Rántott hús citromkarikával és burgonyával', 'Rántott hús, szerdánként'],
+  [toltottPhoto, 'Töltött káposzta tejföllel, mély tányérban', 'Töltött káposzta, kedden'],
+  [palacsintaPhoto, 'Hajtogatott palacsinták mintás tányéron', 'Palacsinta, szerdán'],
+]
+
+/** Three plates from the counter, staggered like they were just put down. */
+function FoodStrip() {
+  return (
+    <section className="food" aria-labelledby="pultrol">
+      <h2 id="pultrol" className="sr">A pultról</h2>
+      {FOOD.map(([src, alt, caption]) => (
+        <figure key={caption}>
+          <img src={src} alt={alt} width="640" height="800" loading="lazy" />
+          <figcaption>{caption}</figcaption>
+        </figure>
+      ))}
+    </section>
+  )
+}
+
+/** The door sign flips to the side that is true right now. */
+function DoorSign({ status }) {
+  return (
+    <div className={`sign${status.open ? ' open' : ''}`}>
+      <span className="sign-string" aria-hidden="true" />
+      <p className="sign-board">{status.open ? 'Nyitva' : 'Zárva'}</p>
+      <p className="sign-sub">{status.text}</p>
+    </div>
+  )
+}
+
 export default function App() {
   const today = useMemo(() => {
     const d = new Date()
@@ -582,6 +724,10 @@ export default function App() {
   const todayDay = today.getDay()
   const [weekDay, setWeekDay] = useState(todayDay >= 1 && todayDay <= 5 ? todayDay : 1)
   const [editDay, setEditDay] = useState(todayDay >= 1 && todayDay <= 5 ? todayDay : 1)
+  const [avoid, setAvoid] = useState([])
+  const [stamps, setStamps] = useState(() => loadStamps())
+  const [freshStamp, setFreshStamp] = useState(false)
+  const status = useMemo(() => shopStatus(now), [now])
 
   const tel = `tel:${BUSINESS.phone.replace(/\s/g, '')}`
   // On the weekend the board already shows Monday, like a real board left out on Friday.
@@ -655,6 +801,10 @@ export default function App() {
                 <div className="today-copy">
                   <h1>{weekend ? 'Hétvégén zárva' : 'Mi a mai menü?'}</h1>
                   <p className="lede">Ami a táblán van, az a pulton is. Hétköznap 11-től 15 óráig, amíg a leves tart.</p>
+                  <p className={status.open ? 'status open' : 'status'} role="status">
+                    <span className="live" aria-hidden="true" />
+                    {status.text}
+                  </p>
                   <div className="today-actions">
                     {weekend ? null : (
                       <a className="btn" href="#rendeles">
@@ -666,12 +816,29 @@ export default function App() {
                     </a>
                   </div>
                 </div>
-                <Letterboard menu={todayMenu} heading={boardHeading} seed={todayDay + 1} />
+                <div className="board-col">
+                  <Letterboard menu={todayMenu} heading={boardHeading} seed={todayDay + 1} avoid={avoid} />
+                  {todayMenu.closed ? null : <DietFilter avoid={avoid} onToggle={(c) => setAvoid((a) => (a.includes(c) ? a.filter((x) => x !== c) : [...a, c]))} />}
+                </div>
               </div>
             </section>
-            {weekend ? null : <OrderPanel menu={todayMenu} now={now} dateIso={todayIso} />}
+            {weekend ? null : (
+              <OrderPanel
+                menu={todayMenu}
+                now={now}
+                dateIso={todayIso}
+                onStamp={(st) => {
+                  setStamps(st.free ? 0 : st.count)
+                  setFreshStamp(true)
+                }}
+              />
+            )}
+            <StampCard count={stamps} fresh={freshStamp} />
+            <FoodStrip />
+            <TearPad week={week} monday={monday} startDay={weekend ? 1 : todayDay} />
             <section className="visit" aria-labelledby="hol">
               <img src={soupPhoto} alt="Gőzölgő leves egy nagy üstben, mellette szárított paprikafüzér" width="1200" height="358" loading="lazy" />
+              <DoorSign status={status} />
               <div className="visit-text">
                 <h2 id="hol">A körúton, a sarkon.</h2>
                 <p>

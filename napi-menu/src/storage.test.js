@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { beforeEach, describe, it } from 'node:test'
-import { addOrder, loadOrders, loadWeek, normalizeAllergens, normalizeMenu, saveDay, setOrderStatus } from './storage.js'
+import { CARD_SIZE, addOrder, addStamp, loadOrders, loadStamps, loadWeek, normalizeAllergens, normalizeMenu, saveDay, setOrderStatus } from './storage.js'
 
 const memory = new Map()
 
@@ -78,5 +78,14 @@ describe('orders', () => {
     addOrder('2026-10-12', order)
     assert.deepEqual(loadOrders('2026-10-13'), [])
     assert.equal(addOrder('2026-10-13', order).no, 1)
+  })
+})
+
+describe('loyalty stamps', () => {
+  it('counts up and starts over on the tenth, which is free', () => {
+
+    for (let i = 1; i < CARD_SIZE; i++) assert.deepEqual(addStamp(), { count: i, free: false })
+    assert.deepEqual(addStamp(), { count: CARD_SIZE, free: true })
+    assert.equal(loadStamps(), 0)
   })
 })

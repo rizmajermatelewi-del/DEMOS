@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
-import { clampQty, menuItems, orderLines, orderTotal, phoneOk, pickupSlots, validateOrder } from './order.js'
+import { clampQty, fitsDiet, menuItems, orderLines, orderTotal, phoneOk, pickupSlots, shopStatus, validateOrder } from './order.js'
 import { SEED } from './data.js'
 
 // 2026-10-13 is a Tuesday.
@@ -56,5 +56,26 @@ describe('validateOrder', () => {
     assert.deepEqual(Object.keys(errors).sort(), ['items', 'name', 'phone', 'slot'])
     const ok = validateOrder({ lines: [{ qty: 1 }], slot: '11:00', name: 'Kiss Anna', phone: '06 30 123 4567' }, ['11:00'])
     assert.deepEqual(ok, {})
+  })
+})
+
+describe('shopStatus', () => {
+  const at = (iso) => new Date(iso)
+  it('is open on a weekday between 11 and 15', () => {
+    assert.deepEqual(shopStatus(at('2026-10-13T12:30:00')), { open: true, text: 'Nyitva, 15:00-ig' })
+  })
+  it('says when it opens later today, tomorrow, or on Monday', () => {
+    assert.equal(shopStatus(at('2026-10-13T08:00:00')).text, 'Ma 11:00-kor nyitunk')
+    assert.equal(shopStatus(at('2026-10-13T16:00:00')).text, 'Zárva, holnap 11:00-kor nyitunk')
+    assert.equal(shopStatus(at('2026-10-16T16:00:00')).text, 'Zárva, hétfőn 11:00-kor nyitunk')
+    assert.equal(shopStatus(at('2026-10-18T12:00:00')).open, false)
+  })
+})
+
+describe('fitsDiet', () => {
+  it('rules out a dish with an avoided allergen', () => {
+    assert.equal(fitsDiet(['G', 'T'], ['G']), false)
+    assert.equal(fitsDiet(['L'], ['G']), true)
+    assert.equal(fitsDiet(undefined, ['G']), true)
   })
 })

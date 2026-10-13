@@ -118,3 +118,20 @@ export function login(password, expected) {
 export function logout() {
   sessionStorage.removeItem(AUTH)
 }
+
+/* Loyalty card: one stamp per takeaway order, the tenth meal is free. */
+const STAMPS = 'kispipa-stamps-v1'
+export const CARD_SIZE = 10
+
+export function loadStamps() {
+  const n = Number(localStorage.getItem(STAMPS))
+  return Number.isInteger(n) && n >= 0 && n <= CARD_SIZE ? n : 0
+}
+
+/** Adds a stamp. A full card starts over, and `free` says this order filled it. */
+export function addStamp() {
+  const next = loadStamps() + 1
+  const free = next >= CARD_SIZE
+  localStorage.setItem(STAMPS, String(free ? 0 : next))
+  return { count: free ? CARD_SIZE : next, free }
+}

@@ -13,7 +13,7 @@
   --oak-dark: #7f5328;
   --radius: 6px;
   --board-font: 'Sofia Sans Condensed', 'Arial Narrow', sans-serif;
-  --text: 'Figtree', 'Segoe UI', sans-serif;
+  --text: 'Instrument Sans', 'Segoe UI', sans-serif;
   color-scheme: light;
 }
 
@@ -557,3 +557,120 @@ footer {
   .visit-text { margin: -1.5rem 0.5rem 0; }
   .week-tabs button { min-width: 0; flex: 1 1 4.5rem; }
 }
+
+/* Live open/closed line under the lede */
+.status { display: inline-flex; align-items: center; gap: 0.5rem; margin: 0 0 1.3rem; font-weight: 700; }
+.live { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: #a1240f; box-shadow: 0 0 0 4px rgb(161 36 15 / 0.18); }
+.status.open .live { background: #23843f; box-shadow: 0 0 0 4px rgb(35 132 63 / 0.2); }
+
+/* Diet filter: chips under the board, crossed-out dishes on it */
+.board-col { display: grid; gap: 1rem; }
+.diet { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+.diet-label { font-weight: 800; margin-right: 0.3rem; }
+.diet button {
+  font: 600 0.9rem var(--text); padding: 0.35rem 0.7rem; border: 2px solid var(--ink); border-radius: 999px;
+  background: var(--napkin); color: var(--ink); cursor: pointer;
+}
+.diet button b { background: var(--sun); padding: 0 0.3em; border-radius: 2px; }
+.diet button[aria-pressed='true'] { background: var(--ink); color: var(--napkin); }
+.diet button[aria-pressed='true'] b { color: var(--ink); }
+.row { position: relative; }
+.row.out { opacity: 0.55; }
+/* A red marker stroke, drawn across the line like on a real board */
+.row.out::after {
+  content: ''; position: absolute; left: -0.3rem; right: -0.3rem; top: 50%; height: 0.32em;
+  background: #e0442a; border-radius: 0.2em; transform: rotate(-1.4deg) scaleX(1); transform-origin: left;
+  box-shadow: 0 1px 0 rgb(0 0 0 / 0.3);
+}
+
+/* Stamp line on the placed slip */
+.ticket-stamp { font-weight: 800; padding: 0.4rem 0.6rem; border: 2px dashed var(--ink); border-radius: var(--radius); }
+
+/* Loyalty card */
+.stamps { padding: 4.5rem 1.25rem 1rem; }
+.stamp-card {
+  max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: center;
+  padding: 2rem; background: #fff; border: 2px solid var(--ink); border-radius: 14px; box-shadow: 8px 8px 0 var(--ink);
+  transform: rotate(0.8deg);
+}
+.stamp-card h2 { margin: 0; font: 800 clamp(1.9rem, 3.6vw, 2.6rem) / 1 var(--board-font); text-transform: uppercase; }
+.stamp-text p { margin: 0.7rem 0 0; max-width: 34ch; }
+.stamp-count { font: 800 1.4rem var(--board-font) !important; }
+.stamp-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 3.6rem); gap: 0.6rem; }
+.stamp-grid li {
+  display: grid; place-items: center; width: 3.6rem; height: 3.6rem; border-radius: 50%;
+  border: 2px dashed var(--ink-soft); color: var(--ink-soft); font: 700 0.95rem var(--board-font);
+}
+.stamp-grid li:last-child { border-style: solid; border-color: var(--ink); background: var(--sun); color: var(--ink); font-size: 0.8rem; }
+.stamp-grid li.on { border: 3px solid #a1240f; color: #a1240f; background: radial-gradient(circle, rgb(161 36 15 / 0.12), transparent 70%); transform: rotate(-12deg); }
+
+/* Food strip: three plates, staggered */
+.food { max-width: 1200px; margin: 4rem auto 0; padding: 0 1.25rem; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1.2rem; align-items: start; }
+.food figure { margin: 0; }
+.food figure:nth-child(2) { margin-top: 3rem; }
+.food figure:nth-child(3) { margin-top: 1.2rem; }
+.food img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border: 2px solid var(--ink); border-radius: var(--radius); box-shadow: 6px 6px 0 var(--ink); }
+.food figcaption { margin-top: 0.6rem; font-weight: 700; }
+
+/* Tear-off pad */
+.pad-wrap { max-width: 1200px; margin: 4.5rem auto 0; padding: 0 1.25rem; display: grid; justify-items: start; gap: 1.4rem; }
+.pad-wrap h2 { margin: 0; font: 800 clamp(2rem, 4vw, 2.8rem) / 1 var(--board-font); text-transform: uppercase; }
+.pad { position: relative; width: min(100%, 26rem); height: 20rem; }
+.pad::before { content: ''; position: absolute; left: 0; right: 0; top: -0.9rem; height: 1.4rem; background: var(--ink); border-radius: 6px 6px 2px 2px; z-index: 5; }
+.sheet {
+  position: absolute; inset: 0; padding: 1.4rem 1.5rem; background: #fff; border: 2px solid var(--ink); border-radius: 2px 2px 8px 8px;
+  box-shadow: 0 3px 0 #e7e2d2, 0 6px 0 #d9d3c0;
+}
+.sheet:not(.top) { transform: translateY(5px); }
+.sheet-day { margin: 0 0 0.8rem; font: 800 2.6rem/1 var(--board-font); text-transform: uppercase; color: #a1240f; }
+.sheet ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.35rem; font-size: 1.05rem; }
+.sheet.tearing { transform-origin: 0% 0%; }
+.pad-wrap .btn:disabled { opacity: 0.6; cursor: wait; }
+
+/* Door sign hanging over the photo */
+.sign { position: absolute; top: -1.2rem; right: 3rem; z-index: 2; display: grid; justify-items: center; }
+.sign-string { width: 4rem; height: 1.6rem; border: 2px solid var(--ink); border-bottom: 0; border-radius: 2rem 2rem 0 0; }
+.sign-board {
+  margin: 0; padding: 0.5rem 1.3rem; background: #a1240f; color: #fff; border: 3px solid var(--ink); border-radius: var(--radius);
+  font: 800 2rem/1 var(--board-font); text-transform: uppercase; letter-spacing: 0.06em; box-shadow: 4px 4px 0 var(--ink);
+}
+.sign.open .sign-board { background: #23843f; }
+.sign-sub { margin: 0.4rem 0 0; padding: 0.15rem 0.5rem; background: var(--napkin); border: 2px solid var(--ink); border-radius: var(--radius); font-weight: 700; font-size: 0.85rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .row.out::after { animation: strike 0.35s ease-out; }
+  .stamp-grid li.fresh { animation: stamp 0.45s cubic-bezier(0.34, 1.6, 0.64, 1); }
+  .sheet.tearing { animation: tear 0.45s ease-in forwards; }
+  .sign-board { animation: flip 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) 0.3s backwards; }
+}
+@keyframes strike { from { transform: rotate(-1.4deg) scaleX(0); } }
+@keyframes stamp { from { transform: rotate(-30deg) scale(2.2); opacity: 0; } }
+@keyframes tear { 30% { transform: rotate(-4deg); } to { transform: translate(-30px, 220px) rotate(-28deg); opacity: 0; } }
+@keyframes flip { from { transform: perspective(400px) rotateX(-180deg); } }
+
+@media (max-width: 900px) {
+  .stamp-card { grid-template-columns: 1fr; transform: none; }
+  .food { grid-template-columns: 1fr 1fr; }
+  .food figure:nth-child(n) { margin-top: 0; }
+  .food figure:first-child { grid-column: 1 / -1; }
+  .food figure:first-child img { aspect-ratio: 16 / 10; height: auto; }
+}
+@media (max-width: 520px) {
+  .stamp-grid { grid-template-columns: repeat(5, 2.8rem); gap: 0.4rem; }
+  .stamp-grid li { width: 2.8rem; height: 2.8rem; font-size: 0.8rem; }
+  .stamp-grid li:last-child { font-size: 0.6rem; }
+  .sign { right: 1.2rem; top: -1rem; }
+  .sign-board { font-size: 1.5rem; }
+  .pad { height: 18rem; }
+}
+
+/* Pad on the right, heading and button on the left; photos square and calmer */
+@media (min-width: 901px) {
+  .pad-wrap { grid-template-columns: minmax(0, 1fr) 26rem; grid-template-areas: 'h pad' 'b pad'; align-items: start; column-gap: 3rem; }
+  .pad-wrap h2 { grid-area: h; align-self: end; font-size: clamp(2.4rem, 5vw, 3.6rem); }
+  .pad-wrap > .btn { grid-area: b; justify-self: start; }
+  .pad { grid-area: pad; }
+}
+.pad { height: 16.5rem; }
+.food { max-width: 1060px; }
+.food img { aspect-ratio: 1 / 1; height: auto; }

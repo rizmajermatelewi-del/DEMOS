@@ -63,3 +63,19 @@ export function validateOrder({ lines, slot, name, phone }, slots) {
   if (!phoneOk(phone)) errors.phone = 'Telefonszám, például 06 30 123 4567.'
   return errors
 }
+
+/** Whether the shop is open at `now`, and the line the page prints about it. */
+export function shopStatus(now) {
+  const day = now.getDay()
+  const min = now.getHours() * 60 + now.getMinutes()
+  const weekend = day === 0 || day === 6
+  if (!weekend && min >= OPEN_MIN && min < CLOSE_MIN) return { open: true, text: `Nyitva, ${hhmm(CLOSE_MIN)}-ig` }
+  if (!weekend && min < OPEN_MIN) return { open: false, text: `Ma ${hhmm(OPEN_MIN)}-kor nyitunk` }
+  if (day === 5 || day === 6 || (day === 0)) return { open: false, text: `Zárva, hétfőn ${hhmm(OPEN_MIN)}-kor nyitunk` }
+  return { open: false, text: `Zárva, holnap ${hhmm(OPEN_MIN)}-kor nyitunk` }
+}
+
+/** False when a dish contains any allergen the guest avoids. */
+export function fitsDiet(allergens, avoid) {
+  return !(allergens ?? []).some((code) => avoid.includes(code))
+}
