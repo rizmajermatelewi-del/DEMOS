@@ -1,4 +1,4 @@
-# Oldó Masszázsstúdió — „Hol fáj?” testtérkép
+# Oldó Masszázsstúdió — „Mennyi időd van?”
 
 Bemutató projekt, saját kezdeményezés. Nem élő vállalkozás, minden ár és
 időpont kitalált. A foglalás szándékosan nem megy el.
@@ -7,38 +7,33 @@ időpont kitalált. A foglalás szándékosan nem megy el.
 
 ## A probléma
 
-Aki masszázsra jelentkezik, ritkán tudja, hogy „svéd”, „sport” vagy
-„talp” kell neki. Azt tudja, hol fáj. A legtöbb szalon oldala mégis a
+Aki masszázsra jelentkezik, ritkán tudja, hogy „svéd” vagy „sport” kell neki.
+Azt tudja, hol fáj, és hogy mennyi ideje van. A legtöbb szalon oldala mégis a
 kezelések nevével kezd.
 
-## Mit csinál
+## Mit csinál (újratervezve 2026-10-14)
 
-- **Testtérkép.** Hátulnézetes alak, a fájó zónákra koppintva azok
-  „felmelegszenek”; mellette ugyanez kavics alakú jelölőkkel, billentyűzettel
-  is. A fájdalom erőssége (feszül / fáj / nagyon fáj) is számít.
-- **Ajánlás:** kezelés, időtartam, ár és egy mondat, hogy miért
-  (`recommend`, tesztelve). Egy gombbal átviszi a foglaláshoz.
-- **Első szabad időpontok** a kezelés hosszához: kedd-szombat, legalább
-  két órával előre, zárás előtt befejeződik (`freeSlots`, tesztelve).
-- Árlista, ahol a kavics mérete a kezelés hosszát mutatja.
-- A hero-ban egy 4 mp be, 6 mp ki ritmusú légző gyűrű.
-- **Teljes oldal (2026-10-14):** az első alkalom négy lépése egymásra rakott kövekként (kőrakás), a masszőr bemutatása, ajándékutalvány élő előnézettel és egyéves érvényességgel (`voucherExpiry`, tesztelve, a február 29-et is kezeli), képsor a szobáról, vendégkönyv kavics alakú idézetekkel, GYIK.
+- **Óra-összerakó.** Kiválasztod az időt (30-120 perc, 15-ösével) és a
+  területeket; az oldal 5 perces lépésekben beosztja az időt (minden terület
+  kap egy minimumot, a többit súly szerint osztja), és kiírja az árat
+  (`composeSession`, `priceFor`, tesztelve). Ha a területek nem férnek bele,
+  megmondja, hány perc kell, és egy gombbal átállítja.
+- **A terv sávja:** színes blokkok percre, kezdési időkkel, mint egy napirend.
+- **Első szabad időpontok** a választott hosszhoz: kedd-szombat, legalább két
+  órával előre, zárás előtt befejeződik (`freeSlots`, tesztelve).
+- **Ajándékutalvány percre**, élő előnézettel, egy évig érvényes
+  (`voucherExpiry`, tesztelve, a február 29-et is kezeli).
+- Masszőr, a stúdió fotói, vélemények, GYIK.
 - `HealthAndBeautyBusiness` schema.org adat.
 
 ## Döntések
 
-- **Sötét téma**, mert egy masszázsszoba félhomályos; ez az egyetlen sötét
-  demó a sorozatban.
+- **Nappali fény, len és agyag.** A korábbi sötét, testtérképes változat
+  helyett; Máté szerint a funkció és a dizájn sem volt jó.
 - **Nincs keretrendszer.** A logika a `therapy.js`-ben, tesztelve.
-- A foglaltság egy dátumból számolt, stabil mintázat, nem véletlen, így a
-  bemutató minden betöltéskor ugyanazt mutatja.
-- Fontok saját hosztolásból (@fontsource: Sora + Manrope). Minden mozgás
-  lassú, és `prefers-reduced-motion` alatt kikapcsol.
-- Fotók: Unsplash (ingyenes licenc), a nyitókép 3aGV2ViCzrM.
-
-## Mérés
-
-Lighthouse mobil, 2026-09-26 (a 2026-10-14-es bővítés előtt): 97 / 100 / 100 / 100.
+- A foglaltság egy dátumból számolt, stabil mintázat, nem véletlen.
+- Betűk: Familjen Grotesk + Onest (@fontsource, SIL OFL). Fotók: Unsplash
+  (ingyenes licenc). Minden mozgás kikapcsol `prefers-reduced-motion` alatt.
 
 ## Futtatás
 

@@ -1,45 +1,46 @@
-/** Body zones on the map, back view. */
-export const ZONES = {
-  fej: 'Fej',
-  nyak: 'Nyak',
-  vall: 'Váll',
-  hat: 'Felső hát',
-  derek: 'Derék',
-  csipo: 'Csípő',
-  kar: 'Kar',
-  lab: 'Láb',
-  talp: 'Talp',
-}
+/**
+ * The areas a session can cover. `weight` is how much of the time an area takes
+ * when there is room, `min` is the least that is worth doing on it.
+ */
+export const AREAS = [
+  { id: 'nyak', name: 'Nyak és váll', weight: 3, min: 10, color: '#c86a4a' },
+  { id: 'hat', name: 'Hát', weight: 4, min: 15, color: '#d99a5b' },
+  { id: 'derek', name: 'Derék', weight: 3, min: 10, color: '#a8794f' },
+  { id: 'fej', name: 'Fej és arc', weight: 1, min: 5, color: '#8f9e86' },
+  { id: 'kar', name: 'Kar és kéz', weight: 1, min: 5, color: '#b7a58c' },
+  { id: 'lab', name: 'Láb', weight: 2, min: 10, color: '#6f8a7e' },
+  { id: 'talp', name: 'Talp', weight: 2, min: 10, color: '#56707a' },
+]
 
-export const TREATMENTS = {
-  svedTeljes: { name: 'Teljes testes svédmasszázs', minutes: 90, price: 16900 },
-  svedRelax: { name: 'Relaxáló svédmasszázs', minutes: 60, price: 12900 },
-  nyakVall: { name: 'Nyak-váll-fej kezelés', minutes: 30, price: 7400 },
-  hatDerek: { name: 'Hát- és derékmasszázs', minutes: 45, price: 9900 },
-  sport: { name: 'Sportmasszázs', minutes: 60, price: 13900 },
-  talp: { name: 'Talpmasszázs', minutes: 40, price: 8400 },
-}
+export const MINUTES = [30, 45, 60, 75, 90, 105, 120]
+const PRICES = { 30: 7400, 45: 9900, 60: 12900, 75: 14900, 90: 16900, 105: 18900, 120: 20900 }
 
-const UPPER = new Set(['fej', 'nyak', 'vall'])
-const BACK = new Set(['hat', 'derek', 'csipo'])
+/** Price for a session length; unknown lengths are rounded up to the next one on the list. */
+export function priceFor(minutes) {
+  const m = MINUTES.find((x) => x >= minutes) ?? MINUTES.at(-1)
+  return PRICES[m]
+}
 
 /**
- * Which treatment fits the marked zones. level: 1 = feszes, 2 = fáj, 3 = nagyon fáj.
- * Returns the treatment key and a one-line reason for the recommendation card.
+ * Split `minutes` between the chosen areas in 5-minute steps: every area gets at least
+ * its minimum, the rest is shared by weight. Nothing chosen means a whole-body relax session.
+ * Returns { parts: [{ id, name, minutes, color }], fits, need } where `need` is the shortest
+ * length the chosen areas fit into.
  */
-export function recommend(zones = [], level = 1) {
-  const z = new Set(zones)
-  if (z.size === 0) return { key: 'svedRelax', why: 'Nem fáj semmi? Akkor egy óra csak a pihenésért.' }
-  if (z.size >= 4) return { key: 'svedTeljes', why: 'Több helyen feszül, ezért az egész testet átvesszük.' }
-  if ([...z].every((x) => x === 'talp')) return { key: 'talp', why: 'Talp és lábfej, olajjal, reflexpontokkal.' }
-  if ([...z].every((x) => UPPER.has(x))) return { key: 'nyakVall', why: 'Gépnél ülőknek: nyak, váll, fejbőr, fél óra alatt.' }
-  if (z.has('lab') && level === 3) return { key: 'sport', why: 'Erős fájdalom a lábban: mélyebb, sportmasszázs.' }
-  if ([...z].some((x) => BACK.has(x))) {
-    return level === 3
-      ? { key: 'sport', why: 'Erősen fájó hát: mélyebb technikával dolgozunk.' }
-      : { key: 'hatDerek', why: 'Hát és derék, oda-vissza, a lapockák között is.' }
-  }
-  return { key: 'svedRelax', why: 'A jelölt helyekre több időt szánunk egy teljes órán belül.' }
+export function composeSession(minutes, ids = []) {
+  const chosen = AREAS.filter((a) => ids.includes(a.id))
+  const areas = chosen.length ? chosen : AREAS
+  const need = areas.reduce((s, a) => s + a.min, 0)
+  const shortest = MINUTES.find((m) => m >= need) ?? MINUTES.at(-1)
+  if (need > minutes) return { parts: [], fits: false, need: shortest }
+  const spare = minutes - need
+  const totalWeight = areas.reduce((s, a) => s + a.weight, 0)
+  const parts = areas.map((a) => ({ ...a, minutes: a.min + Math.floor((spare * a.weight) / totalWeight / 5) * 5 }))
+  // Hand out what rounding left over, heaviest areas first.
+  let left = minutes - parts.reduce((s, p) => s + p.minutes, 0)
+  const order = [...parts].sort((x, y) => y.weight - x.weight)
+  for (let i = 0; left > 0; i = (i + 1) % order.length, left -= 5) order[i].minutes += 5
+  return { parts: parts.map(({ id, name, minutes: m, color }) => ({ id, name, minutes: m, color })), fits: true, need: shortest }
 }
 
 // Opening: Tuesday to Saturday, 10:00-19:00 (Sat 10:00-15:00), on a 30-minute grid.

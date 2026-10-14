@@ -1,23 +1,37 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
-import { bookingProblems, freeSlots, recommend } from './therapy.js'
+import { AREAS, bookingProblems, composeSession, freeSlots, MINUTES, priceFor } from './therapy.js'
 
-describe('recommend', () => {
-  it('suggests a relaxing hour when nothing hurts', () => {
-    assert.equal(recommend([]).key, 'svedRelax')
+describe('composeSession', () => {
+  const sum = (r) => r.parts.reduce((a, p) => a + p.minutes, 0)
+  it('fills exactly the chosen time in 5-minute steps', () => {
+    for (const m of MINUTES) {
+      const r = composeSession(m, ['nyak', 'hat'])
+      assert.ok(r.fits)
+      assert.equal(sum(r), m)
+      assert.ok(r.parts.every((p) => p.minutes % 5 === 0))
+    }
   })
-  it('keeps desk-worker pain to the short neck and shoulder treatment', () => {
-    assert.equal(recommend(['nyak', 'vall']).key, 'nyakVall')
+  it('gives every area at least its minimum', () => {
+    const r = composeSession(45, ['nyak', 'hat', 'talp'])
+    assert.deepEqual(r.parts.map((p) => p.minutes >= AREAS.find((a) => a.id === p.id).min), [true, true, true])
   })
-  it('sends feet to the foot massage', () => {
-    assert.equal(recommend(['talp']).key, 'talp')
+  it('says when the areas do not fit and how long they need', () => {
+    const r = composeSession(30, ['nyak', 'hat', 'derek', 'lab'])
+    assert.equal(r.fits, false)
+    assert.equal(r.need, 45)
   })
-  it('goes deeper on a badly hurting back', () => {
-    assert.equal(recommend(['derek'], 2).key, 'hatDerek')
-    assert.equal(recommend(['derek'], 3).key, 'sport')
+  it('treats nothing chosen as the whole body', () => {
+    assert.equal(composeSession(90).parts.length, AREAS.length)
+    assert.equal(composeSession(30).fits, false)
   })
-  it('takes the whole body from four zones up', () => {
-    assert.equal(recommend(['nyak', 'hat', 'lab', 'talp']).key, 'svedTeljes')
+})
+
+describe('priceFor', () => {
+  it('rounds up to the next listed length', () => {
+    assert.equal(priceFor(60), 12900)
+    assert.equal(priceFor(50), 12900)
+    assert.equal(priceFor(500), 20900)
   })
 })
 
@@ -37,8 +51,8 @@ describe('freeSlots', () => {
       assert.ok(end <= (s.getDay() === 6 ? 15 : 19) * 60)
     }
   })
-  it('finds room for the longest treatment too', () => {
-    assert.equal(freeSlots(new Date('2026-09-26T16:30:00'), 90, 8).length, 8)
+  it('finds room for the longest session too', () => {
+    assert.equal(freeSlots(new Date('2026-09-26T16:30:00'), 120, 8).length, 8)
   })
   it('is stable for the same moment', () => {
     const now = new Date('2026-09-29T08:00:00')

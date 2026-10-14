@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#1c2226" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%2712%27 fill=%27%231c2226%27/><ellipse cx=%2716%27 cy=%2717%27 rx=%279%27 ry=%277.5%27 fill=%27%23e07a55%27/><ellipse cx=%2716%27 cy=%2717%27 rx=%274%27 ry=%273%27 fill=%27%23eee4d6%27/></svg>" />
+    <meta name="theme-color" content="#f3eee6" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%2710%27 fill=%27%23f3eee6%27/><rect x=%277%27 y=%276%27 width=%2718%27 height=%276%27 rx=%273%27 fill=%27%23c86a4a%27/><rect x=%277%27 y=%2714%27 width=%2718%27 height=%279%27 rx=%273%27 fill=%27%23d99a5b%27/><rect x=%277%27 y=%2725%27 width=%2718%27 height=%273%27 rx=%271.5%27 fill=%27%236f8a7e%27/></svg>" />
     <title>Oldó Masszázsstúdió: bemutató</title>
     <meta
       name="description"
-      content="Bemutató oldal egy gyömrői masszázsstúdiónak: a testtérképen megjelölöd, hol fáj, az oldal kezelést, időtartamot és szabad időpontot ajánl. Nem küld foglalást."
+      content="Bemutató oldal egy gyömrői masszázsstúdiónak: megadod, mennyi időd van és hol fáj, az oldal percre beosztja a masszázst, kiírja az árat és a szabad időpontokat. Nem küld foglalást."
     />
     <script type="application/ld+json">
       {
@@ -48,156 +48,127 @@
     </p>
 
     <header class="top">
-      <p class="mark"><span class="pebble-mark" aria-hidden="true"></span>oldó <span>masszázsstúdió</span></p>
-      <nav aria-label="Oldal">
-        <a href="#hol-faj">Hol fáj?</a>
-        <a href="#arak">Árak</a>
-        <a href="#foglalas">Foglalás</a>
+      <p class="mark"><span class="mark-stack" aria-hidden="true"><i></i><i></i><i></i></span>Oldó <span>masszázsstúdió</span></p>
+      <nav class="nav" aria-label="Fő">
+        <a href="#osszeallit">Összeállítom</a>
+        <a href="#foglalas">Időpont</a>
         <a href="#utalvany">Utalvány</a>
       </nav>
+      <a class="phone" href="tel:+36305550619">+36 30 555 0619</a>
     </header>
 
     <main id="tartalom">
       <section class="hero">
         <div class="hero-copy">
-          <h1>Mutassa meg, hol fáj. <span>A többit mi tudjuk.</span></h1>
-          <p class="lede">Masszázsstúdió Gyömrőn. Jelölje meg a testtérképen, hol feszül, és megmondjuk, melyik kezelés segít.</p>
+          <p class="eyebrow">Masszázs Gyömrőn, időpontra</p>
+          <h1>Mennyi időd van? <span>Abból lesz a masszázs.</span></h1>
+          <p class="lede">Nem kell tudnod, mi a svéd vagy a sport. Mondd meg, hol fáj és mennyi időd van, mi percre beosztjuk, és látod az árat is.</p>
           <div class="actions">
-            <a class="pebble pebble-warm" href="#hol-faj">Megmutatom, hol fáj</a>
-            <a class="pebble" href="#arak">Árak</a>
+            <a class="btn btn-clay" href="#osszeallit">Összeállítom az órám</a>
+            <a class="btn" href="#utalvany">Ajándékba adnám</a>
           </div>
+          <dl class="hero-facts">
+            <div><dt>30-120</dt><dd>perc, 15-ösével</dd></div>
+            <div><dt>7 400 Ft</dt><dd>-tól, fél óra</dd></div>
+            <div><dt>Kedd-szombat</dt><dd>10:00-tól</dd></div>
+          </dl>
         </div>
-        <figure class="breath" aria-hidden="true">
-          <span class="ring"></span>
-          <span class="ring ring-2"></span>
-          <img
-            src="/src/assets/kez.webp"
-            srcset="/src/assets/kez-460.webp 460w, /src/assets/kez.webp 720w"
-            sizes="(max-width: 860px) 70vw, 24rem"
-            alt=""
-            width="720"
-            height="1080"
-          />
-          <figcaption class="breath-cue" id="cue">Belégzés</figcaption>
+        <figure class="hero-photo">
+          <img src="/src/assets/nappali.webp" alt="Világos kezelőszoba boltíves bejárattal, két ágy, kerek szőnyeg, fonott lámpák" width="900" height="1100" />
         </figure>
       </section>
 
-      <section class="map" id="hol-faj" aria-labelledby="map-title">
-        <div class="figure-wrap">
-          <svg class="body" id="body" viewBox="0 0 200 420" aria-hidden="true">
-            <defs>
-              <radialGradient id="heat">
-                <stop offset="0" stop-color="#ffb08f" />
-                <stop offset="1" stop-color="#e07a55" />
-              </radialGradient>
-            </defs>
-            <g class="zone" data-zone="fej"><ellipse cx="100" cy="40" rx="25" ry="29" /></g>
-            <g class="zone" data-zone="nyak"><rect x="88" y="66" width="24" height="22" rx="9" /></g>
-            <g class="zone" data-zone="vall"><rect x="46" y="86" width="108" height="28" rx="14" /></g>
-            <g class="zone" data-zone="kar"><rect x="22" y="96" width="22" height="150" rx="11" /><rect x="156" y="96" width="22" height="150" rx="11" /></g>
-            <g class="zone" data-zone="hat"><rect x="56" y="116" width="88" height="66" rx="20" /></g>
-            <g class="zone" data-zone="derek"><rect x="60" y="184" width="80" height="44" rx="18" /></g>
-            <g class="zone" data-zone="csipo"><rect x="56" y="230" width="88" height="42" rx="21" /></g>
-            <g class="zone" data-zone="lab"><rect x="61" y="274" width="36" height="110" rx="17" /><rect x="103" y="274" width="36" height="110" rx="17" /></g>
-            <g class="zone" data-zone="talp"><ellipse cx="79" cy="396" rx="19" ry="10" /><ellipse cx="121" cy="396" rx="19" ry="10" /></g>
-          </svg>
-          <p class="map-note">Hátulnézet. Koppintson rá, ahol fáj.</p>
-        </div>
-
-        <div class="map-side">
-          <h2 id="map-title">Hol fáj?</h2>
-          <fieldset class="chips" id="chips">
-            <legend class="sr">Fájó testrészek</legend>
+      <section class="composer" id="osszeallit" aria-labelledby="comp-title">
+        <div class="comp-controls">
+          <h2 id="comp-title">Rakd össze az órád.</h2>
+          <fieldset class="minutes">
+            <legend>Mennyi időd van?</legend>
+            <div class="minute-row" id="minute-row"></div>
           </fieldset>
-          <fieldset class="level">
-            <legend>Mennyire?</legend>
-            <label><input type="radio" name="level" value="1" checked /><span>Feszül</span></label>
-            <label><input type="radio" name="level" value="2" /><span>Fáj</span></label>
-            <label><input type="radio" name="level" value="3" /><span>Nagyon fáj</span></label>
+          <fieldset class="areas">
+            <legend>Hol fáj vagy feszül? <span class="legend-hint">Ha semmit nem jelölsz, az egész testet átvesszük.</span></legend>
+            <div class="area-row" id="area-row"></div>
           </fieldset>
-
-          <article class="rec" id="rec" aria-live="polite">
-            <p class="rec-label">Ezt ajánljuk</p>
-            <h3 id="rec-name"></h3>
-            <p class="rec-why" id="rec-why"></p>
-            <p class="rec-meta"><span id="rec-min"></span><span id="rec-price"></span></p>
-            <a class="pebble pebble-warm" href="#foglalas" id="rec-book">Ezt foglalom</a>
-          </article>
-          <p class="disclaimer">Friss sérülés, gyulladás vagy terhesség esetén előbb kérdezze az orvosát.</p>
         </div>
-      </section>
 
-      <section class="cairn-wrap" aria-labelledby="cairn-title">
-        <div class="cairn-copy">
-          <h2 id="cairn-title">Az első alkalom, kőről kőre.</h2>
-          <p class="lede">Aki először jön, általában azt kérdezi, mi fog történni. Ennyi, ebben a sorrendben.</p>
-        </div>
-        <ol class="cairn">
-          <li style="--w: 15rem; --r: -2deg"><b>Leülünk.</b> Öt perc beszélgetés: hol fáj, mióta, mit dolgozik, volt-e műtét.</li>
-          <li style="--w: 17rem; --r: 1.5deg"><b>Átöltözik.</b> Egyedül marad a szobában, a fehérneműt megtarthatja, takaró alatt fekszik.</li>
-          <li style="--w: 19rem; --r: -1deg"><b>Masszírozunk.</b> Langyos olajjal. Ha erős vagy gyenge, szóljon nyugodtan, menet közben is.</li>
-          <li style="--w: 21rem; --r: 0.8deg"><b>Utána tea.</b> Pár perc, amíg feláll a vérnyomás. Kap egy nyújtást, amit otthon csinálhat.</li>
-        </ol>
-      </section>
-
-      <section class="prices" id="arak" aria-labelledby="prices-title">
-        <h2 id="prices-title">Kezelések és árak</h2>
-        <ul class="menu" id="menu"></ul>
-      </section>
-
-      <section class="therapist" aria-labelledby="ther-title">
-        <img src="/src/assets/kezek.webp" alt="Két kéz masszírozza egy fekvő vendég hátát" width="640" height="800" loading="lazy" />
-        <div>
-          <p class="rec-label">Aki masszíroz</p>
-          <h2 id="ther-title">Szabó Réka</h2>
-          <p class="lede">Gyógymasszőr, tizenkét éve. Előtte kilenc évig egy rehabilitációs osztályon dolgozott, ezért a derékfájást és a gépnél ülők nyakát ismeri a legjobban.</p>
-          <ul class="creds">
-            <li>Gyógymasszőr, OKJ</li>
-            <li>Sportmasszőr</li>
-            <li>Talpreflexológia</li>
-          </ul>
-          <p class="quote">„Az első alkalom után megmondom, kell-e még jönnie. Sokszor nem kell.”</p>
-        </div>
+        <article class="plan" aria-labelledby="plan-title">
+          <header class="plan-head">
+            <h3 id="plan-title">A te órád</h3>
+            <p class="plan-total"><span id="plan-min">60 perc</span><b id="plan-price">12 900 Ft</b></p>
+          </header>
+          <ol class="strip" id="strip" aria-live="polite"></ol>
+          <p class="plan-warn" id="plan-warn" role="status" hidden></p>
+          <p class="plan-note">Az első öt percben megbeszéljük, mi a helyzet. Ha útközben máshol kell több idő, átrakjuk.</p>
+          <a class="btn btn-clay plan-book" href="#foglalas" id="plan-book">Ezt foglalom</a>
+        </article>
       </section>
 
       <section class="booking" id="foglalas" aria-labelledby="booking-title">
-        <h2 id="booking-title">Első szabad időpontok</h2>
+        <div class="booking-head">
+          <h2 id="booking-title">Első szabad időpontok</h2>
+          <p class="lede" id="booking-for"></p>
+        </div>
         <form id="booking-form" novalidate>
-          <label class="wide">
-            Kezelés
-            <select id="treatment" name="treatment"></select>
-          </label>
-          <fieldset class="wide slots-field">
-            <legend>Időpont</legend>
+          <fieldset class="slots-field">
+            <legend class="sr">Időpont</legend>
             <div class="slots" id="slots"></div>
             <span class="error" id="slot-error" hidden></span>
           </fieldset>
-          <label>
-            Név
-            <input id="name" name="name" autocomplete="name" required />
-            <span class="error" id="name-error" hidden></span>
-          </label>
-          <label>
-            Telefon
-            <input id="phone" name="phone" type="tel" autocomplete="tel" required />
-            <span class="error" id="phone-error" hidden></span>
-          </label>
-          <div class="wide send">
-            <button class="pebble pebble-warm" type="submit">Lefoglalom</button>
+          <div class="fields">
+            <label>
+              Név
+              <input id="name" name="name" autocomplete="name" required />
+              <span class="error" id="name-error" hidden></span>
+            </label>
+            <label>
+              Telefon
+              <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+              <span class="error" id="phone-error" hidden></span>
+            </label>
+          </div>
+          <div class="send">
+            <button class="btn btn-clay" type="submit">Lefoglalom</button>
             <p class="hint">Lemondás díjmentesen, 24 órával előtte.</p>
           </div>
-          <p id="form-status" class="form-status wide" role="status" hidden></p>
+          <p id="form-status" class="form-status" role="status" hidden></p>
         </form>
+      </section>
+
+      <section class="therapist" aria-labelledby="ther-title">
+        <img src="/src/assets/fejmasszazs.webp" alt="Masszőr két kézzel masszírozza egy vendég nyakát és tarkóját" width="640" height="800" loading="lazy" />
+        <div>
+          <p class="eyebrow">Aki masszíroz</p>
+          <h2 id="ther-title">Szabó Réka</h2>
+          <p class="lede">Gyógymasszőr, tizenkét éve. Előtte egy rehabilitációs osztályon dolgozott, ezért a derékfájást és a gépnél ülők nyakát ismeri a legjobban.</p>
+          <p class="quote">„Az első alkalom után megmondom, kell-e még jönnöd. Sokszor nem kell.”</p>
+          <ul class="creds">
+            <li>Gyógymasszőr</li>
+            <li>Sportmasszőr</li>
+            <li>Talpreflexológia</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="room" aria-labelledby="room-title">
+        <h2 id="room-title" class="sr">A stúdió</h2>
+        <figure class="room-wide">
+          <img src="/src/assets/szoba-vilagos.webp" alt="A kezelőszoba: masszázságy fehér lepedővel, íróasztal, orchidea" width="900" height="640" loading="lazy" />
+          <figcaption>Egy szoba, egy ágy. Senki nem jár át, amíg bent vagy.</figcaption>
+        </figure>
+        <figure>
+          <img src="/src/assets/torolkozo.webp" alt="Feltekert törölköző, olajos flakon, mécses és rózsaszín tulipánok" width="900" height="640" loading="lazy" />
+          <figcaption>Tiszta törölköző minden vendégnek, illatmentes olaj, ha kéred.</figcaption>
+        </figure>
       </section>
 
       <section class="voucher-wrap" id="utalvany" aria-labelledby="voucher-title">
         <div class="voucher-form">
-          <h2 id="voucher-title">Ajándékba?</h2>
-          <p class="lede">Ajándékutalvány bármelyik kezelésre, egy évig érvényes. Írja be, kinek szól, és nézze meg, hogy fog kinézni.</p>
-          <label>
-            Kezelés
-            <select id="v-treatment"></select>
-          </label>
+          <h2 id="voucher-title">Időt adnál ajándékba?</h2>
+          <p class="lede">Az utalványon perc áll, nem kezelés: aki kapja, maga rakja össze, mire használja.</p>
+          <fieldset class="minutes">
+            <legend>Hány perc?</legend>
+            <div class="minute-row" id="v-minutes"></div>
+          </fieldset>
           <label>
             Kinek?
             <input id="v-to" maxlength="28" autocomplete="off" placeholder="pl. Anyának" />
@@ -206,54 +177,48 @@
             Pár szó (nem kötelező)
             <input id="v-note" maxlength="60" autocomplete="off" placeholder="pl. Pihenj egy kicsit." />
           </label>
-          <p class="hint">A bemutató nem ad ki utalványt. Élesben itt fizetne, és PDF-ben kapná meg e-mailben.</p>
+          <p class="hint">A bemutató nem ad ki utalványt. Élesben itt fizetnél, és PDF-ben kapnád meg e-mailben.</p>
         </div>
         <figure class="voucher" aria-live="polite">
-          <span class="v-pebble" aria-hidden="true"></span>
-          <p class="v-brand">oldó <span>masszázsstúdió</span></p>
-          <p class="v-kind">Ajándékutalvány</p>
-          <p class="v-to" id="v-to-out">Kedves Vendégünk</p>
-          <p class="v-what" id="v-what"></p>
+          <p class="v-brand">Oldó <span>masszázsstúdió</span></p>
+          <p class="v-big"><b id="v-min">60</b> perc</p>
+          <p class="v-to" id="v-to-out">Neked</p>
           <p class="v-note" id="v-note-out"></p>
-          <p class="v-foot"><span id="v-expiry"></span><span>Gyömrő, Szent István út 7.</span></p>
+          <div class="v-bar" id="v-bar" aria-hidden="true"></div>
+          <p class="v-foot"><span id="v-price"></span><span id="v-expiry"></span></p>
         </figure>
       </section>
 
-      <section class="room" aria-labelledby="room-title">
-        <h2 id="room-title">A szoba</h2>
-        <ul>
-          <li><img src="/src/assets/szoba.webp" alt="Félhomályos kezelőszoba, masszázságy barna lepedővel, a falon egy rajz" width="600" height="750" loading="lazy" /><p>Egy szoba, egy ágy, nincs átjárás.</p></li>
-          <li><img src="/src/assets/olaj.webp" alt="Kéz illóolajat csepegtet a tenyerébe" width="600" height="750" loading="lazy" /><p>Illatmentes olaj, ha kéri.</p></li>
-          <li><img src="/src/assets/mecses.webp" alt="Mécses egy kerámia aromalámpában, sötét háttér előtt" width="600" height="750" loading="lazy" /><p>Félhomály, halk zene vagy csend.</p></li>
-          <li><img src="/src/assets/kovek.webp" alt="Fekete masszázskövek egy fonott kosárban, rajtuk egy virágszirom" width="600" height="750" loading="lazy" /><p>Meleg köves kezelés télen.</p></li>
-        </ul>
-      </section>
-
       <section class="guests" aria-labelledby="guests-title">
-        <h2 id="guests-title">A vendégkönyvből</h2>
+        <h2 id="guests-title">Akik már voltak</h2>
         <ul>
-          <li><p>„Három éve fáj a derekam. A második alkalom után tudtam úgy aludni, hogy nem ébredtem fel rá.”</p><span>Zsolt, 46, raktáros</span></li>
-          <li><p>„A testtérképen bejelöltem a nyakam, és pont azt kaptam, amit kellett. Fél óra, ebédszünetben.”</p><span>Nóra, 34, könyvelő</span></li>
-          <li><p>„A lányomtól kaptam utalványt. Azóta havonta járok, magamnak veszem.”</p><span>Erzsébet, 63</span></li>
+          <li><p>„Negyvenöt percem volt ebédszünetben. Nyakra és vállra kértem, pont annyi lett, amennyit mondtak.”</p><span>Nóra, könyvelő</span></li>
+          <li><p>„Három éve fáj a derekam. A második alkalom után úgy aludtam, hogy nem ébredtem fel rá.”</p><span>Zsolt, raktáros</span></li>
+          <li><p>„Kilencven percet kaptam a lányomtól. Fél óra talp volt benne, azóta azt kérem mindig.”</p><span>Erzsébet</span></li>
         </ul>
         <p class="hint">A nevek a bemutatóhoz kitaláltak.</p>
       </section>
 
       <section class="faq" aria-labelledby="faq-title">
-        <h2 id="faq-title">Mielőtt jön</h2>
-        <details><summary>Mit vegyek fel?</summary><p>Bármit, amiben kényelmesen jön. Átöltözni a szobában tud, törölközőt és takarót adunk.</p></details>
-        <details><summary>Fájni fog?</summary><p>A sportmasszázs lehet kellemetlen pár pillanatig, de soha nem dolgozunk a tűréshatára fölött. Szóljon, és lazítunk.</p></details>
-        <details><summary>Várandósan is jöhetek?</summary><p>A második trimesztertől, oldalt fekve, orvosi jóváhagyással. Foglaláskor jelezze, és több időt hagyunk.</p></details>
-        <details><summary>Mi van, ha nem érek oda?</summary><p>24 órával előtte díjmentesen lemondhatja vagy áteheti. Utána a díj felét kérjük, mert az időpontot már nem tudjuk kiadni.</p></details>
+        <h2 id="faq-title">Mielőtt jössz</h2>
+        <details><summary>Mit vegyek fel?</summary><p>Bármit, amiben kényelmesen jössz. A szobában átöltözhetsz, törölközőt és takarót adunk.</p></details>
+        <details><summary>Fájni fog?</summary><p>Mélyebb munkánál lehet pár pillanatig kellemetlen, de soha nem a tűréshatárod fölött. Szólj, és lazítunk.</p></details>
+        <details><summary>Várandósan is jöhetek?</summary><p>A második trimesztertől, oldalt fekve, orvosi jóváhagyással. Foglaláskor jelezd, és több időt hagyunk.</p></details>
+        <details><summary>Mi van, ha nem érek oda?</summary><p>24 órával előtte díjmentesen lemondhatod vagy áteheted. Utána a díj felét kérjük, mert az időpontot már nem tudjuk kiadni.</p></details>
       </section>
 
-      <section class="visit" aria-labelledby="visit-title">
+      <section class="visit" id="hol" aria-labelledby="visit-title">
         <h2 id="visit-title">Szent István út 7., udvari bejárat.</h2>
-        <p class="lede">Kedd-péntek 10:00-19:00, szombat 10:00-15:00. Parkolni az udvarban lehet. Telefon: <a href="tel:+36305550619">+36 30 555 0619</a></p>
+        <dl>
+          <div><dt>Kedd-péntek</dt><dd>10:00-19:00</dd></div>
+          <div><dt>Szombat</dt><dd>10:00-15:00</dd></div>
+          <div><dt>Telefon</dt><dd><a href="tel:+36305550619">+36 30 555 0619</a></dd></div>
+        </dl>
+        <p class="lede">Parkolni az udvarban lehet. Friss sérülés, gyulladás vagy láz esetén előbb kérdezd az orvosod.</p>
       </section>
     </main>
 
-    <footer>Oldó Masszázsstúdió, bemutató, nem élő vállalkozás. Az árak és időpontok mintaadatok. Fotók: Unsplash. Betűk: Sora és Manrope (SIL OFL).</footer>
+    <footer>Oldó Masszázsstúdió, bemutató, nem élő vállalkozás. Az árak és időpontok mintaadatok. Fotók: Unsplash. Betűk: Familjen Grotesk és Onest (SIL OFL).</footer>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
