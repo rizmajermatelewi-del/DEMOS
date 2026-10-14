@@ -20,6 +20,8 @@ pedig nem ér el senkit, és elviszi máshova az autót.
 - **Műhely nézet** PIN mögött (a bemutató PIN-je a lapon ki van írva: `2468`):
   a nap foglalásai és a nyitott ajánlatkérések egy listában
 
+- **Teljes oldal a munkalap körül (2026-10-14):** nyitókép, a műhely fehértáblája a három emelővel és a mai autókkal (mágneses rendszámtáblák, állapot szerint színezve, alatta a valódi következő szabad leadás a `nextFreeSlot`-ból), vizsga előtti ellenőrzőlista pipálható négyzetekkel, képsor, ügyfél-megjegyzések kézírással a munkalap aljáról, GYIK, cím
+
 ## Döntések
 
 - **Két belépő, mert kétféle ügyfél van.** Aki tudja, mi kell (olajcsere,
@@ -54,4 +56,4 @@ végén "BEÍRVA" pecsét. Kutatás: Awwwards (Oreck Vacuum Repair, Speeders Car
 Wash), sablonos sötét-műhelyes oldalak ellenpéldának.
 
 React 19 + Vite, Vitest. Betűk: Big Shoulders Display + IBM Plex Sans/Mono
-(latin-ext). Fotók: Lummi (szabad felhasználás).
+(latin-ext), a kézírás Caveat (SIL OFL). Fotók: Unsplash (ingyenes licenc).

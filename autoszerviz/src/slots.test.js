@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { atMinutes, isoLocal, slotsForDate } from './slots.js'
+import { atMinutes, isoLocal, nextFreeSlot, slotsForDate } from './slots.js'
 
 const TUE = '2026-09-22'
 
@@ -61,5 +61,19 @@ describe('isoLocal', () => {
     const late = new Date(2026, 8, 22, 23, 30, 0)
     expect(isoLocal(late)).toBe('2026-09-22')
     expect(atMinutes('2026-09-22', 9 * 60).getHours()).toBe(9)
+  })
+})
+
+describe('nextFreeSlot', () => {
+  it('skips a day that is already over and lands on the next opening', () => {
+    // Friday 18:00: the day is over, Saturday opens at 8:00.
+    const now = new Date(2026, 9, 16, 18, 0)
+    expect(nextFreeSlot(60, [], now)).toEqual({ date: '2026-10-17', startMin: 8 * 60 })
+  })
+
+  it('steps past a booking that fills the first slot', () => {
+    const now = new Date(2026, 9, 17, 6, 0)
+    const taken = [{ date: '2026-10-17', startMin: 8 * 60, durationMin: 60 }]
+    expect(nextFreeSlot(60, taken, now)).toEqual({ date: '2026-10-17', startMin: 9 * 60 })
   })
 })

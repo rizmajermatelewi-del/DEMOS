@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { BUSINESS, OPEN_WINDOWS, SERVICES, formatHuf, minutesToLabel, normalizePlate } from './data.js'
 import { atMinutes, nextDays, slotsForDate } from './slots.js'
+import { Checklist, Faq, Hero, LiftBoard, Notes, Shots, Where } from './Sections.jsx'
 import { createBooking, createQuote, deleteBooking, deleteQuote, loadBookings, loadQuotes } from './storage.js'
 
 const DAY_COUNT = 14
@@ -111,6 +112,12 @@ export default function App() {
     setErrors({})
     setPinError(false)
     setView(next)
+  }
+
+  /** Switch the desk to a form and bring it into view. */
+  function toDesk(next) {
+    go(next)
+    requestAnimationFrame(() => document.getElementById('foglalas')?.scrollIntoView({ block: 'start' }))
   }
 
   function pickDate(iso) {
@@ -466,10 +473,12 @@ export default function App() {
 
         {view === 'book' || view === 'quote' ? (
           <>
-            <div className="desk">
+            <Hero nextNo={nextNo} onBook={() => toDesk('book')} onQuote={() => toDesk('quote')} />
+            <LiftBoard bookings={bookings} onBook={() => toDesk('book')} />
+            <div className="desk" id="foglalas" tabIndex={-1}>
               {view === 'book' ? (
                 <form className="sheet" onSubmit={onBook} noValidate>
-                  <h1 className="sheet-title">Időpontra jössz, nem sorba állsz.</h1>
+                  <h2 className="sheet-title">Időpontra jössz, nem sorba állsz.</h2>
                   <p className="sheet-lede">Jelöld be a munkát, válassz leadási időt. Az árat most látod, nem a számlán.</p>
 
                   <fieldset className="block">
@@ -575,7 +584,7 @@ export default function App() {
                 </form>
               ) : (
                 <form className="sheet" onSubmit={onQuote} noValidate>
-                  <h1 className="sheet-title">Írd le, mit csinál az autó.</h1>
+                  <h2 className="sheet-title">Írd le, mit csinál az autó.</h2>
                   <p className="sheet-lede">Becsült árral hívunk vissza, mielőtt bármihez hozzányúlnánk.</p>
 
                   <fieldset className="block">
@@ -631,6 +640,16 @@ export default function App() {
                 </ul>
               </div>
             </section>
+            <Checklist
+              onBookInspection={() => {
+                pickService('vizsga')
+                toDesk('book')
+              }}
+            />
+            <Shots />
+            <Notes />
+            <Faq />
+            <Where />
           </>
         ) : null}
       </main>
@@ -639,7 +658,7 @@ export default function App() {
         <p>
           {BUSINESS.name}, {BUSINESS.address} {BUSINESS.city}. <a href={`tel:${tel}`}>{BUSINESS.phone}</a>
         </p>
-        <p>Kitalált vállalkozás, bemutató célra. Fotók: Lummi.</p>
+        <p>Kitalált vállalkozás, bemutató célra. Fotók: Unsplash. Betűk: Big Shoulders Display, IBM Plex és Caveat (SIL OFL).</p>
       </footer>
     </>
   )

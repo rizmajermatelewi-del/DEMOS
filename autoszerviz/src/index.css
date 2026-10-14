@@ -656,3 +656,144 @@ main > .sheet:not(.done) { max-width: 60rem; margin: 0 auto; }
   .mast-doc { display: flex; align-items: baseline; gap: 0.6rem; text-align: left; }
   .mast-doc span { margin: 0; }
 }
+
+/* ---- Full-site sections around the desk ---- */
+.hero-sheet { display: grid; gap: 1.75rem; margin: 0.5rem 0 3.5rem; }
+.eyebrow { margin: 0; font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.hero-copy h1 {
+  margin: 0.4rem 0 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.8rem, 7vw, 5.6rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  max-width: 12ch;
+}
+.hero-photo { margin: 0; position: relative; }
+.hero-photo img { display: block; width: 100%; height: auto; border: 1.5px solid var(--ink); }
+.hero-photo figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: 1.5px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.stamp-mini { color: var(--stamp); }
+@media (min-width: 980px) {
+  .hero-sheet { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: end; gap: 2.5rem; }
+}
+
+/* The workshop whiteboard: plate magnets on three lifts. */
+.board-wrap { margin-bottom: 3.5rem; }
+.board-head h2, .notes h2, .where h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+.whiteboard {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.25rem 1rem;
+  background: linear-gradient(160deg, #fdfdfb, #eef0ec);
+  border: 10px solid #b9bdc2;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px #8f949a, 0 16px 28px -18px rgb(28 34 48 / 0.5);
+}
+.wb-date { margin: 0 0 1rem; font-family: 'Caveat', cursive; font-size: 1.7rem; line-height: 1; color: var(--carbon); }
+.lifts { display: grid; gap: 1.25rem; }
+.lift h3 { margin: 0 0 0.6rem; font-family: 'Caveat', cursive; font-weight: 500; font-size: 1.6rem; color: #b3261e; border-bottom: 2px solid rgb(179 38 30 / 0.5); }
+.lift ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; }
+.magnet { display: grid; gap: 0.15rem; padding-left: 0.9rem; position: relative; }
+.magnet::before { content: ''; position: absolute; left: 0; top: 0.35rem; width: 0.55rem; height: 0.55rem; border-radius: 50%; box-shadow: 0 1px 2px rgb(0 0 0 / 0.4); }
+.magnet.kesz::before { background: #2e8b47; }
+.magnet.munka::before { background: var(--carbon); }
+.magnet.var::before { background: var(--stamp); }
+.hu-plate {
+  justify-self: start;
+  display: inline-flex;
+  align-items: stretch;
+  border: 2px solid #1c2230;
+  border-radius: 4px;
+  background: #fff;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  padding-right: 0.5rem;
+  gap: 0.45rem;
+  box-shadow: 0 3px 5px -2px rgb(0 0 0 / 0.35);
+}
+.hu-plate i { display: grid; place-items: center; padding: 0 0.3rem; background: #1f4fa8; color: #fff; font-style: normal; font-size: 0.7rem; }
+.wb-text { font-family: 'Caveat', cursive; font-size: 1.35rem; line-height: 1.1; color: var(--ink); }
+.wb-state { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.wb-next { margin: 1.25rem 0 0; padding-top: 0.8rem; border-top: 1px dashed var(--rule); font-size: 1rem; }
+.wb-next b { color: var(--carbon); }
+@media (min-width: 760px) {
+  .lifts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lift + .lift { border-left: 1px dashed var(--rule); padding-left: 1.25rem; }
+}
+
+/* Inspection checklist: a second work order. */
+.checklist { margin-top: 3.5rem; max-width: 60rem; }
+.checks { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 0.15rem 2rem; }
+.checks label { display: flex; gap: 0.8rem; align-items: flex-start; padding: 0.55rem 0; border-bottom: 1px solid var(--rule); cursor: pointer; }
+.checks input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.checks .box { flex: none; margin-top: 0.1rem; }
+.checks input:focus-visible + .box { outline: 3px solid var(--carbon); outline-offset: 2px; }
+.checks input:checked + .box { color: var(--carbon); }
+.tally { margin: 0; flex: 1 1 18rem; }
+.tally b { font-family: var(--display); font-size: 1.6rem; color: var(--carbon); }
+.checklist .sheet-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+@media (min-width: 720px) { .checks { grid-template-columns: 1fr 1fr; } }
+
+/* Photo strip */
+.shots { margin-top: 3.5rem; }
+.shots ul { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+.shots img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border: 1.5px solid var(--ink); }
+.shots p { margin: 0.4rem 0 0; font-size: 0.9rem; color: var(--muted); }
+@media (min-width: 820px) { .shots ul { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Customer notes, torn from the bottom of the work order */
+.notes { margin-top: 3.5rem; }
+.notes ul { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 1.25rem; }
+.slip {
+  background: var(--sheet);
+  border: 1.5px solid var(--ink);
+  padding: 1rem 1.1rem 1.1rem;
+  box-shadow: 5px 5px 0 var(--carbon-soft);
+}
+.slip:nth-child(2) { transform: rotate(0.6deg); }
+.slip:nth-child(3) { transform: rotate(-0.5deg); }
+.slip-head { margin: 0; display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; font-size: 0.9rem; color: var(--muted); }
+.slip-label { margin: 0.8rem 0 0; font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.hand {
+  margin: 0.2rem 0 0;
+  font-family: 'Caveat', cursive;
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+  color: var(--carbon);
+  background: repeating-linear-gradient(transparent 0 calc(1.75rem - 1px), var(--rule) calc(1.75rem - 1px) 1.75rem);
+}
+@media (min-width: 820px) { .notes ul { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* FAQ */
+.faq { margin-top: 3.5rem; max-width: 52rem; }
+.faq details { border-bottom: 1px solid var(--rule); }
+.faq summary { padding: 0.9rem 0; cursor: pointer; font-weight: 600; list-style: none; display: flex; gap: 0.8rem; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before { content: '+'; font-family: var(--mono); color: var(--carbon); }
+.faq details[open] summary::before { content: '−'; }
+.faq details p { margin: 0 0 1rem 1.6rem; color: var(--muted); }
+
+/* Where */
+.where { display: grid; gap: 1rem; margin-top: 3.5rem; padding-top: 2rem; border-top: 3px double var(--ink); }
+@media (min-width: 820px) { .where { grid-template-columns: 1fr 1fr; gap: 3rem; } }
+#foglalas { scroll-margin-top: 1rem; }
+#foglalas:focus { outline: none; }
+.hero-copy h1 { margin-top: 1.1rem; }
+main > .checklist.sheet { margin: 3.5rem auto 0; }

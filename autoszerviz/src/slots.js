@@ -54,3 +54,12 @@ export function slotsForDate(iso, durationMin, bookings, now = new Date()) {
 
   return slots
 }
+
+/** The first free start over the coming days, or null. Feeds the "next free drop-off" line on the lift board. */
+export function nextFreeSlot(durationMin, bookings, now = new Date(), days = 14) {
+  for (const iso of nextDays(days, now)) {
+    const slots = slotsForDate(iso, durationMin, bookings, now)
+    if (slots.length) return { date: iso, startMin: slots[0] }
+  }
+  return null
+}
