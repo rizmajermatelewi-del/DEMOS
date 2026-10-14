@@ -6,6 +6,7 @@ import '@fontsource/martian-mono/500.css'
 import './style.css'
 import { phoneStatus } from './status.js'
 import { problems } from './validate.js'
+import { JOBS, readout, angle } from './prices.js'
 
 // Header LED: green while the phone is answered, red with the next opening otherwise.
 const statusLink = document.getElementById('status')
@@ -87,3 +88,31 @@ form.addEventListener('submit', (event) => {
   for (const id of fields) form.elements[id].value = ''
   show({})
 })
+
+// The multimeter: one radio per dial position, the knob turns to the checked one.
+const face = document.getElementById('dial-face')
+const knob = document.getElementById('knob')
+const lcdValue = document.getElementById('lcd-value')
+const lcdUnit = document.getElementById('lcd-unit')
+const lcdTime = document.getElementById('lcd-time')
+JOBS.forEach((job, i) => {
+  const a = angle(i)
+  const label = document.createElement('label')
+  label.className = 'pos'
+  label.style.setProperty('--a', `${a}deg`)
+  label.innerHTML = `<input type="radio" name="dial" value="${job.id}" /><span>${job.label}</span>`
+  face.append(label)
+})
+face.addEventListener('change', (e) => {
+  const i = JOBS.findIndex((j) => j.id === e.target.value)
+  knob.style.setProperty('--turn', `${angle(i)}deg`)
+  const r = readout(e.target.value)
+  lcdValue.textContent = r.value
+  lcdUnit.textContent = r.unit
+  lcdTime.textContent = r.time
+  document.getElementById('meter').classList.add('is-on')
+})
+
+// Before and after: the range input moves the cut between the two photos.
+const compare = document.getElementById('compare')
+document.getElementById('slider').addEventListener('input', (e) => compare.style.setProperty('--pos', `${e.target.value}%`))

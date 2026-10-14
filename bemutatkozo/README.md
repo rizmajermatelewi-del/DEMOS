@@ -14,7 +14,11 @@ mint amit a tartalma indokol.
 
 ## Mit csinál
 
-- Egy oldal: mit vállal, hol dolgozik, mikor érhető el, hívás gomb
+- Teljes oldal: mit vállal, hol dolgozik, mikor érhető el, hívás gomb
+- Árak egy mérőműszer forgókapcsolóján: a gomb elfordul, az LCD kiírja az alsó árat és az időt (`prices.js`, tesztelve)
+- A munkamenet egy sorkapocs: négy lépés, mindegyik a saját érszínével (barna, kék, zöld-sárga, fekete)
+- Előtte / utána csúszka egy rendetlen dobozzal és egy feliratozott táblával, alatta három munka
+- Vélemények mérési jegyzőkönyvként, GYIK
 - Ajánlatkérő, ahol a munkát kismegszakítók felkapcsolásával választod ki egy
   DIN-sínes elosztótáblán; a felkapcsolt kör leírása kigyullad
 - Fejléc-LED a valódi nyitvatartásból: zöld, ha most hívható, különben piros a
@@ -25,7 +29,7 @@ mint amit a tartalma indokol.
 
 ## Mérés
 
-Lighthouse, mobil emuláció, 2026-09-26, az újratervezés után:
+Lighthouse, mobil emuláció, 2026-09-26, az első újratervezés után (a 2026-10-14-es bővítés előtt):
 
 | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|
@@ -36,7 +40,7 @@ feletti fájlok előtöltve.
 
 ## Döntések
 
-- **Nincs keretrendszer.** Sima HTML + CSS + egy 36 soros script. A Vite csak
+- **Nincs keretrendszer.** Sima HTML + CSS + egy rövid script. A Vite csak
   build eszköz. Egy oldalhoz, ami nem változik, a React több kódot szállítana,
   mint maga a tartalom.
 - **Az űrlap-ellenőrzés külön, tesztelt függvény** (`validate.js`), a DOM
@@ -56,3 +60,5 @@ npm run dev
 ```
 
 Vite, `node --test`.
+
+Fotók: Unsplash (ingyenes licenc). Betűk: Saira és Martian Mono (SIL OFL).

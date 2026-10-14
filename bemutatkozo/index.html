@@ -8,14 +8,14 @@
     <title>Kovács Villanyszerelés: bemutató</title>
     <meta
       name="description"
-      content="Bemutató egyoldalas oldal egy debreceni villanyszerelőnek. Az ajánlatkérőben kismegszakítókkal választod ki a munkát. Az űrlap nem küld üzenetet."
+      content="Bemutató oldal egy debreceni villanyszerelőnek: árak egy mérőműszer tárcsáján, előtte-utána tábla, ajánlatkérő kismegszakítókkal. Az űrlap nem küld üzenetet."
     />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Electrician",
         "name": "Kovács Villanyszerelés",
-        "description": "Bemutató egyoldalas oldal, saját portfólió-projekt, nem élő vállalkozás.",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.",
         "url": "https://demo-bemutatkozo.vercel.app",
         "telephone": "+36 30 555 0187",
         "address": {
@@ -45,6 +45,11 @@
 
     <header class="top">
       <p class="mark">Kovács <span>Villanyszerelés</span></p>
+      <nav class="nav" aria-label="Fő">
+        <a href="#arak">Árak</a>
+        <a href="#munkak">Munkák</a>
+        <a href="#ajanlat">Ajánlatkérés</a>
+      </nav>
       <a class="status" id="status" href="tel:+36305550187">
         <span class="led" aria-hidden="true"></span>
         <span class="status-text">+36 30 555 0187</span>
@@ -64,6 +69,11 @@
             <a class="btn primary" href="#ajanlat"><span class="dot" aria-hidden="true"></span>Ajánlatot kérek</a>
             <a class="btn" href="tel:+36305550187">+36 30 555 0187</a>
           </div>
+          <ul class="facts">
+            <li><b>14</b> év a szakmában</li>
+            <li><b>aznap</b> visszahívok</li>
+            <li><b>0 Ft</b> kiszállás Debrecenben</li>
+          </ul>
         </div>
         <figure class="hero-photo">
           <img
@@ -75,6 +85,94 @@
             height="964"
           />
         </figure>
+      </section>
+
+      <section class="prices" id="arak" aria-labelledby="arak-cim">
+        <div class="prices-copy">
+          <h2 id="arak-cim">Mennyibe kerül? Tekerd rá.</h2>
+          <p class="lede">A tárcsán a leggyakoribb munkák. A kijelző az alsó árat mutatja munkadíjjal; a pontos összeget a helyszínen mondom meg, mielőtt bármihez hozzányúlok.</p>
+          <p class="small">Az anyagot a számla szerint, felár nélkül adom tovább.</p>
+        </div>
+        <div class="meter" id="meter">
+          <div class="meter-top">
+            <span class="meter-brand">KOVÁCS <b>M-14</b></span>
+            <output class="meter-lcd" id="lcd" aria-live="polite">
+              <span class="lcd-value" id="lcd-value">OFF</span>
+              <span class="lcd-unit" id="lcd-unit">Tekerd a gombot egy munkára</span>
+            </output>
+            <p class="meter-time" id="lcd-time"></p>
+          </div>
+          <fieldset class="dial">
+            <legend class="sr">Melyik munka ára érdekel?</legend>
+            <div class="dial-face" id="dial-face">
+              <span class="knob" id="knob" aria-hidden="true"><span class="knob-mark"></span></span>
+            </div>
+          </fieldset>
+          <div class="jacks" aria-hidden="true">
+            <span><i class="jack black"></i>COM</span>
+            <span><i class="jack red"></i>VΩ</span>
+            <span><i class="jack red"></i>10A</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="steps" aria-labelledby="menet-cim">
+        <h2 id="menet-cim">Négy ér, négy lépés.</h2>
+        <ol class="terminal">
+          <li style="--wire: #7a4a2a">
+            <span class="screw" aria-hidden="true"></span>
+            <span class="code">L1</span>
+            <h3>Felhívsz</h3>
+            <p>Ha épp létrán vagyok, aznap visszahívlak. Elmondod, mi a gond, és megbeszéljük, mikor megyek.</p>
+          </li>
+          <li style="--wire: #2c6fbf">
+            <span class="screw" aria-hidden="true"></span>
+            <span class="code">N</span>
+            <h3>Megnézem</h3>
+            <p>Kimegyek, megnézem a hálózatot, és ott helyben megmondom az árat. Ha nem kéred, nem fizetsz semmit.</p>
+          </li>
+          <li class="pe">
+            <span class="screw" aria-hidden="true"></span>
+            <span class="code">PE</span>
+            <h3>Megcsinálom</h3>
+            <p>Takarófóliával dolgozom, a port feltakarítom, a régi anyagot elviszem.</p>
+          </li>
+          <li style="--wire: #26292b">
+            <span class="screw" aria-hidden="true"></span>
+            <span class="code">L2</span>
+            <h3>Megmérem</h3>
+            <p>A végén érintésvédelmi mérés, és a jegyzőkönyvet is megkapod. Erre a biztosító is rákérdez.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="works" id="munkak" aria-labelledby="munkak-cim">
+        <div class="works-head">
+          <h2 id="munkak-cim">Ilyenből ilyet.</h2>
+          <p class="lede">Húzd el a csúszkát. Bal oldalt egy elosztódoboz, ahogy átvettem, jobb oldalt egy tábla, ahogy átadom: minden kör feliratozva.</p>
+        </div>
+        <figure class="compare" id="compare" style="--pos: 50%">
+          <img src="/src/assets/utana.webp" alt="Utána: rendezett kismegszakító-sor, alatta kék nullasín" width="900" height="1100" loading="lazy" />
+          <img class="before" src="/src/assets/elotte.webp" alt="Előtte: kusza, szigetelőszalaggal tekert vezetékek egy falba süllyesztett dobozban" width="900" height="1100" loading="lazy" />
+          <span class="tag tag-l" aria-hidden="true">Előtte</span>
+          <span class="tag tag-r" aria-hidden="true">Utána</span>
+          <span class="handle" aria-hidden="true"></span>
+          <input class="slider" id="slider" type="range" min="0" max="100" value="50" aria-label="Előtte és utána: húzd jobbra, hogy több látsszon az előtte képből" />
+        </figure>
+        <ul class="strip-photos">
+          <li>
+            <img src="/src/assets/munka-1.webp" alt="Szerelő egy nyitott mérőhelynél köti be a vezetékeket" width="700" height="520" loading="lazy" />
+            <p><b>Mérőhely-áthelyezés</b> Hajdúsámson, szeptember</p>
+          </li>
+          <li>
+            <img src="/src/assets/munka-2.webp" alt="Szerelő fúrógéppel dolgozik egy faburkolatos ház bejáratánál" width="700" height="520" loading="lazy" />
+            <p><b>Kültéri lámpa és mozgásérzékelő</b> Debrecen, Józsa</p>
+          </li>
+          <li>
+            <img src="/src/assets/munka-3.webp" alt="Új elosztótábla színes vezetékekkel és kismegszakítókkal" width="700" height="520" loading="lazy" />
+            <p><b>Háromfázisú tábla, hőszivattyúhoz</b> Balmazújváros</p>
+          </li>
+        </ul>
       </section>
 
       <section class="ask" id="ajanlat" aria-labelledby="ask-title">
@@ -166,6 +264,59 @@
         </form>
       </section>
 
+      <section class="report" aria-labelledby="jkv-cim">
+        <h2 id="jkv-cim">Mérési jegyzőkönyv</h2>
+        <p class="lede">Amit az ügyfelek írtak a munka után. A nevek a bemutatóhoz kitaláltak.</p>
+        <table>
+          <thead>
+            <tr><th scope="col">Sz.</th><th scope="col">Ügyfél</th><th scope="col">Munka</th><th scope="col">Megjegyzés</th><th scope="col">Eredmény</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-h="Sz.">0412</td>
+              <td data-h="Ügyfél">Szilvia, Debrecen</td>
+              <td data-h="Munka">FI-relé, tábla</td>
+              <td data-h="Megjegyzés">„Reggel hívtam, délután már itt volt. Előre megmondta az árat, annyi is lett.”</td>
+              <td data-h="Eredmény"><span class="ok">Megfelelt</span></td>
+            </tr>
+            <tr>
+              <td data-h="Sz.">0398</td>
+              <td data-h="Ügyfél">Gábor, Hajdúsámson</td>
+              <td data-h="Munka">Felújítás, 62 m²</td>
+              <td data-h="Megjegyzés">„Minden kör fel van írva a táblán. A burkoló is megdicsérte, hogy a dobozok vízszintben vannak.”</td>
+              <td data-h="Eredmény"><span class="ok">Megfelelt</span></td>
+            </tr>
+            <tr>
+              <td data-h="Sz.">0377</td>
+              <td data-h="Ügyfél">Edit, Józsa</td>
+              <td data-h="Munka">Hibakeresés</td>
+              <td data-h="Megjegyzés">„Két éve kapcsolt le a fürdő. Fél óra alatt megtalálta a beázott dobozt.”</td>
+              <td data-h="Eredmény"><span class="ok">Megfelelt</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="faq" aria-labelledby="gyik-cim">
+        <h2 id="gyik-cim">Mielőtt hívsz</h2>
+        <details>
+          <summary>Hétvégén is jössz?</summary>
+          <p>Hétköznap 8 és 17 között dolgozom. Ha szombaton nincs áram az egész házban, hívj nyugodtan; ha bírom, megyek, és ezt előre megmondom az árral együtt.</p>
+        </details>
+        <details>
+          <summary>Mennyi a kiszállás?</summary>
+          <p>Debrecenen belül nincs kiszállási díj. A környező településekre 25 km-ig 5 000 Ft, ezt levonom, ha megrendeled a munkát.</p>
+        </details>
+        <details>
+          <summary>Adsz számlát és garanciát?</summary>
+          <p>Minden munkáról számlát adok. A szerelésre egy év garancia jár, az anyagra a gyártóé.</p>
+        </details>
+        <details>
+          <summary>Régi, alumínium vezeték van a lakásban. Az baj?</summary>
+          <p>Nem feltétlenül. Megmérem, és ha a terhelést bírja, nem kell az egészet cserélni. Ha nem, megmondom, melyik kör a sürgős.</p>
+        </details>
+      </section>
+
       <section class="where" aria-labelledby="where-title">
         <h2 id="where-title">Debrecen, és 25 km körbe.</h2>
         <p class="lede">Városon belül a kiszállás díjmentes.</p>
@@ -192,7 +343,9 @@
       </section>
     </main>
 
-    <footer>Kovács Villanyszerelés, bemutató, nem élő vállalkozás.</footer>
+    <footer>
+      <p><strong>Kovács Villanyszerelés</strong>, bemutató, nem élő vállalkozás. Fotók: Unsplash. Betűk: Saira és Martian Mono (SIL OFL).</p>
+    </footer>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
