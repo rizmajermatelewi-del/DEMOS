@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#efefeb" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 fill=%27%23161616%27/><rect x=%274%27 y=%2715%27 width=%2724%27 height=%272%27 fill=%27%23efefeb%27/><rect x=%277%27 y=%278%27 width=%274%27 height=%2716%27 fill=%27%23d62d20%27/><rect x=%2721%27 y=%278%27 width=%274%27 height=%2716%27 fill=%27%23d62d20%27/></svg>" />
+    <meta name="theme-color" content="#1d1d1b" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 fill=%27%231d1d1b%27/><rect x=%275%27 y=%2718%27 width=%274%27 height=%279%27 fill=%27%23ff5a1f%27/><rect x=%2711%27 y=%2711%27 width=%274%27 height=%2716%27 fill=%27%23ff5a1f%27/><rect x=%2717%27 y=%2715%27 width=%274%27 height=%2712%27 fill=%27%23e8e6e1%27/><rect x=%2723%27 y=%2720%27 width=%274%27 height=%277%27 fill=%27%23e8e6e1%27/></svg>" />
     <title>Súlypont Edzőterem: bemutató</title>
     <meta
       name="description"
-      content="Bemutató oldal egy monori edzőteremnek: a bérletet súlytárcsákként pakolod a rúdra, a mai órákra helyet foglalsz, az első edzés ingyenes. Nem küld jelentkezést."
+      content="Bemutató oldal egy monori edzőteremnek: heti telítettségi térkép, hogy lásd, mikor üres a terem és mely gépek szabadok, bérletkalkulátor, órák, edzők, ingyenes első edzés. Nem küld jelentkezést."
     />
     <script type="application/ld+json">
       {
@@ -48,86 +48,101 @@
     </p>
 
     <header class="top">
-      <p class="mark">Súlypont</p>
-      <nav aria-label="Oldal">
+      <p class="mark">SÚLYPONT <span>edzőterem · Monor</span></p>
+      <nav class="nav" aria-label="Fő">
+        <a href="#mikor">Mikor üres?</a>
         <a href="#berlet">Bérlet</a>
-        <a href="#orak">Mai órák</a>
+        <a href="#orak">Órák</a>
         <a href="#proba">Első edzés</a>
       </nav>
     </header>
 
     <main id="tartalom">
       <section class="hero">
-        <h1 class="lift"><span>Rakd össze</span> <span>a bérleted.</span></h1>
-        <div class="hero-side">
-          <p class="lede">Edzőterem Monoron, hétköznap reggel 6-tól este 10-ig. Csak azért fizetsz, amit tényleg használsz.</p>
+        <div class="hero-copy">
+          <p class="now" id="now"><span class="now-dot" aria-hidden="true"></span><span id="now-text">Most</span></p>
+          <h1>Edzés akkor, <span>amikor nincs sor a padra.</span></h1>
+          <p class="lede">Megmutatjuk, mikor üres a terem, és melyik gép szabad. Jössz, amikor neked jó, és nem a guggolóállvány mellett várod a sorod.</p>
           <div class="actions">
-            <a class="slam slam-red" href="#berlet">Összerakom</a>
-            <a class="slam" href="#proba">Első edzés ingyen</a>
+            <a class="btn btn-hot" href="#mikor">Mikor üres?</a>
+            <a class="btn" href="#proba">Ingyenes első edzés</a>
           </div>
         </div>
         <figure class="hero-photo">
-          <img
-            src="/src/assets/tarcsa.webp"
-            srcset="/src/assets/tarcsa-520.webp 520w, /src/assets/tarcsa.webp 900w"
-            sizes="(max-width: 860px) 100vw, 1140px"
-            alt="Felülnézet: valaki felhúzásra készül a gumipadlón, a rúdon két fekete tárcsa, a padlón krétanyomok"
-            width="900"
-            height="600"
-          />
+          <img src="/src/assets/terem.webp" alt="Az edzőterem csarnoka felülvilágítóval, padok, állványok és gépek" width="1600" height="900" />
         </figure>
       </section>
 
-      <section class="builder" id="berlet" aria-labelledby="builder-title">
-        <h2 id="builder-title">Minden extra egy tárcsa a rúdon.</h2>
-        <p class="lede">Az alapbérlet a rúd: gépterem és öltöző. Tegyél rá, amit kérsz. Amit leveszel, azt nem fizeted.</p>
-
-        <div class="rack">
-          <svg class="barbell" id="barbell" viewBox="0 0 800 220" role="img" aria-labelledby="barbell-desc">
-            <desc id="barbell-desc">A rúd a felrakott tárcsákkal</desc>
-            <rect class="sleeve" x="30" y="100" width="212" height="20" />
-            <rect class="sleeve" x="558" y="100" width="212" height="20" />
-            <rect class="shaft" x="242" y="104" width="316" height="12" />
-            <rect class="collar" x="236" y="88" width="12" height="44" />
-            <rect class="collar" x="552" y="88" width="12" height="44" />
-            <g id="plates-left"></g>
-            <g id="plates-right"></g>
-          </svg>
-          <p class="readout" aria-live="polite"><b id="kg">20 kg</b> <span>=</span> <strong id="price">12 900 Ft</strong><span class="per">/ hó</span></p>
+      <section class="heat-wrap" id="mikor" aria-labelledby="heat-title">
+        <div class="heat-head">
+          <h2 id="heat-title">Mikor üres a terem?</h2>
+          <p class="lede">Az elmúlt hetek beléptetése alapján, óránként. Koppints egy órára, és megmutatjuk, mi szabad akkor.</p>
         </div>
+        <div class="heat-body">
+          <div>
+            <div class="heat" id="heat" role="group" aria-label="Telítettség a hét napjain óránként"></div>
+            <p class="legend" aria-hidden="true"><span>Szinte üres</span><i></i><span>Tele</span></p>
+          </div>
+          <aside class="slot-panel" aria-live="polite">
+            <p class="sp-when" id="sp-when"></p>
+            <p class="sp-level"><b id="sp-pct"></b><span id="sp-level"></span></p>
+            <ul class="zones" id="zones"></ul>
+            <p class="sp-quiet" id="sp-quiet"></p>
+            <button type="button" class="btn btn-hot" id="sp-pick">Erre az időre jönnék</button>
+          </aside>
+        </div>
+      </section>
 
-        <form id="builder" class="builder-form">
-          <fieldset class="plates">
-            <legend class="sr">Extrák</legend>
-            <div id="plate-picks" class="plate-picks"></div>
-          </fieldset>
-          <fieldset class="terms">
-            <legend>Hűség</legend>
-            <label><input type="radio" name="term" value="havi" checked /><span>Havonta mondható fel</span></label>
-            <label><input type="radio" name="term" value="felev" /><span>6 hónap, −10%</span></label>
-            <label><input type="radio" name="term" value="ev" /><span>12 hónap, −20%</span></label>
-          </fieldset>
-        </form>
+      <section class="calc" id="berlet" aria-labelledby="calc-title">
+        <div class="calc-copy">
+          <h2 id="calc-title">Melyik bérlet éri meg?</h2>
+          <p class="lede">Mondd meg, hányszor jössz egy héten, és kiszámoljuk, mi a legolcsóbb egy hónapra.</p>
+          <label class="per-week" for="per-week">
+            <span>Hetente <output id="pw-out">2</output>×</span>
+            <input id="per-week" type="range" min="1" max="6" step="1" value="2" />
+          </label>
+          <p class="hint" id="pw-visits"></p>
+        </div>
+        <ul class="passes" id="passes" aria-live="polite"></ul>
       </section>
 
       <section class="classes" id="orak" aria-labelledby="classes-title">
-        <h2 id="classes-title">Ma az órákon</h2>
-        <p class="lede" id="classes-day"></p>
-        <ol class="timetable" id="timetable"></ol>
+        <h2 id="classes-title">Órák a héten</h2>
+        <table>
+          <thead><tr><th scope="col">Nap</th><th scope="col">Idő</th><th scope="col">Óra</th><th scope="col">Edző</th><th scope="col">Hely</th></tr></thead>
+          <tbody>
+            <tr><td>Hétfő</td><td>18:00</td><td>Köredzés</td><td>Kata</td><td>4 / 12</td></tr>
+            <tr><td>Kedd</td><td>7:00</td><td>Reggeli erő</td><td>Bence</td><td>7 / 10</td></tr>
+            <tr><td>Szerda</td><td>18:30</td><td>Kettlebell</td><td>Kata</td><td>2 / 10</td></tr>
+            <tr><td>Csütörtök</td><td>19:00</td><td>Mobilitás és nyújtás</td><td>Máté</td><td>9 / 14</td></tr>
+            <tr><td>Szombat</td><td>10:00</td><td>Kezdők edzése</td><td>Bence</td><td>6 / 8</td></tr>
+          </tbody>
+        </table>
+        <p class="hint">Az órák a bérlet árában vannak, napijeggyel 800 Ft felár.</p>
+      </section>
+
+      <section class="coaches" aria-labelledby="coach-title">
+        <h2 id="coach-title">Akik segítenek</h2>
+        <ul>
+          <li><img src="/src/assets/edzo-bence.webp" alt="Bence, mosolygó férfi edző fekete trikóban" width="560" height="700" loading="lazy" /><h3>Bence</h3><p>Erőemelő, nyolc éve edző. Ha még sosem guggoltál rúddal, vele kezdj.</p></li>
+          <li><img src="/src/assets/edzo-kata.webp" alt="Kata, női edző csavart kötéllel a vállán" width="560" height="700" loading="lazy" /><h3>Kata</h3><p>Köredzés és kettlebell. Az ő óráin senki nem áll a sarokban.</p></li>
+          <li><img src="/src/assets/edzo-mate.webp" alt="Máté, férfi edző egy gépen ülve, kulaccsal" width="560" height="700" loading="lazy" /><h3>Máté</h3><p>Gyógytornász végzettségű. Hátfájással, sérülés után hozzá fordulj.</p></li>
+        </ul>
+      </section>
+
+      <section class="strip" aria-label="A teremből">
+        <img src="/src/assets/kettlebell.webp" alt="Kettlebellek a gumipadlón" width="640" height="800" loading="lazy" />
+        <img src="/src/assets/edzes.webp" alt="Edző egy kézisúlyzós gyakorlatot igazít" width="640" height="800" loading="lazy" />
+        <img src="/src/assets/kezisulyzo.webp" alt="Kézisúlyzók sorban az állványon" width="640" height="800" loading="lazy" />
+        <img src="/src/assets/labdak.webp" alt="Medicinlabdák a téglafal tövében" width="640" height="800" loading="lazy" />
       </section>
 
       <section class="trial" id="proba" aria-labelledby="trial-title">
         <div>
           <h2 id="trial-title">Az első edzés ingyen van.</h2>
-          <p class="lede">Körbevezetünk, megmutatjuk a gépeket, és egy edző összerak veled egy első tervet. Nem kell bérletet venni hozzá.</p>
-          <dl class="facts">
-            <div><dt>Cím</dt><dd>2200 Monor, Kossuth Lajos utca 88.</dd></div>
-            <div><dt>Hétköznap</dt><dd>6:00-22:00</dd></div>
-            <div><dt>Hétvégén</dt><dd>8:00-20:00</dd></div>
-          </dl>
+          <p class="lede">Egy edző megmutatja a termet és a gépeket, összerakunk egy első tervet. Nem kell bérletet venned, hogy eljöhess.</p>
         </div>
-        <form id="trial-form" class="trial-form" novalidate>
-          <p class="attached" id="attached" hidden></p>
+        <form id="trial-form" novalidate>
           <label>
             Név
             <input id="name" name="name" autocomplete="name" required />
@@ -138,22 +153,34 @@
             <input id="phone" name="phone" type="tel" autocomplete="tel" required />
             <span class="error" id="phone-error" hidden></span>
           </label>
-          <label>
+          <label class="wide">
             Mikor jönnél?
-            <select id="when" name="when">
-              <option>Reggel, munka előtt</option>
-              <option>Napközben</option>
-              <option>Este, munka után</option>
-              <option>Hétvégén</option>
-            </select>
+            <input id="when" name="when" autocomplete="off" placeholder="Válassz a térképen, vagy írd be" />
           </label>
-          <button class="slam slam-red" type="submit">Jelentkezem</button>
-          <p id="form-status" class="form-status" role="status" hidden></p>
+          <button class="btn btn-hot" type="submit">Jelentkezem</button>
+          <p id="form-status" class="form-status wide" role="status" hidden></p>
         </form>
+      </section>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">Kérdések</h2>
+        <details><summary>Kell hoznom valamit?</summary><p>Váltócipőt és törölközőt. Öltöző, zuhany, zárható szekrény van, lakatot adunk.</p></details>
+        <details><summary>Honnan tudjátok, mennyien vannak?</summary><p>A beléptetőkapu számolja. A térkép az elmúlt hat hét átlaga, nem élő adat, de ritkán téved nagyot.</p></details>
+        <details><summary>Fel lehet függeszteni a bérletet?</summary><p>Igen, betegség vagy szabadság miatt évente egyszer, legfeljebb két hétre.</p></details>
+        <details><summary>Van parkoló?</summary><p>Az udvaron húsz hely van, a bejárat a Kossuth Lajos utca felől.</p></details>
+      </section>
+
+      <section class="visit" aria-labelledby="visit-title">
+        <h2 id="visit-title">Kossuth Lajos utca 88., Monor.</h2>
+        <dl>
+          <div><dt>Hétköznap</dt><dd>6:00-22:00</dd></div>
+          <div><dt>Hétvégén</dt><dd>8:00-20:00</dd></div>
+          <div><dt>Telefon</dt><dd><a href="tel:+36295550915">+36 29 555 0915</a></dd></div>
+        </dl>
       </section>
     </main>
 
-    <footer>Súlypont Edzőterem, bemutató, nem élő vállalkozás. Az árak és az órarend mintaadatok.</footer>
+    <footer>Súlypont Edzőterem, bemutató, nem élő vállalkozás. A telítettség, az árak és az órák mintaadatok. Fotók: Unsplash. Betűk: Barlow és Barlow Condensed (SIL OFL).</footer>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

@@ -1,39 +1,38 @@
-# Súlypont Edzőterem — bérlet súlyzórúdon
+# Súlypont Edzőterem — „Mikor üres a terem?”
 
-Bemutató projekt, saját kezdeményezés. Nem élő vállalkozás, minden ár és
-óra kitalált. A jelentkezés szándékosan nem megy el.
+Bemutató projekt, saját kezdeményezés. Nem élő vállalkozás, minden ár, óra és
+telítettségi adat kitalált. A jelentkezés szándékosan nem megy el.
 
 Élő: https://demo-edzoterem.vercel.app
 
 ## A probléma
 
-Az edzőtermek árlistája általában öt bérlettípus egy táblázatban, apró
-betűs feltételekkel. Aki csak gépezni és néha szaunázni jár, nem tudja, melyik
-az övé, és mennyit fizet olyanért, amit nem használ.
+Az edzőteremben a legnagyobb bosszúság nem az ár, hanem a sor a pad és a
+guggolóállvány mellett. Aki rugalmas, szívesen jönne, amikor üres, de nem
+tudja, mikor az.
 
-## Mit csinál
+## Mit csinál (újratervezve 2026-10-14)
 
-- **Bérlet a rúdon.** Az alapbérlet a 20 kg-os rúd; minden extra egy
-  bumper tárcsa a súlyemelő színkódja szerint (piros 25, kék 20, sárga 15,
-  zöld 10, fehér 5). A tárcsák mindkét oldalra felcsúsznak, a legnehezebb
-  kerül a zárhoz; a rúd „súlya” mellett ott a havidíj.
-- Hűségkedvezmény: havi, 6 hónap (−10%), 12 hónap (−20%).
-- **Mai órák** élő szabad hellyel; az elmúlt órák zárva, ha a napiak véget
-  értek, a holnapiakat mutatja.
-- Ingyenes első edzés, az összerakott bérlet csatolva.
+- **Heti telítettségi térkép:** napok × órák, színnel. Egy órára koppintva
+  megmutatja a telítettséget és azt, hogy a szabad súlyoknál, a gépeknél, a
+  kardiónál és a funkcionális részen hány hely szabad, plusz a nap
+  legcsendesebb két óráját (`crowd`, `freeByZone`, `quietest`, tesztelve).
+  Telefonon a tengelyek megfordulnak: órák lefelé, napok oldalra.
+- **„Erre az időre jönnék”** gomb: a kiválasztott időpontot beírja az
+  ingyenes első edzés jelentkezésébe.
+- **Bérletkalkulátor:** heti hány alkalom alapján napijegy, 10 alkalmas és havi
+  bérlet havi ára és alkalmankénti ára, a legolcsóbb kiemelve (`compare`,
+  tesztelve).
+- A fejlécben az aktuális telítettség, órarend, edzők, GYIK.
 - `ExerciseGym` schema.org adat.
 
 ## Döntések
 
-- **Nincs keretrendszer.** Ár, súly, tárcsasorrend és órarend a `plates.js`-ben,
-  tesztelve; a rajzolás a `main.js`-ben, kulcsolt SVG-elemekkel.
-- A foglaltság dátumból számolt, stabil mintázat.
-- Fontok saját hosztolásból (@fontsource: Anton + Rubik).
-- Fotó: Unsplash qZ-U9z4TQ6A.
-
-## Mérés
-
-Lighthouse mobil, 2026-09-26: 99 / 100 / 100 / 100.
+- **Beton, kréta, jelzőnarancs.** A korábbi súlytárcsás bérletválasztó helyett;
+  Máté szerint a funkció és a dizájn sem volt jó.
+- **Nincs keretrendszer.** A logika a `crowd.js`-ben, tesztelve; a telítettség
+  egy kitalált, de hihető heti görbe (reggeli és munka utáni csúcs), stabil.
+- Betűk: Barlow + Barlow Condensed (@fontsource, SIL OFL). Fotók: Unsplash.
 
 ## Futtatás
 

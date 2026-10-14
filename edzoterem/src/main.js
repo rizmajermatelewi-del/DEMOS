@@ -1,150 +1,113 @@
-import '@fontsource/anton/400.css'
-import '@fontsource/rubik/400.css'
-import '@fontsource/rubik/600.css'
+import '@fontsource/barlow-condensed/600.css'
+import '@fontsource/barlow-condensed/800.css'
+import '@fontsource/barlow/400.css'
+import '@fontsource/barlow/500.css'
 import './style.css'
-import { ADDONS, barWeight, classesFor, loadOrder, monthly, TERMS, trialProblems } from './plates.js'
+import { compare, crowd, freeByZone, level, openHours, quietest, trialProblems } from './crowd.js'
 
 const $ = (id) => document.getElementById(id)
-const NS = 'http://www.w3.org/2000/svg'
-const ft = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} Ft`
+const ft = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} Ft`
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+const DAY_NAMES = ['vasárnap', 'hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat']
+const SHORT = ['V', 'H', 'K', 'Sze', 'Cs', 'P', 'Szo']
+const WEEK = [1, 2, 3, 4, 5, 6, 0] // Monday first
+const FIRST_HOUR = 6
+const LAST_HOUR = 21
+const cap = (s) => s[0].toUpperCase() + s.slice(1)
 
-// Plate pickers: one disc per add-on, in its bumper colour. Two common extras start loaded.
-const DEFAULTS = ['csoport', 'szauna']
-$('plate-picks').innerHTML = ADDONS.map(
-  (a) => `<label class="pick" style="--plate:${a.color}">
-    <input type="checkbox" name="addon" value="${a.id}" ${DEFAULTS.includes(a.id) ? "checked" : ""} />
-    <span class="disc" aria-hidden="true"><b>${a.kg}</b></span>
-    <span class="pick-name">${a.name}</span>
-    <span class="pick-price">+${ft(a.price)}</span>
-  </label>`,
-).join('')
-
-// Plate geometry: thickness grows with weight, 5 kg is a smaller disc.
-const THICK = { 25: 30, 20: 26, 15: 21, 10: 16, 5: 12 }
-const drawn = new Map()
-
-function paintBar(ids) {
-  const keep = new Set()
-  for (const side of ['left', 'right']) {
-    let edge = side === 'left' ? 236 : 564
-    for (const a of loadOrder(ids)) {
-      const key = `${side}-${a.id}`
-      keep.add(key)
-      const w = THICK[a.kg]
-      const h = a.kg === 5 ? 110 : 190
-      const x = side === 'left' ? edge - w : edge
-      edge = side === 'left' ? edge - w - 2 : edge + w + 2
-      let g = drawn.get(key)
-      if (!g) {
-        g = document.createElementNS(NS, 'g')
-        g.setAttribute('class', `plate ${side}${reduce ? '' : ' load'}`)
-        g.innerHTML = `<rect width="${w}" height="${h}" y="${110 - h / 2}" rx="4" fill="${a.color}"/><rect x="${w / 2 - 1}" y="${110 - h / 2 + 10}" width="2" height="${h - 20}" fill="rgb(0 0 0 / 0.18)"/>`
-        $(`plates-${side}`).append(g)
-        drawn.set(key, g)
-        g.addEventListener('animationend', () => g.classList.remove('load'), { once: true })
-      }
-      g.style.setProperty('--x', `${x}px`)
-    }
-  }
-  for (const [key, g] of drawn) {
-    if (keep.has(key)) continue
-    drawn.delete(key)
-    if (reduce) g.remove()
-    else {
-      g.classList.add('unload')
-      g.addEventListener('animationend', () => g.remove(), { once: true })
-    }
-  }
-}
-
-const builder = $('builder')
-function selected() {
-  return [...builder.querySelectorAll('input[name="addon"]:checked')].map((b) => b.value)
-}
-function term() {
-  return builder.querySelector('input[name="term"]:checked').value
-}
-
-let lastCount = 0
-function paint() {
-  const ids = selected()
-  paintBar(ids)
-  $('kg').textContent = `${barWeight(ids)} kg`
-  $('price').textContent = ft(monthly(ids, term()))
-  if (!reduce && ids.length > lastCount) {
-    const rack = document.querySelector('.rack')
-    rack.classList.remove('thud')
-    void rack.offsetWidth // restart the thud
-    rack.classList.add('thud')
-  }
-  lastCount = ids.length
-}
-builder.addEventListener('change', paint)
-paint()
-
-// Today's classes: past ones are shut, the rest can be joined while spots last.
-const DAYS = ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat']
-const MONTHS = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december']
-const minutes = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3))
+// Right now
 const now = new Date()
-let nowMin = now.getHours() * 60 + now.getMinutes()
-let day = now
-// Once today's last class has started, show tomorrow instead of a list of closed rows.
-if (classesFor(now).every((c) => minutes(c.time) <= nowMin)) {
-  day = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
-  nowMin = -1
-  $('classes-title').textContent = 'Holnap az órákon'
-}
-$('classes-day').textContent = `${DAYS[day.getDay()]}, ${MONTHS[day.getMonth()]} ${day.getDate()}. A helyek száma élő.`
-const classes = classesFor(day)
-const joined = new Set()
+const today = now.getDay()
+const pctNow = crowd(today, now.getHours())
+$('now-text').textContent = pctNow == null ? 'Most zárva' : `Most: ${level(pctNow).toLowerCase()}, ${pctNow}%`
+$('now').classList.toggle('closed', pctNow == null)
 
-function paintClasses() {
-  $('timetable').innerHTML = classes
-    .map((c) => {
-      const past = minutes(c.time) <= nowMin
-      const inIt = joined.has(c.id)
-      const free = c.free - (inIt ? 1 : 0)
-      const state = past ? 'Elmúlt' : inIt ? 'Benne vagy' : free === 0 ? 'Tele' : 'Beírom magam'
-      const dots = Array.from({ length: c.cap }, (_, i) => `<i class="${i < c.cap - free ? 'full' : ''}"></i>`).join('')
-      return `<li class="${past ? 'past' : ''}${inIt ? ' in' : ''}">
-        <time>${c.time}</time>
-        <span class="class-name">${c.name}</span>
-        <span class="spots" aria-hidden="true">${dots}</span>
-        <span class="free">${past ? '' : `${free} szabad hely`}</span>
-        <button class="slam slam-small" type="button" data-class="${c.id}" ${past || (free === 0 && !inIt) ? 'disabled' : ''} aria-pressed="${inIt}">${state}</button>
-      </li>`
-    })
+/** The selected cell starts at the current hour, or the next open hour. */
+function startCell() {
+  for (let i = 0; i < 48; i++) {
+    const t = new Date(now.getTime() + i * 3600e3)
+    if (crowd(t.getDay(), t.getHours()) != null) return { day: t.getDay(), hour: t.getHours() }
+  }
+  return { day: 1, hour: 10 }
+}
+let sel = startCell()
+
+// The heatmap: day rows, hour columns (CSS swaps them on phones).
+const heat = $('heat')
+let html = ''
+for (let h = FIRST_HOUR; h <= LAST_HOUR; h++) html += `<span class="hlabel" style="--h:${h - FIRST_HOUR + 2}">${h}</span>`
+WEEK.forEach((d, row) => {
+  html += `<span class="dlabel" style="--d:${row + 2}">${SHORT[d]}</span>`
+  for (let h = FIRST_HOUR; h <= LAST_HOUR; h++) {
+    const pct = crowd(d, h)
+    const pos = `--d:${row + 2};--h:${h - FIRST_HOUR + 2}`
+    html +=
+      pct == null
+        ? `<span class="cell off" style="${pos}" aria-hidden="true"></span>`
+        : `<button type="button" class="cell" style="${pos};--p:${pct}" data-day="${d}" data-hour="${h}" aria-label="${cap(DAY_NAMES[d])} ${h}:00, ${level(pct).toLowerCase()}, ${pct}%"${d === today ? ' data-today=""' : ''}></button>`
+  }
+})
+heat.innerHTML = html
+
+function paintPanel() {
+  const { day, hour } = sel
+  const pct = crowd(day, hour)
+  for (const c of heat.querySelectorAll('button.cell')) {
+    c.setAttribute('aria-pressed', String(Number(c.dataset.day) === day && Number(c.dataset.hour) === hour))
+  }
+  $('sp-when').textContent = `${cap(DAY_NAMES[day])} ${hour}:00-${hour + 1}:00`
+  $('sp-pct').textContent = `${pct}%`
+  $('sp-level').textContent = level(pct)
+  $('sp-level').dataset.level = pct < 35 ? 'low' : pct < 65 ? 'mid' : 'high'
+  $('zones').innerHTML = freeByZone(day, hour)
+    .map(
+      (z) => `<li><span class="z-name">${z.name}<small>${z.detail}</small></span><span class="z-bar" style="--f:${z.free / z.cap}"><i></i></span><b>${z.free} szabad</b></li>`,
+    )
+    .join('')
+  const q = quietest(day)
+  const [, close] = openHours(day)
+  $('sp-quiet').textContent = `${cap(DAY_NAMES[day])} a legcsendesebb: ${q}:00-${Math.min(q + 2, close)}:00.`
+}
+heat.addEventListener('click', (e) => {
+  const c = e.target.closest('button.cell')
+  if (!c) return
+  sel = { day: Number(c.dataset.day), hour: Number(c.dataset.hour) }
+  paintPanel()
+})
+$('sp-pick').addEventListener('click', () => {
+  $('when').value = `${cap(DAY_NAMES[sel.day])} ${sel.hour}:00`
+  $('proba').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+  $('name').focus({ preventScroll: true })
+})
+paintPanel()
+
+// Pass calculator
+function paintPasses() {
+  const perWeek = Number($('per-week').value)
+  const { visits, rows } = compare(perWeek)
+  $('pw-out').textContent = perWeek
+  $('pw-visits').textContent = `Ez havonta kb. ${visits} alkalom.`
+  $('passes').innerHTML = rows
+    .map(
+      (r) => `<li class="pass${r.best ? ' best' : ''}">
+        ${r.best ? '<span class="flag">Ez éri meg</span>' : ''}
+        <h3>${r.name}</h3>
+        <p class="p-note">${ft(r.price)} · ${r.note}</p>
+        <p class="p-month"><b>${ft(r.monthly)}</b> / hónap</p>
+        <p class="p-visit">${ft(r.perVisit)} alkalmanként</p>
+      </li>`,
+    )
     .join('')
 }
-$('timetable').addEventListener('click', (e) => {
-  const b = e.target.closest('[data-class]')
-  if (!b) return
-  const id = b.dataset.class
-  if (joined.has(id)) joined.delete(id)
-  else joined.add(id)
-  paintClasses()
-  $('timetable').querySelector(`[data-class="${id}"]`).focus()
-})
-paintClasses()
+$('per-week').addEventListener('input', paintPasses)
+paintPasses()
 
-// Free trial: carries the membership the visitor built, if any.
+// Trial
 const form = $('trial-form')
-const status = $('form-status')
-const attached = $('attached')
-document.querySelectorAll('a[href="#proba"]').forEach((a) =>
-  a.addEventListener('click', () => {
-    const ids = selected()
-    attached.hidden = ids.length === 0
-    attached.textContent = `Ezt a bérletet raktad össze: ${ids.length} extra, ${TERMS[term()].name.toLowerCase()}, ${ft(monthly(ids, term()))} / hó`
-  }),
-)
-
 form.addEventListener('submit', (e) => {
   e.preventDefault()
-  status.hidden = true
-  const found = trialProblems(Object.fromEntries(new FormData(form)))
+  const data = Object.fromEntries(new FormData(form))
+  const found = trialProblems(data)
   let first = null
   for (const id of ['name', 'phone']) {
     const input = form.elements[id]
@@ -157,8 +120,8 @@ form.addEventListener('submit', (e) => {
     if (found[id] && !first) first = input
   }
   if (first) return first.focus()
+  const status = $('form-status')
   status.hidden = false
-  status.textContent = `Megvan, ${form.elements.when.value.toLowerCase()} várunk. Ez a bemutató nem küld jelentkezést; élesben egy edző hívna vissza, hogy egyeztessetek.`
-  form.elements.name.value = ''
-  form.elements.phone.value = ''
+  status.textContent = `Megvan${data.when ? `, ${data.when.trim()}` : ''}. Ez a bemutató nem küld jelentkezést; élesben egy edző visszahívna, hogy egyeztessen.`
+  form.reset()
 })
