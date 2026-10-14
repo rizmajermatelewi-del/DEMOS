@@ -3,7 +3,7 @@ import '@fontsource/cormorant-garamond/600-italic.css'
 import '@fontsource/karla/400.css'
 import '@fontsource/karla/600.css'
 import './style.css'
-import { arrange, FLOWERS, orderProblems, pickupDays, price, setCount, stemCount, WRAPS } from './bouquet.js'
+import { arrange, FLOWERS, loadPreset, MONTHS, orderProblems, pickupDays, PRESETS, price, SEASON, setCount, stemCount, WRAPS } from './bouquet.js'
 
 const $ = (id) => document.getElementById(id)
 const NS = 'http://www.w3.org/2000/svg'
@@ -231,3 +231,37 @@ form.addEventListener('submit', (e) => {
   form.elements.name.value = ''
   form.elements.phone.value = ''
 })
+
+// Ready bouquets on the line: price and mix from the same data as the builder.
+const nameOf = Object.fromEntries(FLOWERS.map((f) => [f.id, f.name.toLowerCase()]))
+for (const p of PRESETS) {
+  const c = loadPreset(p.id)
+  document.querySelector(`[data-price="${p.id}"]`).textContent = ft(price(c, 'kraft').total)
+  document.querySelector(`[data-mix="${p.id}"]`).textContent = Object.entries(c)
+    .map(([id, n]) => `${n} ${nameOf[id]}`)
+    .join(', ')
+}
+document.querySelector('.line').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-load]')
+  if (!b) return
+  counts = loadPreset(b.dataset.load)
+  paint()
+  $('csokor').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+})
+
+// The season ribbon: this month is marked, any month can be opened.
+const thisMonth = new Date().getMonth()
+const ribbon = $('ribbon')
+ribbon.innerHTML = MONTHS.map(
+  (m, i) => `<button type="button" class="month${i === thisMonth ? ' now' : ''}" data-m="${i}" aria-pressed="${i === thisMonth}">${m}${i === thisMonth ? '<small>most</small>' : ''}</button>`,
+).join('')
+function showMonth(i) {
+  for (const b of ribbon.children) b.setAttribute('aria-pressed', String(Number(b.dataset.m) === i))
+  const names = SEASON[i]
+  $('in-season').innerHTML = `<span class="label">${i === thisMonth ? 'Most nyílik' : `${MONTHS[i]}.`}</span> ${names.map((n) => `<span class="bloom">${n}</span>`).join('')}`
+}
+ribbon.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-m]')
+  if (b) showMonth(Number(b.dataset.m))
+})
+showMonth(thisMonth)

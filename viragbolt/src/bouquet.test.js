@@ -69,3 +69,20 @@ describe('pickupDays', () => {
     assert.equal(pickupDays(new Date('2026-09-26T09:00:00'), 1)[0].saturday, true)
   })
 })
+
+it('a preset loads within stock and the bouquet limit', async () => {
+  const { loadPreset, PRESETS, stemCount, MAX_STEMS } = await import('./bouquet.js')
+  for (const p of PRESETS) {
+    const c = loadPreset(p.id)
+    assert.ok(stemCount(c) > 0 && stemCount(c) <= MAX_STEMS)
+    assert.deepEqual(c, p.counts)
+  }
+  assert.deepEqual(loadPreset('nincs'), {})
+})
+
+it('every month has something in season', async () => {
+  const { SEASON, MONTHS } = await import('./bouquet.js')
+  assert.equal(SEASON.length, 12)
+  assert.equal(MONTHS.length, 12)
+  assert.ok(SEASON.every((m) => m.length >= 2))
+})

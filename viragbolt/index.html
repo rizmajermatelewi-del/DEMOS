@@ -8,7 +8,7 @@
     <title>Pipacs Virágkötészet: bemutató</title>
     <meta
       name="description"
-      content="Bemutató oldal egy dabasi virágboltnak: a csokrot szálanként rakod össze a mai készletből, élőben látod, kártyát írsz hozzá, és kiválasztod az átvétel napját. Nem küld rendelést."
+      content="Bemutató oldal egy dabasi virágboltnak: kész csokrok alkalomra, szezonnaptár, és a csokrot szálanként rakod össze a mai készletből, élőben látod, kártyát írsz hozzá, és kiválasztod az átvétel napját. Nem küld rendelést."
     />
     <script type="application/ld+json">
       {
@@ -49,6 +49,12 @@
 
     <header class="top">
       <p class="mark">Pipacs <i>virágkötészet</i></p>
+      <nav class="nav" aria-label="Fő">
+        <a href="#keszek">Csokrok</a>
+        <a href="#csokor">Csokorkötő</a>
+        <a href="#szezon">Szezon</a>
+        <a href="#latogatas">Bolt</a>
+      </nav>
       <a class="phone" href="tel:+36295550472">+36 29 555 0472</a>
     </header>
 
@@ -72,6 +78,63 @@
             height="951"
           />
         </figure>
+      </section>
+
+      <section class="ready" id="keszek" aria-labelledby="ready-title">
+        <div class="ready-head">
+          <h2 id="ready-title">Alkalomra, <em>készen.</em></h2>
+          <p class="lede">Négy csokor, amit a héten a legtöbben kértek. Egy koppintás, és a csokorkötőbe kerül: ott elvehetsz belőle, hozzátehetsz, kártyát írhatsz rá.</p>
+        </div>
+        <ul class="line">
+          <li class="hang" data-preset="szulinap">
+            <span class="string" aria-hidden="true"></span>
+            <figure class="tagcard">
+              <img src="/src/assets/csokor-szulinap.webp" alt="Barackszínű dáliacsokor egy kézben, kertben" width="520" height="640" loading="lazy" />
+              <figcaption>
+                <b>Születésnapra</b>
+                <span class="tag-price" data-price="szulinap"></span>
+                <span class="tag-mix" data-mix="szulinap"></span>
+              </figcaption>
+            </figure>
+            <button type="button" class="leaf" data-load="szulinap">Ezt kötöm át</button>
+          </li>
+          <li class="hang" data-preset="koszonom">
+            <span class="string" aria-hidden="true"></span>
+            <figure class="tagcard">
+              <img src="/src/assets/csokor-koszonom.webp" alt="Kraftpapírba csavart kis csokor napraforgóval és zöldekkel, kártyával" width="520" height="640" loading="lazy" />
+              <figcaption>
+                <b>Köszönömre</b>
+                <span class="tag-price" data-price="koszonom"></span>
+                <span class="tag-mix" data-mix="koszonom"></span>
+              </figcaption>
+            </figure>
+            <button type="button" class="leaf" data-load="koszonom">Ezt kötöm át</button>
+          </li>
+          <li class="hang" data-preset="szeretlek">
+            <span class="string" aria-hidden="true"></span>
+            <figure class="tagcard">
+              <img src="/src/assets/csokor-anyak.webp" alt="Dús rózsaszín csokor bazsarózsával és fátyolvirággal" width="520" height="640" loading="lazy" />
+              <figcaption>
+                <b>Szeretlekre</b>
+                <span class="tag-price" data-price="szeretlek"></span>
+                <span class="tag-mix" data-mix="szeretlek"></span>
+              </figcaption>
+            </figure>
+            <button type="button" class="leaf" data-load="szeretlek">Ezt kötöm át</button>
+          </li>
+          <li class="hang" data-preset="bocsanat">
+            <span class="string" aria-hidden="true"></span>
+            <figure class="tagcard">
+              <img src="/src/assets/csokor-asztal.webp" alt="Laza, réti hatású csokor fekete vázában" width="520" height="640" loading="lazy" />
+              <figcaption>
+                <b>Bocsánatkérésre</b>
+                <span class="tag-price" data-price="bocsanat"></span>
+                <span class="tag-mix" data-mix="bocsanat"></span>
+              </figcaption>
+            </figure>
+            <button type="button" class="leaf" data-load="bocsanat">Ezt kötöm át</button>
+          </li>
+        </ul>
       </section>
 
       <section class="builder" id="csokor" aria-labelledby="builder-title">
@@ -139,7 +202,53 @@
         </form>
       </section>
 
-      <section class="visit" aria-labelledby="visit-title">
+      <section class="season" id="szezon" aria-labelledby="season-title">
+        <h2 id="season-title">Mi nyílik <em>most?</em></h2>
+        <p class="lede">A szezonális virág tovább bírja a vázában, és olcsóbb is. Lapozz a hónapok között.</p>
+        <div class="ribbon" id="ribbon" role="group" aria-label="Hónapok"></div>
+        <p class="in-season" id="in-season" aria-live="polite"></p>
+      </section>
+
+      <section class="care" aria-labelledby="care-title">
+        <div class="care-card">
+          <p class="care-brand">Pipacs <i>virágkötészet</i></p>
+          <h2 id="care-title">Hogy tovább bírja</h2>
+          <ol>
+            <li><b>Vágd meg ferdén</b> a szárakat két centivel, mielőtt vízbe teszed.</li>
+            <li><b>Szedd le a leveleket</b>, amelyek a vízbe érnének; azok rohadnak el először.</li>
+            <li><b>Tegyél bele tápot.</b> A kis tasakot a csokorhoz adjuk, egy liter vízre való.</li>
+            <li><b>Kétnaponta friss víz</b>, és ne álljon napon vagy a gyümölcstál mellett.</li>
+          </ol>
+        </div>
+        <div class="care-copy">
+          <h2>Esküvő, ballagás, búcsú</h2>
+          <p class="lede">Menyasszonyi csokor, ballagási csokor egész osztálynak, koszorú és sírcsokor: ezeket személyesen beszéljük meg, mert minden alkalom más.</p>
+          <ul class="events">
+            <li><b>Esküvő</b> kóstolóval: hozd el a ruha színét, és megmutatjuk, mi illik hozzá.</li>
+            <li><b>Ballagás</b> két héttel előtte rendelve, osztálynévsor szerint csomagolva.</li>
+            <li><b>Gyász</b> esetén aznapra is, telefonon: +36 29 555 0472.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="shop" aria-labelledby="shop-title">
+        <h2 id="shop-title" class="sr">A boltból</h2>
+        <ul>
+          <li><img src="/src/assets/bolt-vodrok.webp" alt="Cink vödrök sorban, tele rózsával, szegfűvel és liziantusszal" width="720" height="540" loading="lazy" /><p>Reggel hétkor jön a virág, nyolckor már a vödrökben van.</p></li>
+          <li><img src="/src/assets/bolt-kotes.webp" alt="Virágkötő hortenziás csokrot köt a pultnál" width="720" height="540" loading="lazy" /><p>Minden csokrot kézzel kötünk, a szemed előtt.</p></li>
+          <li><img src="/src/assets/bolt-asztal.webp" alt="Munkaasztal felülről szalagokkal, ollóval és szárított virágokkal" width="720" height="540" loading="lazy" /><p>Szalag, papír, kártya: választhatsz a pultnál.</p></li>
+          <li><img src="/src/assets/bolt-elotte.webp" alt="A bolt bejárata cserepes virágokkal és ládákkal a járdán" width="720" height="540" loading="lazy" /><p>Cserepes növény is van, kint a járdán.</p></li>
+        </ul>
+      </section>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">Kérdések</h2>
+        <details><summary>Kiszállítotok?</summary><p>Dabason belül 1 500 Ft-ért, a szomszéd településekre 2 500 Ft-ért, hétköznap délután. A bemutatóban csak boltban átvétel van.</p></details>
+        <details><summary>Mennyi ideig bírja a csokor?</summary><p>A rózsa és a liziantusz egy hétig, a tulipán négy-öt napig, ha kétnaponta friss vizet kap. A fátyolvirág és az eukaliptusz szárazon is szép marad.</p></details>
+        <details><summary>Kérhetek olyan virágot, ami nincs a vödrökben?</summary><p>Igen, két nap alatt beszerezzük a nagybanin. Hívj, és megmondjuk, mi kapható.</p></details>
+      </section>
+
+      <section class="visit" id="latogatas" aria-labelledby="visit-title">
         <h2 id="visit-title">Bartók Béla út 21., a piac mellett.</h2>
         <dl>
           <div><dt>Hétköznap</dt><dd>8:00-18:00</dd></div>
@@ -150,7 +259,7 @@
       </section>
     </main>
 
-    <footer>Pipacs Virágkötészet, bemutató, nem élő vállalkozás. Az árak és a készlet mintaadatok.</footer>
+    <footer>Pipacs Virágkötészet, bemutató, nem élő vállalkozás. Az árak és a készlet mintaadatok. Fotók: Unsplash. Betűk: Cormorant Garamond és Karla (SIL OFL).</footer>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

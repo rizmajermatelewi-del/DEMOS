@@ -83,3 +83,35 @@ export function pickupDays(now = new Date(), count = 5) {
   }
   return out
 }
+
+/** Ready bouquets on the hanging tags. Each one loads into the builder, where it can be changed. */
+export const PRESETS = [
+  { id: 'szulinap', name: 'Születésnapra', counts: { gerbera: 5, tulipan: 4, eukaliptusz: 3 }, photo: 'csokor-szulinap' },
+  { id: 'koszonom', name: 'Köszönömre', counts: { tulipan: 5, fatyolvirag: 4, eukaliptusz: 2 }, photo: 'csokor-koszonom' },
+  { id: 'szeretlek', name: 'Szeretlekre', counts: { rozsa: 7, liziantusz: 3, fatyolvirag: 3 }, photo: 'csokor-anyak' },
+  { id: 'bocsanat', name: 'Bocsánatkérésre', counts: { liziantusz: 4, rozsa: 3, eukaliptusz: 4 }, photo: 'csokor-asztal' },
+]
+
+/** A preset's counts, clamped to today's stock the same way the buttons are. */
+export function loadPreset(id) {
+  const preset = PRESETS.find((p) => p.id === id)
+  if (!preset) return {}
+  return Object.entries(preset.counts).reduce((acc, [flower, n]) => setCount(acc, flower, n), {})
+}
+
+/** What grows in Hungary month by month, January first. */
+export const SEASON = [
+  ['amarillisz', 'hunyor', 'fenyőág'],
+  ['jácint', 'hajtatott tulipán'],
+  ['nárcisz', 'tulipán', 'barka'],
+  ['tulipán', 'jácint', 'ranunculus'],
+  ['pünkösdi rózsa', 'gyöngyvirág', 'orgona'],
+  ['pünkösdi rózsa', 'levendula', 'szegfű'],
+  ['napraforgó', 'levendula', 'tátika'],
+  ['dália', 'napraforgó', 'cínia'],
+  ['dália', 'őszirózsa', 'hortenzia'],
+  ['krizantém', 'dália', 'csipkebogyó'],
+  ['krizantém', 'eukaliptusz', 'hamvas levelek'],
+  ['amarillisz', 'fenyőág', 'magyal'],
+]
+export const MONTHS = ['jan', 'feb', 'márc', 'ápr', 'máj', 'jún', 'júl', 'aug', 'szept', 'okt', 'nov', 'dec']

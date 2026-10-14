@@ -21,6 +21,9 @@ a boltnak is időbe kerül.
 - **Kártya a szalagon.** Amit a kártyára írsz, azonnal megjelenik a masnira
   kötött cédulán.
 - Átvételi napok: vasárnap zárva, aznapra 16 óráig, szombaton csak délelőtt.
+- **Kész csokrok zsinegen (2026-10-14):** négy alkalmi csokor kraft árcédulán; az ár és az összetétel ugyanabból az adatból jön, mint a csokorkötő, és egy koppintással betölti oda (`loadPreset`, tesztelve).
+- **Szezonnaptár:** tizenkét hónap szalagon, a mostani kiemelve; kattintásra megmutatja, mi nyílik akkor (`SEASON`).
+- Ápolási kártya, esküvő/ballagás/gyász blokk, képsor a boltból, GYIK.
 - `Florist` schema.org adat.
 
 ## Döntések
@@ -32,11 +35,11 @@ a boltnak is időbe kerül.
 - Fontok saját hosztolásból (@fontsource: Cormorant Garamond + Karla). A
   számok Karlával mennek, mert a Cormorant régi stílusú számjegyei rosszul
   olvashatók árakban.
-- Fotó: Unsplash 24HcJhf0u6M, álló kivágás, a kötény logója elmosva.
+- Fotók: Unsplash (ingyenes licenc); a nyitókép 24HcJhf0u6M, álló kivágás, a kötény logója elmosva.
 
 ## Mérés
 
-Lighthouse mobil, 2026-09-26: 98 / 100 / 100 / 100.
+Lighthouse mobil, 2026-09-26 (a 2026-10-14-es bővítés előtt): 98 / 100 / 100 / 100.
 
 ## Futtatás
 
