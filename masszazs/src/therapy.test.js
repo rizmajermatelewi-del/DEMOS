@@ -54,3 +54,9 @@ describe('bookingProblems', () => {
     assert.deepEqual(bookingProblems({ slot: '2026-09-29T10:00', name: 'Balogh Zita', phone: '06 30 412 8876' }), {})
   })
 })
+
+it('a voucher is valid for one year', async () => {
+  const { voucherExpiry, huDate } = await import('./therapy.js')
+  assert.equal(huDate(voucherExpiry(new Date(2026, 9, 14))), '2027. október 14.')
+  assert.equal(huDate(voucherExpiry(new Date(2028, 1, 29))), '2029. február 28.')
+})

@@ -22,6 +22,7 @@ kezelések nevével kezd.
   két órával előre, zárás előtt befejeződik (`freeSlots`, tesztelve).
 - Árlista, ahol a kavics mérete a kezelés hosszát mutatja.
 - A hero-ban egy 4 mp be, 6 mp ki ritmusú légző gyűrű.
+- **Teljes oldal (2026-10-14):** az első alkalom négy lépése egymásra rakott kövekként (kőrakás), a masszőr bemutatása, ajándékutalvány élő előnézettel és egyéves érvényességgel (`voucherExpiry`, tesztelve, a február 29-et is kezeli), képsor a szobáról, vendégkönyv kavics alakú idézetekkel, GYIK.
 - `HealthAndBeautyBusiness` schema.org adat.
 
 ## Döntések
@@ -33,11 +34,11 @@ kezelések nevével kezd.
   bemutató minden betöltéskor ugyanazt mutatja.
 - Fontok saját hosztolásból (@fontsource: Sora + Manrope). Minden mozgás
   lassú, és `prefers-reduced-motion` alatt kikapcsol.
-- Fotó: Unsplash 3aGV2ViCzrM.
+- Fotók: Unsplash (ingyenes licenc), a nyitókép 3aGV2ViCzrM.
 
 ## Mérés
 
-Lighthouse mobil, 2026-09-26: 97 / 100 / 100 / 100.
+Lighthouse mobil, 2026-09-26 (a 2026-10-14-es bővítés előtt): 97 / 100 / 100 / 100.
 
 ## Futtatás
 

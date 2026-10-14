@@ -78,3 +78,17 @@ export function bookingProblems(data) {
   if (String(data.phone ?? '').replace(/\D/g, '').length < 8) next.phone = 'Egy hívható szám kell.'
   return next
 }
+
+/** A gift voucher is valid for a year; a 29 February voucher runs to 28 February. */
+export function voucherExpiry(from = new Date()) {
+  const y = from.getFullYear() + 1
+  const m = from.getMonth()
+  const last = new Date(y, m + 1, 0).getDate()
+  return new Date(y, m, Math.min(from.getDate(), last))
+}
+
+/** "2027. október 14." */
+export function huDate(d) {
+  const MONTHS = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december']
+  return `${d.getFullYear()}. ${MONTHS[d.getMonth()]} ${d.getDate()}.`
+}

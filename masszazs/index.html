@@ -53,6 +53,7 @@
         <a href="#hol-faj">Hol fáj?</a>
         <a href="#arak">Árak</a>
         <a href="#foglalas">Foglalás</a>
+        <a href="#utalvany">Utalvány</a>
       </nav>
     </header>
 
@@ -126,9 +127,37 @@
         </div>
       </section>
 
+      <section class="cairn-wrap" aria-labelledby="cairn-title">
+        <div class="cairn-copy">
+          <h2 id="cairn-title">Az első alkalom, kőről kőre.</h2>
+          <p class="lede">Aki először jön, általában azt kérdezi, mi fog történni. Ennyi, ebben a sorrendben.</p>
+        </div>
+        <ol class="cairn">
+          <li style="--w: 15rem; --r: -2deg"><b>Leülünk.</b> Öt perc beszélgetés: hol fáj, mióta, mit dolgozik, volt-e műtét.</li>
+          <li style="--w: 17rem; --r: 1.5deg"><b>Átöltözik.</b> Egyedül marad a szobában, a fehérneműt megtarthatja, takaró alatt fekszik.</li>
+          <li style="--w: 19rem; --r: -1deg"><b>Masszírozunk.</b> Langyos olajjal. Ha erős vagy gyenge, szóljon nyugodtan, menet közben is.</li>
+          <li style="--w: 21rem; --r: 0.8deg"><b>Utána tea.</b> Pár perc, amíg feláll a vérnyomás. Kap egy nyújtást, amit otthon csinálhat.</li>
+        </ol>
+      </section>
+
       <section class="prices" id="arak" aria-labelledby="prices-title">
         <h2 id="prices-title">Kezelések és árak</h2>
         <ul class="menu" id="menu"></ul>
+      </section>
+
+      <section class="therapist" aria-labelledby="ther-title">
+        <img src="/src/assets/kezek.webp" alt="Két kéz masszírozza egy fekvő vendég hátát" width="640" height="800" loading="lazy" />
+        <div>
+          <p class="rec-label">Aki masszíroz</p>
+          <h2 id="ther-title">Szabó Réka</h2>
+          <p class="lede">Gyógymasszőr, tizenkét éve. Előtte kilenc évig egy rehabilitációs osztályon dolgozott, ezért a derékfájást és a gépnél ülők nyakát ismeri a legjobban.</p>
+          <ul class="creds">
+            <li>Gyógymasszőr, OKJ</li>
+            <li>Sportmasszőr</li>
+            <li>Talpreflexológia</li>
+          </ul>
+          <p class="quote">„Az első alkalom után megmondom, kell-e még jönnie. Sokszor nem kell.”</p>
+        </div>
       </section>
 
       <section class="booking" id="foglalas" aria-labelledby="booking-title">
@@ -161,13 +190,70 @@
         </form>
       </section>
 
+      <section class="voucher-wrap" id="utalvany" aria-labelledby="voucher-title">
+        <div class="voucher-form">
+          <h2 id="voucher-title">Ajándékba?</h2>
+          <p class="lede">Ajándékutalvány bármelyik kezelésre, egy évig érvényes. Írja be, kinek szól, és nézze meg, hogy fog kinézni.</p>
+          <label>
+            Kezelés
+            <select id="v-treatment"></select>
+          </label>
+          <label>
+            Kinek?
+            <input id="v-to" maxlength="28" autocomplete="off" placeholder="pl. Anyának" />
+          </label>
+          <label>
+            Pár szó (nem kötelező)
+            <input id="v-note" maxlength="60" autocomplete="off" placeholder="pl. Pihenj egy kicsit." />
+          </label>
+          <p class="hint">A bemutató nem ad ki utalványt. Élesben itt fizetne, és PDF-ben kapná meg e-mailben.</p>
+        </div>
+        <figure class="voucher" aria-live="polite">
+          <span class="v-pebble" aria-hidden="true"></span>
+          <p class="v-brand">oldó <span>masszázsstúdió</span></p>
+          <p class="v-kind">Ajándékutalvány</p>
+          <p class="v-to" id="v-to-out">Kedves Vendégünk</p>
+          <p class="v-what" id="v-what"></p>
+          <p class="v-note" id="v-note-out"></p>
+          <p class="v-foot"><span id="v-expiry"></span><span>Gyömrő, Szent István út 7.</span></p>
+        </figure>
+      </section>
+
+      <section class="room" aria-labelledby="room-title">
+        <h2 id="room-title">A szoba</h2>
+        <ul>
+          <li><img src="/src/assets/szoba.webp" alt="Félhomályos kezelőszoba, masszázságy barna lepedővel, a falon egy rajz" width="600" height="750" loading="lazy" /><p>Egy szoba, egy ágy, nincs átjárás.</p></li>
+          <li><img src="/src/assets/olaj.webp" alt="Kéz illóolajat csepegtet a tenyerébe" width="600" height="750" loading="lazy" /><p>Illatmentes olaj, ha kéri.</p></li>
+          <li><img src="/src/assets/mecses.webp" alt="Mécses egy kerámia aromalámpában, sötét háttér előtt" width="600" height="750" loading="lazy" /><p>Félhomály, halk zene vagy csend.</p></li>
+          <li><img src="/src/assets/kovek.webp" alt="Fekete masszázskövek egy fonott kosárban, rajtuk egy virágszirom" width="600" height="750" loading="lazy" /><p>Meleg köves kezelés télen.</p></li>
+        </ul>
+      </section>
+
+      <section class="guests" aria-labelledby="guests-title">
+        <h2 id="guests-title">A vendégkönyvből</h2>
+        <ul>
+          <li><p>„Három éve fáj a derekam. A második alkalom után tudtam úgy aludni, hogy nem ébredtem fel rá.”</p><span>Zsolt, 46, raktáros</span></li>
+          <li><p>„A testtérképen bejelöltem a nyakam, és pont azt kaptam, amit kellett. Fél óra, ebédszünetben.”</p><span>Nóra, 34, könyvelő</span></li>
+          <li><p>„A lányomtól kaptam utalványt. Azóta havonta járok, magamnak veszem.”</p><span>Erzsébet, 63</span></li>
+        </ul>
+        <p class="hint">A nevek a bemutatóhoz kitaláltak.</p>
+      </section>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">Mielőtt jön</h2>
+        <details><summary>Mit vegyek fel?</summary><p>Bármit, amiben kényelmesen jön. Átöltözni a szobában tud, törölközőt és takarót adunk.</p></details>
+        <details><summary>Fájni fog?</summary><p>A sportmasszázs lehet kellemetlen pár pillanatig, de soha nem dolgozunk a tűréshatára fölött. Szóljon, és lazítunk.</p></details>
+        <details><summary>Várandósan is jöhetek?</summary><p>A második trimesztertől, oldalt fekve, orvosi jóváhagyással. Foglaláskor jelezze, és több időt hagyunk.</p></details>
+        <details><summary>Mi van, ha nem érek oda?</summary><p>24 órával előtte díjmentesen lemondhatja vagy áteheti. Utána a díj felét kérjük, mert az időpontot már nem tudjuk kiadni.</p></details>
+      </section>
+
       <section class="visit" aria-labelledby="visit-title">
         <h2 id="visit-title">Szent István út 7., udvari bejárat.</h2>
         <p class="lede">Kedd-péntek 10:00-19:00, szombat 10:00-15:00. Parkolni az udvarban lehet. Telefon: <a href="tel:+36305550619">+36 30 555 0619</a></p>
       </section>
     </main>
 
-    <footer>Oldó Masszázsstúdió, bemutató, nem élő vállalkozás. Az árak és időpontok mintaadatok.</footer>
+    <footer>Oldó Masszázsstúdió, bemutató, nem élő vállalkozás. Az árak és időpontok mintaadatok. Fotók: Unsplash. Betűk: Sora és Manrope (SIL OFL).</footer>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

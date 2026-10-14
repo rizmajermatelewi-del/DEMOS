@@ -3,7 +3,7 @@ import '@fontsource/sora/600.css'
 import '@fontsource/manrope/400.css'
 import '@fontsource/manrope/600.css'
 import './style.css'
-import { bookingProblems, freeSlots, recommend, TREATMENTS, ZONES } from './therapy.js'
+import { bookingProblems, freeSlots, huDate, recommend, TREATMENTS, voucherExpiry, ZONES } from './therapy.js'
 
 const $ = (id) => document.getElementById(id)
 const ft = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} Ft`
@@ -151,3 +151,20 @@ form.addEventListener('submit', (e) => {
   form.elements.name.value = ''
   form.elements.phone.value = ''
 })
+
+// Gift voucher: the card fills in as you type.
+const vSelect = $('v-treatment')
+vSelect.innerHTML = Object.entries(TREATMENTS)
+  .map(([k, t]) => `<option value="${k}">${t.name}, ${ft(t.price)}</option>`)
+  .join('')
+vSelect.value = 'svedRelax'
+function paintVoucher() {
+  const t = TREATMENTS[vSelect.value]
+  const to = $('v-to').value.trim()
+  $('v-to-out').textContent = to || 'Kedves Vendégünk'
+  $('v-what').textContent = `${t.name}, ${t.minutes} perc`
+  $('v-note-out').textContent = $('v-note').value.trim()
+  $('v-expiry').textContent = `Érvényes: ${huDate(voucherExpiry())}`
+}
+for (const id of ['v-treatment', 'v-to', 'v-note']) $(id).addEventListener('input', paintVoucher)
+paintVoucher()
