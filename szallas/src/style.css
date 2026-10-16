@@ -45,6 +45,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .btn:hover { background: var(--forest-2); }
 .btn:active { transform: translateY(1px); }
 
+.banner { margin: 0; padding: 0.55rem 1rem; background: var(--ink); color: var(--chalk); font-size: 0.85rem; text-align: center; }
+.banner a { color: var(--brass-hi); }
+.banner-cta { font-weight: 600; white-space: nowrap; }
+
 /* Fejléc */
 .top {
   position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 24px; padding: 10px var(--gutter);
