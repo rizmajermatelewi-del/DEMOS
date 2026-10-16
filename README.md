@@ -17,6 +17,7 @@ kezdeményezés, kitalált mintaadatokkal — nem ügyfélmunka.
 | [`asztalos/`](asztalos) | Asztalosműhely: szekrény húzással méretezve a rajzon, faanyag, becsült ár és szabásjegyzék | https://demo-asztalos.vercel.app |
 | [`edzoterem/`](edzoterem) | Edzőterem: bérlet súlytárcsákként a rúdon, mai órák szabad hellyel, ingyenes első edzés | https://demo-edzoterem.vercel.app |
 | [`fogaszat/`](fogaszat) | Fogászat: VITA fogszín-skála fehérítési tervvel, sürgősségi időpont, visszahíváskérés | https://demo-fogaszat.vercel.app |
+| [`szallas/`](szallas) | Vendégház: kulcstábla a szabad szobákkal, ár IFA-val, közvetlen és portálár egymás mellett, foglalási kérés SZÉP-kártyával | https://demo-szallas.vercel.app |
 
 Mindegyik mappa önálló Vite projekt, saját `package.json`-nal és README-vel
 (probléma + döntések).

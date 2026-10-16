@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#20372a" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%2320372a%27/><rect x=%2710%27 y=%276%27 width=%2712%27 height=%2720%27 rx=%274%27 fill=%27%23c39a4a%27/><circle cx=%2716%27 cy=%279.5%27 r=%271.6%27 fill=%27%2320372a%27/></svg>" />
+    <title>Diófa Vendégház: bemutató</title>
+    <meta
+      name="description"
+      content="Bemutató oldal egy négyszobás vendégháznak: a kulcstáblán látszik, melyik szoba szabad a kiválasztott napokra, az ár IFA-val együtt számolódik, és közvetlenül foglalni olcsóbb, mint a portálon. Nem küld foglalást."
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BedAndBreakfast",
+        "name": "Diófa Vendégház",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.",
+        "url": "https://demo-szallas.vercel.app",
+        "telephone": "+36 30 555 0742",
+        "numberOfRooms": 4,
+        "petsAllowed": true,
+        "checkinTime": "15:00",
+        "checkoutTime": "10:00",
+        "address": { "@type": "PostalAddress", "addressRegion": "Balaton-felvidék", "addressCountry": "HU" }
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#tabla">Ugrás a szabad szobákhoz</a>
+
+    <header class="top">
+      <a class="brand" href="#" aria-label="Diófa Vendégház, az oldal teteje">
+        <span class="brand-fob" aria-hidden="true"><b>D</b></span>
+        <span class="brand-name">Diófa<small>Vendégház</small></span>
+      </a>
+      <nav aria-label="Fő menü">
+        <a href="#tabla">Szobák</a>
+        <a href="#kozvetlen">Ár</a>
+        <a href="#reggeli">Reggeli</a>
+        <a href="#kornyek">Környék</a>
+        <a href="#kerdesek">Kérdések</a>
+      </nav>
+      <a class="top-call" href="tel:+36305550742"><i data-icon="phone"></i><span>06 30 555 0742</span></a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <picture class="hero-photo">
+          <img src="./src/assets/veranda.webp" alt="Fedett tornác hosszú fa asztallal és padokkal, a kert felé nyitva" width="1400" height="933" fetchpriority="high" />
+        </picture>
+        <div class="hero-text">
+          <p class="kicker">Négy szoba egy tornácos házban, a Balaton-felvidéken</p>
+          <h1 id="hero-title">Diófa<br />Vendégház</h1>
+          <p class="lead">Csendes szobák, reggeli a tornácon, a domb mögött a vár. Nálunk közvetlenül foglalva olcsóbb, mint bármelyik portálon.</p>
+        </div>
+
+        <form class="desk" id="desk" aria-label="Mikor jönnek, és hányan?">
+          <label class="field">
+            <span>Érkezés</span>
+            <input type="date" id="arrival" required />
+          </label>
+          <div class="field">
+            <span id="l-nights">Éjszaka</span>
+            <div class="stepper" data-for="nights" role="group" aria-labelledby="l-nights">
+              <button type="button" data-step="-1" aria-label="Eggyel kevesebb éjszaka"><i data-icon="minus"></i></button>
+              <output id="nights" aria-live="polite">2</output>
+              <button type="button" data-step="1" aria-label="Eggyel több éjszaka"><i data-icon="plus"></i></button>
+            </div>
+          </div>
+          <div class="field">
+            <span id="l-adults">Felnőtt</span>
+            <div class="stepper" data-for="adults" role="group" aria-labelledby="l-adults">
+              <button type="button" data-step="-1" aria-label="Eggyel kevesebb felnőtt"><i data-icon="minus"></i></button>
+              <output id="adults" aria-live="polite">2</output>
+              <button type="button" data-step="1" aria-label="Eggyel több felnőtt"><i data-icon="plus"></i></button>
+            </div>
+          </div>
+          <div class="field">
+            <span id="l-kids">Gyerek</span>
+            <div class="stepper" data-for="kids" role="group" aria-labelledby="l-kids">
+              <button type="button" data-step="-1" aria-label="Eggyel kevesebb gyerek"><i data-icon="minus"></i></button>
+              <output id="kids" aria-live="polite">0</output>
+              <button type="button" data-step="1" aria-label="Eggyel több gyerek"><i data-icon="plus"></i></button>
+            </div>
+          </div>
+          <label class="check">
+            <input type="checkbox" id="dog" />
+            <span><i data-icon="dog"></i>Kutyával jövünk</span>
+          </label>
+          <a class="btn" href="#tabla">Melyik kulcs szabad?</a>
+          <p class="desk-out" id="desk-out" aria-live="polite" tabindex="-1"></p>
+        </form>
+      </section>
+
+      <section class="board-wrap" id="tabla" aria-labelledby="tabla-title">
+        <div class="board-head">
+          <h2 id="tabla-title">A kulcstábla</h2>
+          <p>Ami a táblán lóg, az a kiválasztott napokra szabad. Koppintson egy kulcsra, és megmutatjuk a szobát.</p>
+        </div>
+        <div class="board-grid">
+          <div class="board" role="list" id="board" aria-label="Szobák kulcsai"></div>
+          <article class="room" id="room" aria-live="polite"></article>
+        </div>
+      </section>
+
+      <section class="direct" id="kozvetlen" aria-labelledby="kozvetlen-title">
+        <div class="direct-text">
+          <h2 id="kozvetlen-title">Ugyanaz a szoba,<br />két áron</h2>
+          <p>A foglalási portálok minden foglalás után körülbelül 15% jutalékot vonnak le tőlünk, ezért ott drágábban kell adnunk a szobát. Ha közvetlenül nálunk foglal, ez a pénz Önnél marad.</p>
+          <ul class="ticks">
+            <li><i data-icon="check"></i>Nincs foglalási díj, nincs jutalék.</li>
+            <li><i data-icon="check"></i>Velünk beszél, nem egy ügyfélszolgálattal: kérdés, késői érkezés, kiságy.</li>
+            <li><i data-icon="check"></i>SZÉP-kártyát is elfogadunk, mindhárom szálláshely-alszámláról.</li>
+          </ul>
+        </div>
+        <figure class="compare" id="compare" aria-live="polite"></figure>
+      </section>
+
+      <section class="breakfast" id="reggeli" aria-labelledby="reggeli-title">
+        <img src="./src/assets/reggeli.webp" alt="Tükörtojás öntöttvas serpenyőben, mellette pirítós, lekvár és narancslé" width="1000" height="1500" loading="lazy" />
+        <div>
+          <h2 id="reggeli-title">Reggeli a tornácon</h2>
+          <p>Nyolctól tízig terítünk a hosszú fa asztalnál. Tojás a szomszéd tyúkjaitól, kenyér a falusi pékségből, szilvalekvár a kert fáiról.</p>
+          <p class="price-tag"><b>3 500 Ft</b> / fő / reggel, a foglalásnál kérhető</p>
+          <p class="small">Gluténmentes vagy vegán reggelit kérjen előre, és ahhoz igazítjuk.</p>
+        </div>
+      </section>
+
+      <section class="area" id="kornyek" aria-labelledby="kornyek-title">
+        <h2 id="kornyek-title">Ami a domb mögött van</h2>
+        <div class="area-grid">
+          <figure class="area-big">
+            <img src="./src/assets/domb.webp" alt="Dombtetőn álló vár, alatta falu, legelő birkákkal és egy kis piros vonat" width="1200" height="675" loading="lazy" />
+            <figcaption>A várrom a dombon</figcaption>
+          </figure>
+          <figure class="area-small">
+            <img src="./src/assets/to.webp" alt="Tó nádtetős pavilonnal, mögötte erdő, templomtorony és hegyek" width="1400" height="788" loading="lazy" />
+            <figcaption>Fürdőtó pavilonnal</figcaption>
+          </figure>
+          <ol class="trips" id="trips"></ol>
+        </div>
+      </section>
+
+      <section class="guestbook" aria-labelledby="vendegkonyv-title">
+        <h2 id="vendegkonyv-title">A vendégkönyvből</h2>
+        <p class="note">Kitalált bejegyzések, a bemutató kedvéért.</p>
+        <div class="pages">
+          <blockquote><p>A kandallós szobában aludtunk, este a gazda bekészítette a fát. Reggel a tornácon olyan csend volt, hogy hallottuk a diót leesni.</p><footer>Kati és Bence, Budapest</footer></blockquote>
+          <blockquote><p>Kutyával jöttünk, a kertre néző szobából egyenesen ki lehetett engedni. Már foglaltuk a tavaszt.</p><footer>Rékáék és Bodri</footer></blockquote>
+          <blockquote><p>A csillagnézőben tényleg az ágyból láttuk a csillagokat. A szilvalekvárból vittünk haza is.</p><footer>Anna, Győr</footer></blockquote>
+        </div>
+      </section>
+
+      <section class="faq" id="kerdesek" aria-labelledby="kerdesek-title">
+        <h2 id="kerdesek-title">Amit érkezés előtt kérdezni szoktak</h2>
+        <details><summary>Mikor lehet érkezni és távozni?</summary><p>Érkezés 15 és 20 óra között, távozás reggel 10-ig. Ha később ér ide, írjon, és a kulcsot kóddal nyitható dobozban hagyjuk a tornácon.</p></details>
+        <details><summary>Hogyan lesz végleges a foglalás?</summary><p>A kérésére 24 órán belül visszaírunk. A foglalás a 30% előleg beérkezésével lesz végleges, átutalással vagy SZÉP-kártyával. A maradékot itt helyben fizeti.</p></details>
+        <details><summary>Mi az az IFA a számításban?</summary><p>Idegenforgalmi adó, amit a település szed be minden 18 év feletti vendég után, éjszakánként. Mi csak beszedjük és továbbadjuk; az oldal mintaértékkel számol.</p></details>
+        <details><summary>Lehet lemondani?</summary><p>Érkezés előtt 14 napig ingyen, utána az előleget nem tudjuk visszaadni, de egy éven belül másik időpontra felhasználható.</p></details>
+        <details><summary>Van parkoló és wifi?</summary><p>Az udvaron négy autó fér el, a wifi az egész házban és a tornácon is működik.</p></details>
+      </section>
+
+      <section class="contact" aria-labelledby="kapcsolat-title">
+        <h2 id="kapcsolat-title">Diófa Vendégház</h2>
+        <p>Balaton-felvidék, a falu végén, a diófánál.</p>
+        <div class="contact-row">
+          <a href="tel:+36305550742"><i data-icon="phone"></i>06 30 555 0742</a>
+          <a href="mailto:szallas@diofa-minta.hu"><i data-icon="envelope-simple"></i>szallas@diofa-minta.hu</a>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="request" id="request" aria-labelledby="request-title">
+      <form method="dialog" class="request-x"><button aria-label="Bezárás"><i data-icon="x"></i></button></form>
+      <div id="request-body"></div>
+    </dialog>
+
+    <footer class="foot">
+      Diófa Vendégház: bemutató, nem élő vállalkozás. Az árak, a foglaltság és a vendégkönyv mintaadat, foglalás nem megy ki.
+      Fotók: Unsplash. Betűk: Sofia Sans, Sofia Sans Condensed, Caveat (SIL OFL). Ikonok: Phosphor (MIT).
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
