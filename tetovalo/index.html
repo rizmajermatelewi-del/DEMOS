@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0d0d" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230d0d0d%27/><path d=%27M16 5c3 6 6 9 6 14a6 6 0 0 1-12 0c0-5 3-8 6-14z%27 fill=%27%23c8102e%27/></svg>" />
+    <title>Fekete Tinta tetováló: bemutató</title>
+    <meta name="description" content="Bemutató oldal egy tetováló stúdiónak: kész flash minták lefoglalása, ár- és alkalombecslés a hely, méret és stílus alapján, konzultációkérés referenciaképpel. Nem küld adatot." />
+    <script type="application/ld+json">
+      { "@context": "https://schema.org", "@type": "TattooParlor", "name": "Fekete Tinta",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.", "url": "https://demo-tetovalo.vercel.app",
+        "telephone": "+36 30 555 0666", "address": { "@type": "PostalAddress", "addressLocality": "Miskolc", "addressCountry": "HU" } }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#becsles">Ugrás az árbecsléshez</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=tetovalo#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <a class="brand" href="#">Fekete Tinta</a>
+      <nav aria-label="Fő menü"><a href="#flash">Flash</a><a href="#becsles">Ár</a><a href="#konzultacio">Konzultáció</a></nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <img src="./src/assets/munka.webp" alt="Tetováló kesztyűs kézzel dolgozik egy alkaron" width="1400" height="933" fetchpriority="high" />
+        <div class="hero-text">
+          <h1 id="hero-title">Fekete Tinta</h1>
+          <p class="lead">Tradicionális és finomvonalas tetoválás Miskolcon. Előre megmondjuk, mennyi lesz, hány alkalom, és mennyire fog fájni.</p>
+          <a class="btn" href="#becsles">Mennyi lenne?</a>
+        </div>
+      </section>
+
+      <section class="flash" id="flash" aria-labelledby="flash-title">
+        <h2 id="flash-title">A falon lógó flash lap</h2>
+        <p class="sub">Kész minták, mindegyiket csak egyszer varrjuk. Ami foglalt, át van húzva.</p>
+        <ul class="sheet" id="sheet"></ul>
+        <form class="claim" id="claim" novalidate>
+          <p class="claim-pick" id="claim-pick" aria-live="polite"></p>
+          <div class="row2">
+            <label class="field"><span>Név</span><input name="name" autocomplete="name" /></label>
+            <label class="field"><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" /></label>
+          </div>
+          <label class="check"><input type="checkbox" name="adult" /> Elmúltam 18 éves</label>
+          <p class="issues" id="claim-err" role="alert" hidden></p>
+          <button class="btn">Ezt kérem</button>
+        </form>
+      </section>
+
+      <section class="estimate" id="becsles" aria-labelledby="est-title">
+        <h2 id="est-title">Mennyi lenne?</h2>
+        <div class="est-grid">
+          <form class="est-form" id="est" aria-label="Hely, méret, stílus">
+            <fieldset><legend>Hová?</legend><div class="chips" id="places"></div></fieldset>
+            <div class="size"><label for="cm">Mekkora? <output id="cm-out" for="cm"></output></label><input type="range" id="cm" min="3" max="30" value="8" /></div>
+            <fieldset><legend>Milyen?</legend><div class="chips" id="styles"></div></fieldset>
+          </form>
+          <article class="quote" id="quote" aria-live="polite"></article>
+        </div>
+      </section>
+
+      <section class="consult" id="konzultacio" aria-labelledby="consult-title">
+        <div>
+          <h2 id="consult-title">Saját ötlete van?</h2>
+          <p>Írja le, és csatoljon egy referenciaképet. Egy héten belül visszaírunk egy vázlat-időponttal.</p>
+          <form class="idea" id="idea" novalidate>
+            <label class="field"><span>Az ötlet</span><textarea name="idea" rows="3" placeholder="pl. fecske a csuklón, finom vonallal"></textarea></label>
+            <label class="field"><span>Referenciakép (nem kötelező)</span><input type="file" name="ref" id="ref" accept="image/*" /></label>
+            <img id="ref-preview" alt="A feltöltött referenciakép előnézete" hidden />
+            <label class="field"><span>E-mail</span><input name="email" type="email" autocomplete="email" /></label>
+            <p class="issues" id="idea-err" role="alert" hidden></p>
+            <p class="ok" id="idea-ok" role="status" hidden></p>
+            <button class="btn">Elküldöm</button>
+            <p class="small">Bemutató: semmi nem megy el, a kép csak az Ön gépén látszik.</p>
+          </form>
+        </div>
+        <div class="consult-pics">
+          <img src="./src/assets/vazlatok.webp" alt="Tetoválásvázlatok egy asztalon" width="1400" height="933" loading="lazy" />
+          <img src="./src/assets/flash.webp" alt="Tradicionális flash lap rózsákkal és szívekkel" width="1400" height="933" loading="lazy" />
+        </div>
+      </section>
+
+      <section class="visit" aria-labelledby="visit-title">
+        <img src="./src/assets/uzlet.webp" alt="A stúdió kirakata este" width="1400" height="933" loading="lazy" />
+        <div>
+          <h2 id="visit-title">A stúdió</h2>
+          <p>Miskolc, Széchenyi utca 22. · keddtől szombatig 11–19, csak bejelentkezéssel</p>
+          <div class="visit-row"><a href="tel:+36305550666">06 30 555 0666</a><a href="mailto:tinta@fekete-minta.hu">tinta@fekete-minta.hu</a></div>
+          <p class="small">Steril, egyszer használatos tűk. 18 év alatt nem tetoválunk.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">Fekete Tinta: bemutató, nem élő vállalkozás. Az árak, a minták és a foglaltság mintaadatok. Fotók: Unsplash. Betűk: Pirata One, Space Grotesk (SIL OFL).</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

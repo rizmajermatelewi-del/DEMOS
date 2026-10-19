@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1b2a4a" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%2716%27 fill=%27%231b2a4a%27/><circle cx=%2716%27 cy=%2716%27 r=%279%27 fill=%27none%27 stroke=%27%238bd3c7%27 stroke-width=%272.5%27/><path d=%27M16 7v18M7 16h18M10 10l12 12M22 10 10 22%27 stroke=%27%238bd3c7%27 stroke-width=%271.2%27/></svg>" />
+    <title>Küllő Kerékpárszerviz: bemutató</title>
+    <meta name="description" content="Bemutató oldal egy kerékpárszerviznek: a bicikli rajzán rákattint, mi a baj, az oldal összerakja a munkalapot árral és idővel, és megmutatja, melyik napon fér be a munka. Nem küld foglalást." />
+    <script type="application/ld+json">
+      { "@context": "https://schema.org", "@type": "BikeStore", "name": "Küllő Kerékpárszerviz",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.", "url": "https://demo-bicikli.vercel.app",
+        "telephone": "+36 30 555 0291", "address": { "@type": "PostalAddress", "addressLocality": "Kecskemét", "addressCountry": "HU" } }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#bringa">Ugrás a munkalaphoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=bicikli#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <a class="brand" href="#">KÜLLŐ<small>kerékpárszerviz</small></a>
+      <nav aria-label="Fő menü"><a href="#bringa">Mi a baja?</a><a href="#csomagok">Csomagok</a><a href="#leadas">Leadás</a></nav>
+      <a class="call" href="tel:+36305550291" aria-label="Hívás: 06 30 555 0291"><span class="long">06 30 555 0291</span><span class="short">Hívás</span></a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <h1 id="hero-title">Bökjön rá,<br /><span>mi nem jó rajta.</span></h1>
+        <p class="lead">Nem kell tudnia, hogy hívják az alkatrészt. Koppintson a bicikli rajzán oda, ahol baj van, és összerakjuk a munkalapot árral, idővel, szabad nappal.</p>
+      </section>
+
+      <section class="bike-wrap" id="bringa" aria-labelledby="bike-title">
+        <h2 id="bike-title" class="sr-only">A bicikli részei</h2>
+        <div class="bike">
+          <svg viewBox="0 0 600 360" aria-hidden="true" class="bike-svg">
+            <g class="wheel"><circle cx="140" cy="250" r="95" /><circle cx="140" cy="250" r="86" class="rim" /><circle cx="140" cy="250" r="8" class="hub" /></g>
+            <g class="wheel"><circle cx="470" cy="250" r="95" /><circle cx="470" cy="250" r="86" class="rim" /><circle cx="470" cy="250" r="8" class="hub" /></g>
+            <g class="spokes">
+              <path d="M140 164v172M54 250h172M79 189l122 122M201 189 79 311" />
+              <path d="M470 164v172M384 250h172M409 189l122 122M531 189 409 311" />
+            </g>
+            <path class="chain" d="M140 238 L290 230 M140 262 L290 280" />
+            <circle class="ring" cx="290" cy="255" r="26" />
+            <path class="frame" d="M140 250 L290 255 L262 120 Z M262 120 L425 112 M290 255 L438 160 M425 112 L438 160 L470 250" />
+            <path class="bar" d="M425 112 L415 82 M400 80 Q430 70 452 86" />
+            <path class="saddle" d="M262 120 L258 100 M232 98 Q262 88 292 100" />
+            <path class="brake" d="M446 156 l18 -10" />
+            <path class="derailleur" d="M140 262 l18 30 l12 -8" />
+          </svg>
+          <div class="spots" id="spots"></div>
+        </div>
+        <aside class="part-panel" id="panel" aria-live="polite"></aside>
+      </section>
+
+      <section class="packages" id="csomagok" aria-labelledby="pk-title">
+        <h2 id="pk-title">Vagy egyben, csomagban</h2>
+        <div class="pk-grid" id="packages"></div>
+      </section>
+
+      <section class="order" id="leadas" aria-labelledby="order-title">
+        <div class="order-grid">
+          <div class="sheet" id="sheet" aria-live="polite"></div>
+          <div class="days-box">
+            <h2 id="order-title">Mikor hozza?</h2>
+            <p class="sub">Ennyi szabad szerelőidő van még a következő napokon. Ahová nem fér be a munkalap, az halvány.</p>
+            <ul class="days" id="days"></ul>
+            <form class="drop" id="drop" novalidate>
+              <div class="row2">
+                <label class="field"><span>Név</span><input name="name" autocomplete="name" /></label>
+                <label class="field"><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" /></label>
+              </div>
+              <p class="issues" id="err" role="alert" hidden></p>
+              <button class="btn">Lefoglalom a helyet</button>
+              <p class="small">Bemutató: a kérés nem megy el sehova. Fizetés átvételkor.</p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery" aria-label="Képek a műhelyből">
+        <img src="./src/assets/szerelo.webp" alt="Szerelő a szerszámfal előtt egy kerékpáron dolgozik" width="1400" height="933" loading="lazy" />
+        <img src="./src/assets/alkatreszek.webp" alt="Szétszedett kerékpár alkatrészei egy deszkán kirakva" width="1400" height="933" loading="lazy" />
+        <img src="./src/assets/vaz.webp" alt="Narancssárga váz a szerelőállványon" width="1400" height="933" loading="lazy" />
+        <img src="./src/assets/varos.webp" alt="Kerékpáros a városban, napsütésben" width="1400" height="933" loading="lazy" />
+      </section>
+
+      <section class="visit" aria-labelledby="visit-title">
+        <h2 id="visit-title">Küllő Kerékpárszerviz</h2>
+        <p>Kecskemét, Rákóczi út 18. · hétfő–péntek 9–18, szombat 9–12</p>
+        <div class="visit-row"><a href="tel:+36305550291">06 30 555 0291</a><a href="mailto:szerviz@kullo-minta.hu">szerviz@kullo-minta.hu</a></div>
+      </section>
+    </main>
+
+    <dialog class="done" id="done" aria-labelledby="done-title"><div id="done-body"></div></dialog>
+    <footer class="foot">Küllő Kerékpárszerviz: bemutató, nem élő vállalkozás. Az árak és a szabad idők mintaadatok. Fotók: Unsplash. Betűk: Saira, Saira Condensed (SIL OFL).</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#111111" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23fbfbf8%27/><circle cx=%279.5%27 cy=%2716%27 r=%276%27 fill=%27none%27 stroke=%27%23111%27 stroke-width=%272.4%27/><circle cx=%2722.5%27 cy=%2716%27 r=%276%27 fill=%27none%27 stroke=%27%23111%27 stroke-width=%272.4%27/><path d=%27M15.5 16h1%27 stroke=%27%23111%27 stroke-width=%272.4%27/></svg>" />
+    <title>Lencse Optika: bemutató</title>
+    <meta name="description" content="Bemutató oldal egy optikának: közérthetően elmagyarázza a szemüvegreceptet, ajánl hozzá lencsevastagságot árral, megmutatja, milyen keret illik az arcformához, és szemvizsgálatra lehet időpontot kérni. Nem küld adatot." />
+    <script type="application/ld+json">
+      { "@context": "https://schema.org", "@type": "Optician", "name": "Lencse Optika",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.", "url": "https://demo-optika.vercel.app",
+        "telephone": "+36 30 555 0433", "address": { "@type": "PostalAddress", "addressLocality": "Pécs", "addressCountry": "HU" } }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#recept">Ugrás a recept-magyarázóhoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=optika#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <a class="brand" href="#">Lencse<small>optika · Pécs</small></a>
+      <nav aria-label="Fő menü"><a href="#recept">Recept</a><a href="#keret">Keret</a><a href="#vizsgalat">Szemvizsgálat</a></nav>
+      <a class="call" href="#vizsgalat">Időpont</a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="chart" aria-hidden="true">
+          <p class="r1">E</p><p class="r2">F P</p><p class="r3">T O Z</p><p class="r4">L P E D</p><p class="r5">P E C F D</p><p class="r6">E D F C Z P</p><p class="r7">L E N C S E O P T I K A</p>
+        </div>
+        <div class="hero-text">
+          <h1 id="hero-title">Ha a legalsó sort is el tudta olvasni, minden rendben.</h1>
+          <p class="lead">Ha nem, nálunk megnézzük, miért. A szemvizsgálat ingyenes, ha nálunk készül a szemüveg, és a receptjét itt az oldalon is elmagyarázzuk, emberi nyelven.</p>
+          <a class="btn" href="#vizsgalat">Időpontot kérek</a>
+        </div>
+      </section>
+
+      <section class="recipe" id="recept" aria-labelledby="recipe-title">
+        <h2 id="recipe-title">Mit jelent a receptje?</h2>
+        <p class="sub">Írja át a papírról a számokat. Az OD a jobb, az OS a bal szem.</p>
+        <div class="recipe-grid">
+          <form class="rx" id="rx" aria-label="Szemüvegrecept">
+            <table>
+              <thead><tr><th scope="col"><span class="sr-only">Szem</span></th><th scope="col">SPH</th><th scope="col">CYL</th><th scope="col">AX</th><th scope="col">ADD</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">OD<small>jobb</small></th><td><select name="od-sph" aria-label="Jobb szem SPH"></select></td><td><select name="od-cyl" aria-label="Jobb szem CYL"></select></td><td><input name="od-ax" type="number" min="0" max="180" step="1" value="90" inputmode="numeric" aria-label="Jobb szem AX" /></td><td><select name="od-add" aria-label="Jobb szem ADD"></select></td></tr>
+                <tr><th scope="row">OS<small>bal</small></th><td><select name="os-sph" aria-label="Bal szem SPH"></select></td><td><select name="os-cyl" aria-label="Bal szem CYL"></select></td><td><input name="os-ax" type="number" min="0" max="180" step="1" value="90" inputmode="numeric" aria-label="Bal szem AX" /></td><td><select name="os-add" aria-label="Bal szem ADD"></select></td></tr>
+              </tbody>
+            </table>
+          </form>
+          <div class="explain" id="explain" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="frames" id="keret" aria-labelledby="frames-title">
+        <div class="frames-text">
+          <h2 id="frames-title">Melyik keret áll jól?</h2>
+          <fieldset><legend>Az arca inkább…</legend><div class="chips" id="faces"></div></fieldset>
+          <fieldset><legend>Próbálja fel</legend><div class="chips" id="frame-pick"></div></fieldset>
+          <p class="why" id="why" aria-live="polite"></p>
+        </div>
+        <figure class="mirror"><svg viewBox="0 0 300 340" id="mirror" role="img" aria-labelledby="mirror-cap"></svg><figcaption id="mirror-cap"></figcaption></figure>
+      </section>
+
+      <section class="exam" id="vizsgalat" aria-labelledby="exam-title">
+        <img src="./src/assets/vizsgalat.webp" alt="Szemvizsgálat a foropter mögött" width="1400" height="933" loading="lazy" />
+        <div>
+          <h2 id="exam-title">Szemvizsgálat</h2>
+          <p>20 perc, okleveles optometristával. Ingyenes, ha nálunk készül a szemüveg, egyébként 6 900 Ft.</p>
+          <div class="day-tabs" id="day-tabs" role="tablist" aria-label="Napok"></div>
+          <div class="times" id="times"></div>
+          <form class="book" id="book" novalidate>
+            <div class="row2">
+              <label class="field"><span>Név</span><input name="name" autocomplete="name" /></label>
+              <label class="field"><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" /></label>
+            </div>
+            <p class="issues" id="err" role="alert" hidden></p>
+            <button class="btn">Lefoglalom</button>
+            <p class="small">Bemutató: a foglalás nem megy el sehova.</p>
+          </form>
+        </div>
+      </section>
+
+      <section class="strip" aria-label="Képek az üzletből">
+        <img src="./src/assets/keretfal.webp" alt="Szemüvegkeretek hosszú sorokban a falon" width="1400" height="933" loading="lazy" />
+        <img src="./src/assets/tabla.webp" alt="Szemüveg a látásvizsgáló tábla előtt" width="1400" height="933" loading="lazy" />
+        <img src="./src/assets/keret.webp" alt="Barna és átlátszó keretes szemüveg fehér dobozon" width="1400" height="933" loading="lazy" />
+        <img src="./src/assets/szem.webp" alt="Egy szem közelről" width="1400" height="933" loading="lazy" />
+      </section>
+
+      <section class="visit" aria-labelledby="visit-title">
+        <h2 id="visit-title">Lencse Optika</h2>
+        <p>Pécs, Király utca 21. · hétfő–péntek 9–17, szombat 9–12</p>
+        <div class="visit-row"><a href="tel:+36305550433">06 30 555 0433</a><a href="mailto:hello@lencse-minta.hu">hello@lencse-minta.hu</a></div>
+      </section>
+    </main>
+
+    <dialog class="done" id="done" aria-labelledby="done-title"><div id="done-body"></div></dialog>
+    <footer class="foot">Lencse Optika: bemutató, nem élő vállalkozás. Az árak és időpontok mintaadatok, a recept-magyarázat tájékoztató, nem helyettesíti a vizsgálatot. Fotók: Unsplash. Betű: Epilogue (SIL OFL).</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

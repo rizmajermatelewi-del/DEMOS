@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#12352b" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%2710%27 fill=%27%2312352b%27/><ellipse cx=%2716%27 cy=%2720%27 rx=%276%27 ry=%275%27 fill=%27%23ff7a59%27/><circle cx=%279%27 cy=%2713%27 r=%272.4%27 fill=%27%23ff7a59%27/><circle cx=%2714%27 cy=%279%27 r=%272.4%27 fill=%27%23ff7a59%27/><circle cx=%2719%27 cy=%279%27 r=%272.4%27 fill=%27%23ff7a59%27/><circle cx=%2724%27 cy=%2713%27 r=%272.4%27 fill=%27%23ff7a59%27/></svg>" />
+    <title>Mancs Állatorvosi Rendelő: bemutató</title>
+    <meta name="description" content="Bemutató oldal egy állatorvosi rendelőnek: a kedvenc születési dátumából oltási naptárat készít a kötelező oltásokkal, emlékeztetőt lehet kérni, és mindig látszik, van-e most rendelés vagy ügyelet. Nem küld adatot." />
+    <script type="application/ld+json">
+      { "@context": "https://schema.org", "@type": "VeterinaryCare", "name": "Mancs Állatorvosi Rendelő",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.", "url": "https://demo-allatorvos.vercel.app",
+        "telephone": "+36 30 555 0558", "address": { "@type": "PostalAddress", "addressLocality": "Debrecen", "addressCountry": "HU" } }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#naptar">Ugrás az oltási naptárhoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=allatorvos#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <a class="brand" href="#"><span class="paw" aria-hidden="true"></span>Mancs<small>állatorvosi rendelő</small></a>
+      <p class="status" id="status" aria-live="polite"></p>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-text">
+          <h1 id="hero-title">Mikor kell a következő oltás?</h1>
+          <p class="lead">Adja meg, mikor született a kölyök, és összerakjuk az oltási naptárát. A kötelezőket kiemeljük, és ha kéri, SMS-ben szólunk előtte.</p>
+          <a class="btn" href="#naptar">Kiszámolom</a>
+        </div>
+        <div class="hero-pics">
+          <img src="./src/assets/kolyok.webp" alt="Corgi kölyök narancssárga háttér előtt" width="1400" height="933" fetchpriority="high" />
+          <img src="./src/assets/macska.webp" alt="Cirmos macska a gazdája ölében a rendelőben" width="1400" height="933" />
+        </div>
+      </section>
+
+      <section class="planner" id="naptar" aria-labelledby="plan-title">
+        <h2 id="plan-title">Oltási naptár</h2>
+        <form class="pet" id="pet" aria-label="A kedvenc adatai">
+          <fieldset><legend>Kutya vagy macska?</legend><div class="species" id="species"></div></fieldset>
+          <label class="field"><span>A neve</span><input name="petname" id="petname" value="Bodri" maxlength="24" autocomplete="off" /></label>
+          <label class="field"><span>Mikor született?</span><input type="date" id="birth" /></label>
+        </form>
+        <p class="age" id="age" aria-live="polite"></p>
+        <ol class="timeline" id="timeline" aria-live="polite"></ol>
+        <p class="small">Tájékoztató naptár. A pontos sorrendet és időzítést az első vizsgálaton az állatorvos dönti el.</p>
+        <form class="remind" id="remind" novalidate>
+          <h3>Szóljunk előtte?</h3>
+          <p>Minden oltás előtt 5 nappal SMS-t küldünk, egy gombnyomással lemondható.</p>
+          <div class="row2">
+            <label class="field"><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" /></label>
+            <button class="btn">Kérem az emlékeztetőt</button>
+          </div>
+          <p class="issues" id="err" role="alert" hidden></p>
+          <p class="ok" id="ok" role="status" hidden></p>
+        </form>
+      </section>
+
+      <section class="visit-types" aria-labelledby="types-title">
+        <h2 id="types-title">Gyakori ügyek</h2>
+        <ul class="types">
+          <li><b>Oltás</b><span>a vizsgálattal együtt</span><em>7 500 Ft-tól</em></li>
+          <li><b>Mikrochip</b><span>beültetés és regisztráció</span><em>6 000 Ft</em></li>
+          <li><b>Ivartalanítás</b><span>macska, kutya, egynapos</span><em>28 000 Ft-tól</em></li>
+          <li><b>Fogkő-eltávolítás</b><span>altatásban, ultrahanggal</span><em>22 000 Ft-tól</em></li>
+        </ul>
+      </section>
+
+      <section class="team" aria-labelledby="team-title">
+        <img src="./src/assets/csapat.webp" alt="Két állatorvos egy kutyát vizsgál a rendelőben" width="1400" height="933" loading="lazy" />
+        <div>
+          <h2 id="team-title">Sürgős esetben</h2>
+          <p>Rendelési időn kívül ügyeletet tartunk. Mérgezés, baleset, nehéz légzés esetén ne várjon: hívjon, és mondjuk, merre induljon.</p>
+          <a class="emergency" href="tel:+36305550559">Ügyelet: 06 30 555 0559</a>
+          <table id="hours"><caption>Rendelési idő</caption></table>
+        </div>
+      </section>
+
+      <section class="strip" aria-label="Képek a rendelőből">
+        <img src="./src/assets/vizsgalo.webp" alt="Kis kutya a vizsgálóasztalon" width="1400" height="933" loading="lazy" />
+        <img src="./src/assets/bulldog.webp" alt="Francia bulldog a vizsgálóasztalon, kendővel a nyakában" width="1400" height="933" loading="lazy" />
+      </section>
+
+      <section class="visit" aria-labelledby="visit-title">
+        <h2 id="visit-title">Mancs Állatorvosi Rendelő</h2>
+        <p>Debrecen, Piac utca 40., parkolás az udvarban</p>
+        <div class="visit-row"><a href="tel:+36305550558">06 30 555 0558</a><a href="mailto:rendelo@mancs-minta.hu">rendelo@mancs-minta.hu</a></div>
+      </section>
+    </main>
+
+    <footer class="foot">Mancs Állatorvosi Rendelő: bemutató, nem élő vállalkozás. Az árak és a naptár mintaadatok, nem orvosi tanács. Fotók: Unsplash. Betűk: Rubik, Nunito (SIL OFL).</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

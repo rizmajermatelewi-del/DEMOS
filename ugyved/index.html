@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#4a1c24" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%274%27 fill=%27%234a1c24%27/><text x=%2716%27 y=%2722%27 font-family=%27Georgia%27 font-size=%2716%27 text-anchor=%27middle%27 fill=%27%23f4efe6%27>H</text></svg>" />
+    <title>Dr. Halmi Ügyvédi Iroda: bemutató</title>
+    <meta name="description" content="Bemutató oldal egy ügyvédi irodának: kiválasztja az ügye típusát, és látja, mit csinálnak, mennyi ideig tart és mennyibe kerül, kinyomtatható listát kap a szükséges iratokról, és konzultációt foglalhat. Nem küld adatot." />
+    <script type="application/ld+json">
+      { "@context": "https://schema.org", "@type": "LegalService", "name": "Dr. Halmi Ügyvédi Iroda",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.", "url": "https://demo-ugyved.vercel.app",
+        "telephone": "+36 1 555 0614", "address": { "@type": "PostalAddress", "addressLocality": "Szolnok", "addressCountry": "HU" } }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#ugy">Ugrás az ügytípusokhoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=ugyved#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <a class="brand" href="#">Dr. Halmi<small>Ügyvédi Iroda · Szolnok</small></a>
+      <nav aria-label="Fő menü"><a href="#ugy">Ügyek</a><a href="#iratok">Iratok</a><a href="#konzultacio">Konzultáció</a></nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div>
+          <p class="eyebrow">Ingatlan · öröklés · család · munka · cég</p>
+          <h1 id="hero-title">Előre megmondjuk, <em>mennyi és meddig.</em></h1>
+          <p class="lead">Az első kérdés mindig ez a kettő. Válassza ki az ügyét, és itt látja a várható díjat, az időt, és azt is, milyen iratokkal érdemes jönnie.</p>
+        </div>
+        <img src="./src/assets/konyvtar.webp" alt="Régi könyvekkel teli polcok egy ügyvédi irodában" width="1400" height="933" fetchpriority="high" />
+      </section>
+
+      <section class="cases" id="ugy" aria-labelledby="cases-title">
+        <h2 id="cases-title">Milyen ügye van?</h2>
+        <div class="case-grid">
+          <div class="case-list" id="case-list" role="radiogroup" aria-labelledby="cases-title"></div>
+          <article class="case-card" id="case-card" aria-live="polite"></article>
+        </div>
+      </section>
+
+      <section class="folder-wrap" id="iratok" aria-labelledby="folder-title">
+        <div class="folder">
+          <p class="tab-label">Ügyirat</p>
+          <h2 id="folder-title">Hozza magával</h2>
+          <p class="folder-sub" id="folder-sub"></p>
+          <ul class="docs" id="docs"></ul>
+          <p class="progress" id="progress" aria-live="polite"></p>
+          <button type="button" class="btn ghost" id="print">Kinyomtatom a listát</button>
+        </div>
+      </section>
+
+      <section class="consult" id="konzultacio" aria-labelledby="consult-title">
+        <div>
+          <h2 id="consult-title">Első konzultáció</h2>
+          <p>30 perc, 15 000 Ft, ami beszámít a díjba, ha megbíz minket. Kedden és csütörtökön este 6-ig is.</p>
+          <div class="day-tabs" id="day-tabs" role="tablist" aria-label="Napok"></div>
+          <div class="times" id="times"></div>
+          <form class="book" id="book" novalidate>
+            <div class="row2">
+              <label class="field"><span>Név</span><input name="name" autocomplete="name" /></label>
+              <label class="field"><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" /></label>
+            </div>
+            <label class="field"><span>Röviden, miről szól (nem kötelező)</span><textarea name="note" rows="2"></textarea></label>
+            <p class="issues" id="err" role="alert" hidden></p>
+            <button class="btn">Időpontot kérek</button>
+            <p class="small">Az itt leírtakat bizalmasan kezeljük. Bemutató: a kérés nem megy el sehova.</p>
+          </form>
+        </div>
+        <img src="./src/assets/konzultacio.webp" alt="Ügyvéd és ügyfél egy asztalnál beszélget" width="1400" height="933" loading="lazy" />
+      </section>
+
+      <section class="visit" aria-labelledby="visit-title">
+        <h2 id="visit-title">Dr. Halmi Ügyvédi Iroda</h2>
+        <p>Szolnok, Kossuth tér 4., I. emelet · hétfő–péntek 9–16, kedd és csütörtök 18-ig</p>
+        <div class="visit-row"><a href="tel:+3615550614">06 1 555 0614</a><a href="mailto:iroda@halmi-minta.hu">iroda@halmi-minta.hu</a></div>
+        <div class="strip">
+          <img src="./src/assets/alairas.webp" alt="Szerződés aláírása tollal" width="1400" height="933" loading="lazy" />
+          <img src="./src/assets/toll.webp" alt="Toll egy kitöltendő iraton" width="1400" height="933" loading="lazy" />
+          <img src="./src/assets/kezfogas.webp" alt="Kézfogás az íróasztal fölött" width="1400" height="933" loading="lazy" />
+        </div>
+      </section>
+    </main>
+
+    <dialog class="done" id="done" aria-labelledby="done-title"><div id="done-body"></div></dialog>
+    <footer class="foot">Dr. Halmi Ügyvédi Iroda: bemutató, nem élő vállalkozás. A díjak és időpontok mintaadatok, nem jogi tanács. Fotók: Unsplash. Betűk: Newsreader, Public Sans (SIL OFL).</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

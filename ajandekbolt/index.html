@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1d1b2e" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23c9a27a%27/><rect x=%2714%27 width=%274%27 height=%2732%27 fill=%27%23e2483d%27/><path d=%27M16 10c-6-7-11-2-6 1zM16 10c6-7 11-2 6 1z%27 fill=%27%23e2483d%27/></svg>" />
+    <title>Masni Ajándékbolt: bemutató</title>
+    <meta name="description" content="Bemutató oldal egy helyi ajándékboltnak: megadja, kinek és mire keres ajándékot, mennyit szánna rá, és a boltban lévő termékekből ajánl. Becsomagolva, kártyával félreteszi a következő zárásig. Nem küld foglalást." />
+    <script type="application/ld+json">
+      { "@context": "https://schema.org", "@type": "Store", "name": "Masni Ajándékbolt",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.", "url": "https://demo-ajandekbolt.vercel.app",
+        "telephone": "+36 30 555 0815", "address": { "@type": "PostalAddress", "addressLocality": "Eger", "addressCountry": "HU" } }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#kereso">Ugrás az ajándékkeresőhöz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=ajandekbolt#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <a class="brand" href="#"><span class="bow" aria-hidden="true"></span>Masni<small>ajándékbolt · Eger</small></a>
+      <nav aria-label="Fő menü"><a href="#kereso">Ajándékkereső</a><a href="#bolt">A bolt</a><a href="#nyitva">Nyitvatartás</a></nav>
+      <a class="call" href="tel:+36305550815" aria-label="Hívás: 06 30 555 0815"><span class="long">06 30 555 0815</span><span class="short">Hívás</span></a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-text">
+          <h1 id="hero-title">Ajándék, amit nem kell kitalálni.</h1>
+          <p class="lead">Mondja meg, kinek viszi, mire, és mennyit szánna rá. A polcról ajánlunk, becsomagoljuk, kártyát írunk, és félretesszük, amíg érte jön.</p>
+          <a class="btn" href="#kereso">Keresek valamit</a>
+        </div>
+        <img class="hero-img" src="./src/assets/bolt.webp" alt="A bolt belseje: polcok kézműves ajándékokkal, gyertyákkal és kerámiákkal" width="1400" height="933" fetchpriority="high" />
+      </section>
+
+      <section class="finder" id="kereso" aria-labelledby="finder-title">
+        <h2 id="finder-title">Ajándékkereső</h2>
+        <form class="ask" id="ask" aria-label="Kinek, mire, mennyiért?">
+          <fieldset><legend>Kinek?</legend><div class="chips" id="who"></div></fieldset>
+          <fieldset><legend>Mire?</legend><div class="chips" id="occ"></div></fieldset>
+          <div class="budget">
+            <label for="budget">Legfeljebb <output id="budget-out" for="budget"></output></label>
+            <input type="range" id="budget" min="2000" max="12000" step="500" value="6000" />
+          </div>
+        </form>
+        <p class="count" id="count" aria-live="polite"></p>
+        <ul class="shelf" id="shelf" aria-label="Ajánlott ajándékok"></ul>
+      </section>
+
+      <section class="wrap" id="csomagolas" aria-labelledby="wrap-title">
+        <div class="present-stage" aria-hidden="true">
+          <div class="present" id="present">
+            <span class="lid"></span><span class="box"></span><span class="ribbon-v"></span><span class="ribbon-h"></span>
+            <span class="bow-l"></span><span class="bow-r"></span>
+            <span class="tag" id="tag-text"></span>
+          </div>
+        </div>
+        <form class="pack" id="pack" novalidate>
+          <h2 id="wrap-title">Becsomagoljuk</h2>
+          <p class="picked" id="picked" aria-live="polite"></p>
+          <fieldset class="wraps"><legend>Csomagolás</legend><div id="wraps"></div></fieldset>
+          <label class="field"><span>A kártyára <small id="card-count"></small></span>
+            <textarea name="card" id="card" rows="2" maxlength="120" placeholder="pl. Boldog névnapot, Anna!"></textarea></label>
+          <div class="row2">
+            <label class="field"><span>Név</span><input name="name" autocomplete="name" /></label>
+            <label class="field"><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" /></label>
+          </div>
+          <p class="sum" id="sum"></p>
+          <p class="issues" id="err" role="alert" hidden></p>
+          <button class="btn">Tegyék félre nekem</button>
+          <p class="small">Most nem kell fizetni, a boltban fizet, készpénzzel vagy kártyával. Bemutató: a kérés nem megy el sehova.</p>
+        </form>
+      </section>
+
+      <section class="shop" id="bolt" aria-labelledby="shop-title">
+        <h2 id="shop-title">A bolt</h2>
+        <p class="sub">Helyi kézművesek, kis szériák. Amit a polcon lát, azt az oldalon is látja, és fordítva.</p>
+        <div class="mosaic">
+          <img src="./src/assets/polc.webp" alt="Polc színes csomagolt ajándékdobozokkal" width="1400" height="933" loading="lazy" />
+          <img src="./src/assets/keramia.webp" alt="Kézzel készült kerámiatálkák pasztell mázzal" width="1400" height="933" loading="lazy" />
+          <img src="./src/assets/gyertya.webp" alt="Szójagyertyák üvegtégelyben" width="1400" height="933" loading="lazy" />
+          <img src="./src/assets/atadas.webp" alt="Kézből kézbe adott, kraft papírba csomagolt ajándék" width="1400" height="933" loading="lazy" />
+        </div>
+      </section>
+
+      <section class="hours" id="nyitva" aria-labelledby="hours-title">
+        <h2 id="hours-title">Nyitvatartás</h2>
+        <table id="hours-table"><caption class="sr-only">Nyitvatartás a hét napjain</caption></table>
+        <div class="contact"><p>Eger, Széchenyi utca 12., a Líceummal szemben</p><a href="tel:+36305550815">06 30 555 0815</a><a href="mailto:bolt@masni-minta.hu">bolt@masni-minta.hu</a></div>
+      </section>
+    </main>
+
+    <dialog class="held" id="held" aria-labelledby="held-title"><div id="held-body"></div></dialog>
+    <footer class="foot">Masni Ajándékbolt: bemutató, nem élő vállalkozás. A termékek, árak és a készlet mintaadatok. Fotók: Unsplash. Betűk: Syne, Work Sans (SIL OFL). Ikonok: Phosphor (MIT).</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

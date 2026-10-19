@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1e2126" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%231e2126%27/><circle cx=%2716%27 cy=%2716%27 r=%278%27 fill=%27none%27 stroke=%27%23ff6a13%27 stroke-width=%273%27/><path d=%27M12 16h8M16 12v8%27 stroke=%27%23ff6a13%27 stroke-width=%273%27/></svg>" />
+    <title>Csavar Szerviz: bemutató</title>
+    <meta name="description" content="Bemutató oldal egy telefon- és számítógép-javítónak: eszköz, márka és hiba alapján árat és elkészülési időt mond, a munkalapszámmal követhető a javítás, és van nyomtatási árkalkulátor. Nem küld adatot." />
+    <script type="application/ld+json">
+      { "@context": "https://schema.org", "@type": "ElectronicsStore", "name": "Csavar Szerviz",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.", "url": "https://demo-javito.vercel.app",
+        "telephone": "+36 30 555 0164", "address": { "@type": "PostalAddress", "addressLocality": "Győr", "addressCountry": "HU" } }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#becsles">Ugrás az árbecsléshez</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=javito#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <a class="brand" href="#"><span aria-hidden="true">⊕</span> CSAVAR<small>szerviz · Győr</small></a>
+      <nav aria-label="Fő menü"><a href="#becsles">Árbecslés</a><a href="#munkalap">Munkalap</a><a href="#nyomtatas">Nyomtatás</a></nav>
+      <a class="call" href="tel:+36305550164" aria-label="Hívás: 06 30 555 0164"><span class="long">06 30 555 0164</span><span class="short">Hívás</span></a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-text">
+          <p class="mono-tag">TELEFON · LAPTOP · TABLET · NYOMTATÁS</p>
+          <h1 id="hero-title">Mondja meg, mi a baja.<br />Mi megmondjuk, mennyi és mikorra.</h1>
+          <p class="lead">Ár és határidő még azelőtt, hogy bejönne. A bevizsgálás ingyenes, ha nálunk javíttatja, és a munkalapszámmal bármikor megnézheti, hol tart.</p>
+        </div>
+        <img class="hero-img" src="./src/assets/telefon.webp" alt="Szerelő egy szétszedett telefon alaplapján dolgozik" width="1400" height="933" fetchpriority="high" />
+      </section>
+
+      <section class="estimate" id="becsles" aria-labelledby="est-title">
+        <h2 id="est-title">Árbecslés</h2>
+        <div class="est-grid">
+          <form class="pick" id="pick" aria-label="Eszköz, márka, hiba">
+            <fieldset><legend>1. Eszköz</legend><div class="tiles" id="devices"></div></fieldset>
+            <fieldset><legend>2. Márka</legend><div class="chips" id="brands"></div></fieldset>
+            <fieldset><legend>3. Mi a baja?</legend><div class="tiles faults" id="faults"></div></fieldset>
+          </form>
+          <article class="receipt" id="receipt" aria-live="polite"></article>
+        </div>
+      </section>
+
+      <section class="track" id="munkalap" aria-labelledby="track-title">
+        <div class="track-head">
+          <h2 id="track-title">Hol tart a javítás?</h2>
+          <p>Írja be a munkalap számát. Kipróbálhatja ezekkel: <button type="button" class="demo-code">CS-2422</button> <button type="button" class="demo-code">CS-2417</button> <button type="button" class="demo-code">CS-2419</button></p>
+        </div>
+        <form class="track-form" id="track-form" novalidate>
+          <label for="code" class="sr-only">Munkalapszám</label>
+          <input id="code" name="code" placeholder="CS-0000" autocomplete="off" autocapitalize="characters" spellcheck="false" />
+          <button class="btn">Mutasd</button>
+        </form>
+        <ol class="stages" id="stages" aria-live="polite"></ol>
+      </section>
+
+      <section class="print" id="nyomtatas" aria-labelledby="print-title">
+        <img src="./src/assets/forrasztas.webp" alt="Szerelő forrasztópákával dolgozik egy nyák fölött, lámpafényben" width="1400" height="933" loading="lazy" />
+        <div>
+          <h2 id="print-title">Nyomtatás, fénymásolás</h2>
+          <p>Szakdolgozat, menetrend, plakát. E-mailben küldje, mire beér, kész.</p>
+          <form class="calc" id="calc">
+            <label class="field"><span>Oldalak száma</span><input type="number" id="pages" min="1" max="2000" value="24" inputmode="numeric" /></label>
+            <label class="check"><input type="checkbox" id="color" /> színes</label>
+            <label class="check"><input type="checkbox" id="duplex" /> kétoldalas</label>
+          </form>
+          <p class="calc-out" id="calc-out" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="visit" aria-labelledby="visit-title">
+        <h2 id="visit-title">Csavar Szerviz</h2>
+        <p>Győr, Baross Gábor út 31. · hétfőtől péntekig 9–18</p>
+        <div class="visit-row"><a href="tel:+36305550164">06 30 555 0164</a><a href="mailto:javitas@csavar-minta.hu">javitas@csavar-minta.hu</a></div>
+        <div class="strip">
+          <img src="./src/assets/alkatresz.webp" alt="Telefonalkatrészek és szerszámok egy asztalon" width="1400" height="933" loading="lazy" />
+          <img src="./src/assets/laptop.webp" alt="Nyitott laptop, a szerelő kezei a belsejében" width="1400" height="933" loading="lazy" />
+          <img src="./src/assets/kijelzo.webp" alt="Kesztyűs kéz egy telefon kijelzőjét emeli le" width="1400" height="933" loading="lazy" />
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">Csavar Szerviz: bemutató, nem élő vállalkozás. Az árak, a készlet és a munkalapok mintaadatok. Fotók: Unsplash. Betűk: JetBrains Mono, IBM Plex Sans (SIL OFL). Ikonok: Phosphor (MIT).</footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
