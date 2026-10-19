@@ -84,6 +84,45 @@ $('book').addEventListener('submit', (e) => {
   $('done-title').focus()
 })
 
-function render() { renderCard(); renderDocs() }
+// Hero: ügyirat-dosszié füllel ügytípusonként. A fül előre hozza az aktát, a pecsét rácsapódik.
+const SHORT = { ingatlan: 'Ingatlan', orokles: 'Öröklés', valas: 'Válás', munka: 'Munkajog', ceg: 'Cégalapítás', szerzodes: 'Szerződés' }
+const ids = Object.keys(CASES)
+$('file-tabs').innerHTML = ids.map((id, i) => `<button type="button" role="tab" class="ftab" id="ftab-${id}" data-id="${id}" style="--i:${i}" aria-controls="file-body">${SHORT[id]}</button>`).join('')
+function renderFile() {
+  const c = CASES[state.case]
+  const i = ids.indexOf(state.case)
+  document.querySelectorAll('.ftab').forEach((b) => {
+    const on = b.dataset.id === state.case
+    b.setAttribute('aria-selected', String(on))
+    b.tabIndex = on ? 0 : -1
+  })
+  const body = $('file-body')
+  body.setAttribute('aria-labelledby', `ftab-${state.case}`)
+  body.style.setProperty('--tab', i)
+  body.innerHTML = `<p class="f-ref">Ügyirat · ${String(i + 1).padStart(2, '0')}/2026</p>
+    <h3>${c.name}</h3>
+    <p class="f-what">${c.what}</p>
+    <dl class="f-facts"><div><dt>Meddig?</dt><dd>${c.time}</dd></div><div><dt>Mennyi?</dt><dd>${ft(feeFor(state.case, state.price))}<small>${c.fee.label}</small></dd></div></dl>
+    <span class="stamp" aria-hidden="true">Becslés</span>
+    <a class="f-more" href="#ugy">Részletek és iratlista ↓</a>`
+  // Újraindítjuk a beúszást minden váltásnál.
+  body.classList.remove('swap'); void body.offsetWidth; body.classList.add('swap')
+}
+function pickCase(id) {
+  state.case = id
+  state.have.clear()
+  document.querySelector(`input[name="case"][value="${id}"]`).checked = true
+  render()
+}
+$('file-tabs').addEventListener('click', (e) => { const b = e.target.closest('.ftab'); if (b) pickCase(b.dataset.id) })
+$('file-tabs').addEventListener('keydown', (e) => {
+  const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key]
+  if (!step) return
+  const next = ids[(ids.indexOf(state.case) + step + ids.length) % ids.length]
+  pickCase(next)
+  $(`ftab-${next}`).focus()
+})
+
+function render() { renderCard(); renderDocs(); renderFile() }
 render()
 renderSlots()
