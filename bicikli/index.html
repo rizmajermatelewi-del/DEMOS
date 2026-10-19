@@ -37,15 +37,13 @@
         <h2 id="bike-title" class="sr-only">A bicikli részei</h2>
         <div class="bike">
           <svg viewBox="0 0 600 360" aria-hidden="true" class="bike-svg">
-            <g class="wheel"><circle cx="140" cy="250" r="95" /><circle cx="140" cy="250" r="86" class="rim" /><circle cx="140" cy="250" r="8" class="hub" /></g>
-            <g class="wheel"><circle cx="470" cy="250" r="95" /><circle cx="470" cy="250" r="86" class="rim" /><circle cx="470" cy="250" r="8" class="hub" /></g>
-            <g class="spokes">
-              <path d="M140 164v172M54 250h172M79 189l122 122M201 189 79 311" />
-              <path d="M470 164v172M384 250h172M409 189l122 122M531 189 409 311" />
-            </g>
+            <g class="wheel"><circle cx="140" cy="250" r="95" /><circle cx="140" cy="250" r="86" class="rim" />
+              <g class="spokes" style="transform-origin: 140px 250px"><path d="M140 164v172M54 250h172M79 189l122 122M201 189 79 311" /></g><circle cx="140" cy="250" r="8" class="hub" /></g>
+            <g class="wheel"><circle cx="470" cy="250" r="95" /><circle cx="470" cy="250" r="86" class="rim" />
+              <g class="spokes" style="transform-origin: 470px 250px"><path d="M470 164v172M384 250h172M409 189l122 122M531 189 409 311" /></g><circle cx="470" cy="250" r="8" class="hub" /></g>
             <path class="chain" d="M140 238 L290 230 M140 262 L290 280" />
-            <circle class="ring" cx="290" cy="255" r="26" />
-            <path class="frame" d="M140 250 L290 255 L262 120 Z M262 120 L425 112 M290 255 L438 160 M425 112 L438 160 L470 250" />
+            <circle class="ring" cx="290" cy="255" r="26" style="transform-origin: 290px 255px" />
+            <path class="frame" pathLength="1" d="M140 250 L290 255 L262 120 Z M262 120 L425 112 M290 255 L438 160 M425 112 L438 160 L470 250" />
             <path class="bar" d="M425 112 L415 82 M400 80 Q430 70 452 86" />
             <path class="saddle" d="M262 120 L258 100 M232 98 Q262 88 292 100" />
             <path class="brake" d="M446 156 l18 -10" />

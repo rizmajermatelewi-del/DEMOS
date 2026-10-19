@@ -30,8 +30,28 @@ $('spots').addEventListener('click', (e) => {
   $('panel').querySelector('input')?.focus()
 })
 
+// Görgetésre forognak a kerekek, a lánckerék és fut a lánc (mozgáscsökkentésnél áll).
+const svg = document.querySelector('.bike-svg')
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  let queued = false
+  addEventListener('scroll', () => {
+    if (queued) return
+    queued = true
+    requestAnimationFrame(() => {
+      svg.style.setProperty('--spin', `${scrollY * 0.5}deg`)
+      svg.style.setProperty('--roll', `${-scrollY * 0.35}px`)
+      queued = false
+    })
+  }, { passive: true })
+}
+
 function renderPanel() {
   const p = PARTS[state.part]
+  // A kiválasztott alkatrész felé nagyít a rajz.
+  const [x, y] = SPOTS[state.part]
+  const bike = document.querySelector('.bike')
+  bike.style.setProperty('--ox', `${x}%`)
+  bike.style.setProperty('--oy', `${y}%`)
   document.querySelectorAll('.spot').forEach((s) => {
     s.setAttribute('aria-pressed', String(s.dataset.part === state.part))
     s.classList.toggle('has', PARTS[s.dataset.part].services.some(([id]) => state.picked.has(id)))
