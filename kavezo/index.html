@@ -30,20 +30,29 @@
 
     <main>
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-text">
-          <h1 id="hero-title">Nappal kávé,<br /><em>este bor.</em></h1>
-          <p class="lead">Szemben a piaccal: reggel hétkor nyitunk espressóval, este a pult mögül pohárra mért bort töltünk. Húzza el a csúszkát, és megmutatjuk, mi van akkor nálunk.</p>
-        </div>
         <div class="hero-photos" aria-hidden="true">
           <img class="day" src="./src/assets/nappal.webp" alt="" width="1400" height="933" fetchpriority="high" />
           <img class="night" src="./src/assets/este.webp" alt="" width="1400" height="933" />
         </div>
+        <div class="hero-text">
+          <h1 id="hero-title"><span class="line l1"><span>Nappal kávé,</span></span><span class="line l2"><span><em>este bor.</em></span></span></h1>
+          <p class="lead">Szemben a piaccal: reggel hétkor nyitunk espressóval, este a pult mögül pohárra mért bort töltünk. Húzza a napot, és megmutatjuk, mi van akkor nálunk.</p>
+        </div>
 
         <div class="dial" id="most-dial">
-          <label for="time" class="dial-label">Mikor jönne? <output id="time-out" for="time"></output></label>
-          <input type="range" id="time" min="420" max="1439" step="15" value="600" aria-describedby="mode-line" />
+          <div class="dial-head">
+            <label for="time" class="dial-label">Mikor jönne? <output id="time-out" for="time"></output></label>
+            <span class="dial-mode" id="dial-mode" aria-hidden="true"></span>
+            <button type="button" class="now" id="now">Most</button>
+          </div>
+          <div class="sky">
+            <svg class="arc" viewBox="0 0 1000 150" preserveAspectRatio="none" aria-hidden="true">
+              <path id="arc-path" d="M 12 146 C 260 -40, 740 -40, 988 146" />
+            </svg>
+            <span class="sun" id="sun" aria-hidden="true"></span>
+            <input type="range" id="time" min="420" max="1439" step="15" value="600" aria-describedby="mode-line" />
+          </div>
           <ol class="dial-marks" aria-hidden="true"><li>7:00</li><li>11:00</li><li>17:00</li><li>19:00</li><li>24:00</li></ol>
-          <button type="button" class="now" id="now">Most</button>
         </div>
       </section>
 

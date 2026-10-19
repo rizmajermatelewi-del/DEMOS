@@ -27,15 +27,25 @@ $('status').innerHTML = st.open
 
 // A napszak-csúszka: az egész oldal színe és a kínálat követi
 const range = $('time')
+// A nap (este a hold) a hero ívén halad: a csúszka értékét az SVG-útvonal egy pontjára vetítjük.
+const arc = $('arc-path')
+const arcLen = arc.getTotalLength()
+let shownMode = null
 function paint() {
   const min = Number(range.value)
   const m = modeAt(min)
   document.documentElement.style.setProperty('--n', nightness(min).toFixed(3))
+  const p = arc.getPointAtLength(((min - 420) / (1439 - 420)) * arcLen)
+  $('sun').style.cssText = `left:${p.x / 10}%;top:${(p.y / 150) * 100}%`
   $('time-out').textContent = clock(min)
+  $('dial-mode').textContent = m.name
   range.setAttribute('aria-valuetext', `${clock(min)}, ${m.name.toLowerCase()}`)
+  if (m === shownMode) return
+  // Csak napszakváltáskor rajzoljuk újra a kínálatot, akkor sorban beúsznak a tételek.
+  shownMode = m
   $('mode-name').textContent = m.name
   $('mode-line').textContent = m.line
-  $('menu-list').innerHTML = MENU[m.id].map(([name, price, note]) => `<li><span class="dish">${name}<small>${note}</small></span><b>${ft(price)}</b></li>`).join('')
+  $('menu-list').innerHTML = MENU[m.id].map(([name, price, note], i) => `<li style="--i:${i}"><span class="dish">${name}<small>${note}</small></span><b>${ft(price)}</b></li>`).join('')
 }
 range.addEventListener('input', paint)
 const snapNow = () => String(Math.min(1439, Math.max(420, Math.round(nowMin / 15) * 15)))
@@ -98,6 +108,12 @@ $('book').addEventListener('submit', (e) => {
   $('sent').showModal()
   $('sent-title').focus()
 })
+
+// Görgetésre beúszó szakaszok (mozgáscsökkentésnél a CSS eleve láthatónak hagyja őket)
+const reveal = new IntersectionObserver((entries) => entries.forEach((e) => {
+  if (e.isIntersecting) { e.target.classList.add('in'); reveal.unobserve(e.target) }
+}), { rootMargin: '0px 0px -12% 0px' })
+document.querySelectorAll('main > section:not(.hero)').forEach((s) => { s.classList.add('reveal'); reveal.observe(s) })
 
 // Nyitvatartás, a mai nap kiemelve
 const order = [1, 2, 3, 4, 5, 6, 0]
