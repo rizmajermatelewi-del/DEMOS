@@ -18,6 +18,14 @@ kezdeményezés, kitalált mintaadatokkal — nem ügyfélmunka.
 | [`edzoterem/`](edzoterem) | Edzőterem: bérlet súlytárcsákként a rúdon, mai órák szabad hellyel, ingyenes első edzés | https://demo-edzoterem.vercel.app |
 | [`fogaszat/`](fogaszat) | Fogászat: VITA fogszín-skála fehérítési tervvel, sürgősségi időpont, visszahíváskérés | https://demo-fogaszat.vercel.app |
 | [`szallas/`](szallas) | Vendégház: kulcstábla a szabad szobákkal, ár IFA-val, közvetlen és portálár egymás mellett, foglalási kérés SZÉP-kártyával | https://demo-szallas.vercel.app |
+| [`kavezo/`](kavezo) | Kávézó és borbár: a nap ívén húzható idő nappalból estébe váltja az oldalt és a kínálatot, esti programok szabad hellyel | https://demo-kavezo.vercel.app |
+| [`ajandekbolt/`](ajandekbolt) | Ajándékbolt: magát becsomagoló ajándék, ajándékkereső készletből, csomagolás és kártya, félretétel kóddal | https://demo-ajandekbolt.vercel.app |
+| [`javito/`](javito) | Telefon- és számítógép-szerviz: szétszerelt telefon, minden réteg egy hiba, árbecslés hőpapír-nyugtán, munkalap-követés | https://demo-javito.vercel.app |
+| [`bicikli/`](bicikli) | Kerékpárszerviz: kattintható bicikli-rajz, munkalap alkatrészenként, leadás szabad szerelőidővel | https://demo-bicikli.vercel.app |
+| [`optika/`](optika) | Optika: homályos szemtábla húzható lencsével, recept emberi nyelven, keretpróba arcformához, szemvizsgálat | https://demo-optika.vercel.app |
+| [`allatorvos/`](allatorvos) | Állatorvos: növekedési vonalzó oltásokkal, teljes oltási naptár, SMS-emlékeztető, ügyelet | https://demo-allatorvos.vercel.app |
+| [`ugyved/`](ugyved) | Ügyvédi iroda: dosszié ügytípusonként fülekkel, díj és időtartam, „hozza magával” iratlista, konzultáció | https://demo-ugyved.vercel.app |
+| [`tetovalo/`](tetovalo) | Tetoválószalon: kirajzolódó flash minták egyszeri foglalással, ár-, alkalom- és fájdalombecslő | https://demo-tetovalo.vercel.app |
 
 Mindegyik mappa önálló Vite projekt, saját `package.json`-nal és README-vel
 (probléma + döntések).
