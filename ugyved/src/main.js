@@ -100,7 +100,7 @@ function renderFile() {
   body.setAttribute('aria-labelledby', `ftab-${state.case}`)
   body.style.setProperty('--tab', i)
   body.innerHTML = `<p class="f-ref">Ügyirat · ${String(i + 1).padStart(2, '0')}/2026</p>
-    <h3>${c.name}</h3>
+    <h2 class="f-title">${c.name}</h2>
     <p class="f-what">${c.what}</p>
     <dl class="f-facts"><div><dt>Meddig?</dt><dd>${c.time}</dd></div><div><dt>Mennyi?</dt><dd>${ft(feeFor(state.case, state.price))}<small>${c.fee.label}</small></dd></div></dl>
     <span class="stamp" aria-hidden="true">Becslés</span>

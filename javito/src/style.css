@@ -51,9 +51,9 @@ button, input { font: inherit; color: inherit; }
 .hero h1 span { display: block; color: var(--orange); }
 .lead { margin-top: 16px; max-width: 46ch; font-size: 1.08rem; color: #b9c0c8; }
 @keyframes up { from { opacity: 0; transform: translateY(20px); } }
-.parts { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 6px; max-width: 520px; }
+.parts { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 6px; max-width: 520px; min-height: 324px; }
 .part { width: 100%; display: grid; grid-template-columns: 2.4em 1fr auto; align-items: center; gap: 10px; min-height: 48px; padding: 8px 14px; border: 1px solid #353b43; border-radius: 4px; background: #1c2025; text-align: left; cursor: pointer; transition: border-color 0.2s, background 0.2s, transform 0.2s; }
-.part .no { font: 800 0.8rem var(--mono); color: #7d858e; }
+.part .no { font: 800 0.8rem var(--mono); color: #959ea7; }
 .part .pn { font: 800 0.95rem var(--mono); }
 .part .pf { font-size: 0.85rem; color: #9aa2ab; }
 .part:hover { border-color: #6b727a; transform: translateX(4px); }
@@ -183,3 +183,6 @@ button, input { font: inherit; color: inherit; }
 .strip { margin-top: 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .strip img { width: 100%; aspect-ratio: 1; object-fit: cover; }
 .foot { padding: 22px var(--gutter) calc(22px + env(safe-area-inset-bottom)); font-size: 0.85rem; color: var(--muted); }
+
+/* Érintési célterület: a menüpontok legalább 44 px magasak, a rövidek (pl. „Ár”) oldalt is kapnak helyet. */
+.top nav a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 6px; }

@@ -29,7 +29,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .banner { margin: 0; padding: 0.55rem 1rem; background: var(--ink); color: #f4efe6; font-size: 0.85rem; text-align: center; }
 .banner a { color: #f6c46a; }
 .banner-cta { font-weight: 600; white-space: nowrap; }
-.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; border: 2px solid var(--ink); border-radius: 999px; background: var(--red); color: #fff; font-weight: 600; text-decoration: none; cursor: pointer; box-shadow: 4px 4px 0 var(--ink); transition: transform 0.15s, box-shadow 0.15s; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; border: 2px solid var(--ink); border-radius: 999px; background: #c4362c; color: #fff; font-weight: 600; text-decoration: none; cursor: pointer; box-shadow: 4px 4px 0 var(--ink); transition: transform 0.15s, box-shadow 0.15s; }
 .btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
 .btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
@@ -55,7 +55,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .hero h1 { grid-area: h; font-size: clamp(2.5rem, 11vw, 6.6rem); line-height: 0.92; }
 .hero h1 span { display: block; animation: slide 0.9s cubic-bezier(0.2, 0.75, 0, 1) both; }
 .h-bot { color: var(--red); animation-delay: 0.12s !important; }
-@keyframes slide { from { opacity: 0; transform: translateX(-40px); } }
+@keyframes slide { from { transform: translateX(-40px); } }
 .polaroid { margin: 0; padding: 10px 10px 0; background: #fff; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); transition: transform 0.4s cubic-bezier(0.2, 0.75, 0, 1); }
 .polaroid img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
 .polaroid figcaption { padding: 8px 2px 10px; font: italic 500 0.9rem var(--body); text-align: center; }
@@ -214,3 +214,6 @@ button, input, textarea { font: inherit; color: inherit; }
 .slip-main { font: 700 1.2rem var(--display); }
 .slip-note { color: #c8c4d8; font-size: 0.9rem; }
 .foot { padding: 22px var(--gutter) calc(22px + env(safe-area-inset-bottom)); font-size: 0.85rem; color: var(--muted); border-top: 2px solid var(--ink); }
+
+/* Érintési célterület: a menüpontok legalább 44 px magasak, a rövidek (pl. „Ár”) oldalt is kapnak helyet. */
+.top nav a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 6px; }

@@ -60,7 +60,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .file-body { position: relative; z-index: 1; min-height: 360px; padding: 28px clamp(20px, 3vw, 34px); border: 14px solid var(--manila); border-radius: 4px; color: var(--ink);
   background: repeating-linear-gradient(transparent 0 31px, #ece4d5 31px 32px), #fffdf7; box-shadow: 0 34px 60px -30px rgb(0 0 0 / 0.75); }
 .f-ref { font: 600 0.75rem var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-.file-body h3 { margin-top: 8px; font-size: clamp(1.9rem, 3.4vw, 2.6rem); color: var(--ox); padding-right: 120px; }
+.file-body .f-title { margin-top: 8px; font-size: clamp(1.9rem, 3.4vw, 2.6rem); color: var(--ox); padding-right: 120px; }
 .f-what { margin-top: 10px; max-width: 46ch; }
 .f-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 16px 28px; margin: 22px 0 18px; }
 .f-facts dt { font: 600 0.75rem var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
@@ -76,7 +76,7 @@ button, input, textarea { font: inherit; color: inherit; }
   .file-tabs { position: static; height: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-bottom: 12px; }
   .ftab, .ftab:hover, .ftab[aria-selected="true"] { position: static; width: auto; height: 42px; border-radius: 8px; }
   .file::after { top: 120px; } .file::before { top: 134px; }
-  .file-body h3 { padding-right: 0; margin-top: 36px; }
+  .file-body .f-title { padding-right: 0; margin-top: 36px; }
 }
 @media (min-width: 900px) { .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 72px; } }
 @media (prefers-reduced-motion: reduce) { .hero h1, .file, .swap > *, .swap > .stamp { animation: none !important; } .ftab { transition: none; } }
@@ -161,3 +161,6 @@ button, input, textarea { font: inherit; color: inherit; }
   .folder { box-shadow: none; background: #fff; }
   .btn { display: none; }
 }
+
+/* Érintési célterület: a menüpontok legalább 44 px magasak, a rövidek (pl. „Ár”) oldalt is kapnak helyet. */
+.top nav a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 6px; }

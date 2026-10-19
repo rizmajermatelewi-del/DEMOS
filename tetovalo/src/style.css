@@ -124,8 +124,14 @@ button, input, textarea { font: inherit; color: inherit; }
 .visit p { margin-top: 10px; color: var(--muted); }
 .visit-row { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
 .visit-row a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border: 1px solid var(--bone); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
-@media (min-width: 900px) { .visit { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 48px; } }
+@media (min-width: 900px) { .visit:has(img) { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 48px; } }
 .foot { padding: 22px var(--gutter) calc(22px + env(safe-area-inset-bottom)); font-size: 0.85rem; color: var(--muted); border-top: 1px solid #262626; }
 
 /* Hat minta: asztalon 3×2 rács, hogy ne maradjon egy árva lap. */
 @media (min-width: 900px) { .sheet { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Érintési célterület: a menüpontok legalább 44 px magasak, a rövidek (pl. „Ár”) oldalt is kapnak helyet. */
+.top nav a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 6px; }
+
+/* A [hidden] mindig nyerjen (az img { display: block } felülírta, és üres kép-keret látszott). */
+[hidden] { display: none !important; }
