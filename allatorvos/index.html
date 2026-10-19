@@ -33,9 +33,21 @@
           <p class="lead">Adja meg, mikor született a kölyök, és összerakjuk az oltási naptárát. A kötelezőket kiemeljük, és ha kéri, SMS-ben szólunk előtte.</p>
           <a class="btn" href="#naptar">Kiszámolom</a>
         </div>
-        <div class="hero-pics">
-          <img src="./src/assets/kolyok.webp" alt="Corgi kölyök narancssárga háttér előtt" width="1400" height="933" fetchpriority="high" />
-          <img src="./src/assets/macska.webp" alt="Cirmos macska a gazdája ölében a rendelőben" width="1400" height="933" />
+        <div class="grow" id="grow">
+          <div class="grow-head">
+            <div class="grow-sp" role="radiogroup" aria-label="Kutya vagy macska?">
+              <label><input type="radio" name="hsp" value="kutya" checked /><span>Kutya</span></label>
+              <label><input type="radio" name="hsp" value="macska" /><span>Macska</span></label>
+            </div>
+            <p class="grow-out" id="grow-out" aria-live="polite"></p>
+          </div>
+          <div class="ruler">
+            <img class="buddy" id="buddy" src="./src/assets/kolyok.webp" alt="" width="1400" height="933" fetchpriority="high" />
+            <ol class="marks" id="marks" aria-hidden="true"></ol>
+            <input type="range" id="age" min="0" max="1000" step="1" value="374" aria-label="A kedvenc életkora napban" />
+            <ol class="ticks" aria-hidden="true"><li style="--x:0%">0</li><li style="--x:27.4%">1 hó</li><li style="--x:47.7%">3 hó</li><li style="--x:67.4%">6 hó</li><li style="--x:95.5%">1 év</li></ol>
+          </div>
+          <a class="btn" id="grow-go" href="#naptar">Ennek a naptárát kérem</a>
         </div>
       </section>
 
