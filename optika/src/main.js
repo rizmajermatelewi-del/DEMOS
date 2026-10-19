@@ -113,6 +113,37 @@ $('book').addEventListener('submit', (e) => {
   $('done-title').focus()
 })
 
+// Hero: a tábla homályos, a lencse alatt éles. A lencsét húzni lehet (egér, ujj), vagy nyilakkal mozgatni.
+const stage = $('stage')
+$('chart-sharp').innerHTML = $('chart').innerHTML
+const setLens = (x, y) => {
+  stage.style.setProperty('--lx', `${Math.min(92, Math.max(8, x)).toFixed(1)}%`)
+  stage.style.setProperty('--ly', `${Math.min(90, Math.max(10, y)).toFixed(1)}%`)
+}
+const lens = $('lens')
+let drag = null
+lens.addEventListener('pointerdown', (e) => {
+  drag = stage.getBoundingClientRect()
+  lens.setPointerCapture(e.pointerId)
+  stage.classList.add('dragging')
+})
+lens.addEventListener('pointermove', (e) => {
+  if (!drag) return
+  setLens(((e.clientX - drag.left) / drag.width) * 100, ((e.clientY - drag.top) / drag.height) * 100)
+})
+const stop = () => { drag = null; stage.classList.remove('dragging') }
+lens.addEventListener('pointerup', stop)
+lens.addEventListener('pointercancel', stop)
+lens.addEventListener('keydown', (e) => {
+  const step = { ArrowLeft: [-4, 0], ArrowRight: [4, 0], ArrowUp: [0, -5], ArrowDown: [0, 5] }[e.key]
+  if (!step) return
+  e.preventDefault()
+  const cs = getComputedStyle(stage)
+  setLens(parseFloat(cs.getPropertyValue('--lx')) + step[0], parseFloat(cs.getPropertyValue('--ly')) + step[1])
+})
+// Betöltéskor a lencse jobbról beúszik a tábla közepére (a CSS @property-vel átmenetes).
+requestAnimationFrame(() => requestAnimationFrame(() => setLens(innerWidth >= 900 ? 72 : 50, innerWidth >= 900 ? 46 : 40)))
+
 renderRecipe()
 renderMirror()
 renderExam()

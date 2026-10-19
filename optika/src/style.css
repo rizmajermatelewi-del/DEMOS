@@ -40,7 +40,36 @@ button, input, select { font: inherit; color: inherit; }
 @media (min-width: 900px) { .top nav { display: flex; } .call { margin-left: 8px; } }
 
 /* Hero: a tábla maga a cím */
-.hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; padding: clamp(32px, 6vw, 80px) var(--gutter); align-items: center; }
+/* Hero: az egész szélességet kitöltő, homályos szemvizsgáló tábla; a húzható lencse alatt éles. */
+@property --lx { syntax: '<percentage>'; inherits: true; initial-value: 88%; }
+@property --ly { syntax: '<percentage>'; inherits: true; initial-value: 62%; }
+.hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); }
+.stage { --r: 78px; position: relative; overflow: hidden; background: #fff; border-bottom: 1px solid var(--line); transition: --lx 1.6s cubic-bezier(0.2, 0.75, 0, 1), --ly 1.6s cubic-bezier(0.2, 0.75, 0, 1); }
+.stage.dragging { transition: none; }
+.stage .chart { padding: 36px 16px 44px; border: 0; border-radius: 0; background: none; }
+.chart.blur { filter: blur(5px); opacity: 0.75; }
+.chart.sharp { position: absolute; inset: 0; clip-path: circle(calc(var(--r) - 6px) at var(--lx) var(--ly)); }
+.loupe { position: absolute; left: var(--lx); top: var(--ly); width: calc(var(--r) * 2); height: calc(var(--r) * 2); translate: -50% -50%; padding: 0; border-radius: 50%; cursor: grab; touch-action: none;
+  border: 9px solid var(--ink); background: radial-gradient(circle at 30% 25%, rgb(255 255 255 / 0.45), transparent 40%);
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.7), 0 22px 40px -14px rgb(0 0 0 / 0.45); }
+.loupe:active { cursor: grabbing; }
+.loupe::after { content: ''; position: absolute; left: 82%; top: 82%; width: 16px; height: calc(var(--r) * 0.9); border-radius: 8px; background: var(--ink); transform-origin: top center; transform: rotate(-45deg); }
+.loupe-tag { position: absolute; left: 50%; top: calc(100% + 18px); translate: -50% 0; padding: 4px 12px; border-radius: 999px; background: var(--blue); color: #fff; font-size: 0.8rem; font-weight: 600; white-space: nowrap; pointer-events: none; }
+.loupe:focus-visible { outline: 3px solid var(--blue); outline-offset: 6px; }
+.hero-text { padding: 28px var(--gutter) 44px; }
+@media (min-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .stage { --r: 116px; min-height: min(760px, calc(100svh - 110px)); display: grid; align-content: center; }
+  .stage .chart { padding: 52px 3% 52px 46%; }
+  .stage .chart .r1 { font-size: clamp(8rem, 13vw, 13rem); } .stage .chart .r2 { font-size: clamp(5rem, 7.6vw, 7.6rem); }
+  .stage .chart .r3 { font-size: clamp(3.4rem, 5vw, 5rem); } .stage .chart .r4 { font-size: clamp(2.4rem, 3.4vw, 3.4rem); }
+  .stage .chart .r5 { font-size: clamp(1.7rem, 2.4vw, 2.4rem); } .stage .chart .r6 { font-size: clamp(1.2rem, 1.7vw, 1.7rem); } .stage .chart .r7 { font-size: clamp(0.8rem, 1.1vw, 1.1rem); }
+  .chart.sharp { align-content: center; }
+  .hero-text h1 { font-size: clamp(2rem, 3.1vw, 3rem); }
+  .hero-text .lead { margin: 14px 0 20px; }
+  .hero-text { position: absolute; left: var(--gutter); bottom: 40px; width: min(540px, 42%); padding: 28px 30px; border-radius: 22px; background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: blur(6px); box-shadow: 0 24px 60px -30px rgb(0 0 0 / 0.4); }
+}
+@media (prefers-reduced-motion: reduce) { .stage { transition: none; } }
 .chart { display: grid; justify-items: center; gap: 0.3em; padding: 28px 16px; border: 1px solid var(--line); border-radius: 20px; background: #fff; font-weight: 800; line-height: 1; text-align: center; letter-spacing: 0.18em; overflow: hidden; }
 .chart p { white-space: nowrap; }
 .chart .r1 { font-size: clamp(5rem, 16vw, 9rem); }
@@ -52,7 +81,6 @@ button, input, select { font: inherit; color: inherit; }
 .chart .r7 { font-size: clamp(0.5rem, 1.5vw, 0.75rem); color: var(--blue); }
 .hero h1 { font-size: clamp(2.2rem, 5.4vw, 4rem); }
 .lead { margin: 18px 0 26px; max-width: 46ch; font-size: 1.12rem; color: var(--muted); }
-@media (min-width: 900px) { .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 64px; } }
 
 /* Recept */
 .recipe { padding: clamp(48px, 7vw, 96px) var(--gutter); background: var(--blue-soft); }
