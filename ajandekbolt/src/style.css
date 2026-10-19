@@ -47,11 +47,73 @@ button, input, textarea { font: inherit; color: inherit; }
 @media (max-width: 479px) { .call .long { display: none; } }
 @media (min-width: 480px) { .call .short { display: none; } }
 
-.hero { display: grid; gap: 28px; padding: 28px var(--gutter) 0; align-items: center; }
-.hero h1 { font-size: clamp(2.8rem, 9vw, 6rem); }
-.lead { margin: 18px 0 24px; max-width: 42ch; font-size: 1.15rem; color: var(--muted); }
-.hero-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 2px solid var(--ink); border-radius: 26px 26px 26px 120px; }
-@media (min-width: 900px) { .hero { grid-template-columns: 1fr 1fr; padding-top: 48px; } }
+/* Hero: kraftpapír asztal, közepén egy nagy ajándék, ami betöltéskor becsomagolja magát.
+   Kattintásra kibomlik, és kiugrik belőle az első három ajánlat. */
+.hero { position: relative; display: grid; gap: 18px; padding: 32px var(--gutter) 48px; overflow: hidden; border-bottom: 2px solid var(--ink);
+  grid-template-columns: minmax(0, 1fr); grid-template-areas: "h" "g" "f";
+  background: repeating-linear-gradient(115deg, rgb(255 255 255 / 0.05) 0 2px, transparent 2px 9px), #ead8bd; }
+.hero h1 { grid-area: h; font-size: clamp(2.5rem, 11vw, 6.6rem); line-height: 0.92; }
+.hero h1 span { display: block; animation: slide 0.9s cubic-bezier(0.2, 0.75, 0, 1) both; }
+.h-bot { color: var(--red); animation-delay: 0.12s !important; }
+@keyframes slide { from { opacity: 0; transform: translateX(-40px); } }
+.polaroid { margin: 0; padding: 10px 10px 0; background: #fff; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); transition: transform 0.4s cubic-bezier(0.2, 0.75, 0, 1); }
+.polaroid img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.polaroid figcaption { padding: 8px 2px 10px; font: italic 500 0.9rem var(--body); text-align: center; }
+/* A két fotó ugyanabban a cellában fekszik, mint az ajándék, mögötte, mintha az asztalra dobták volna. */
+.p-left { grid-area: g; z-index: 0; width: 46%; justify-self: start; align-self: start; transform: rotate(-7deg); }
+.p-right { grid-area: g; z-index: 0; width: 42%; justify-self: end; align-self: end; transform: rotate(5deg); }
+.polaroid:hover { transform: rotate(0) scale(1.03); z-index: 3; }
+.hero-foot { grid-area: f; display: grid; gap: 18px; justify-items: start; }
+.lead { max-width: 44ch; font-size: 1.15rem; color: #3d3a52; }
+
+.gift { grid-area: g; z-index: 2; position: relative; justify-self: center; align-self: center; width: 300px; height: 300px; padding: 0; border: 0; background: none; cursor: pointer; }
+.gift:focus-visible { outline-offset: 10px; border-radius: 20px; }
+.gift .hero-present { position: absolute; left: 50%; top: 52%; margin: -105px 0 0 -110px; transform: scale(1.15); animation: bob 3.4s 2.2s ease-in-out infinite; }
+@keyframes bob { 50% { translate: 0 -7px; } }
+/* Becsomagolás betöltéskor: doboz, fedél, szalag, masni. "backwards", hogy utána a hover és a kibontás szabadon mozgathassa. */
+.hero-present .box { animation: drop 0.7s 0.15s cubic-bezier(0.3, 1.4, 0.5, 1) backwards; }
+.hero-present .lid { animation: drop 0.7s 0.35s cubic-bezier(0.3, 1.4, 0.5, 1) backwards; transition: transform 0.6s cubic-bezier(0.2, 0.75, 0, 1), opacity 0.5s; }
+.hero-present .ribbon-v { transform-origin: top; animation: growY 0.45s 0.8s ease-out backwards; transition: transform 0.4s; }
+.hero-present .ribbon-h { transform-origin: left; animation: growX 0.45s 0.9s ease-out backwards; transition: transform 0.4s; }
+.hero-present .bow-l { animation: bowL 0.6s 1.15s cubic-bezier(0.3, 1.6, 0.5, 1) backwards; transition: transform 0.6s cubic-bezier(0.2, 0.75, 0, 1), opacity 0.5s; }
+.hero-present .bow-r { animation: bowR 0.6s 1.2s cubic-bezier(0.3, 1.6, 0.5, 1) backwards; transition: transform 0.6s cubic-bezier(0.2, 0.75, 0, 1), opacity 0.5s; }
+@keyframes drop { from { opacity: 0; transform: translateY(-140px); } }
+@keyframes growY { from { transform: scaleY(0); } }
+@keyframes growX { from { transform: scaleX(0); } }
+@keyframes bowL { from { transform: rotate(-22deg) scale(0); } }
+@keyframes bowR { from { transform: rotate(22deg) scale(0); } }
+.gift:hover .hero-present .lid { transform: translateY(-10px) rotate(-3deg); }
+.gift.open .hero-present .lid { transform: translate(-40px, -150px) rotate(-30deg); opacity: 0; }
+.gift.open .hero-present .bow-l { transform: translate(-90px, -110px) rotate(-80deg); opacity: 0; }
+.gift.open .hero-present .bow-r { transform: translate(90px, -110px) rotate(80deg); opacity: 0; }
+.gift.open .hero-present .ribbon-v { transform: scaleY(0); }
+.burst { position: absolute; left: 50%; top: 40%; z-index: 6; pointer-events: none; }
+.pop { position: absolute; left: 0; top: 0; display: grid; justify-items: center; gap: 4px; width: 128px; padding: 10px; border: 2px solid var(--ink); border-radius: 16px; background: var(--tint); box-shadow: 4px 4px 0 var(--ink); opacity: 0; translate: -50% 0; }
+.pop svg { width: 38px; height: 38px; fill: var(--ink); }
+.pop b { font: 700 0.8rem/1.15 var(--display); text-align: center; }
+.gift.open .pop { animation: pop 0.8s calc(0.25s + var(--i) * 0.09s) cubic-bezier(0.3, 1.5, 0.5, 1) forwards; }
+@keyframes pop { to { opacity: 1; transform: translate(calc((var(--i) - 1) * 140px), -170px) rotate(calc((var(--i) - 1) * 8deg)); } }
+.gift-hint { position: absolute; left: -6px; bottom: 18px; padding: 4px 10px; border-radius: 999px; background: var(--paper); border: 2px solid var(--ink); font: italic 600 0.95rem var(--body); transform: rotate(-8deg); animation: fade 0.6s 1.8s backwards; }
+.gift-hint::after { content: ' ↗'; }
+@keyframes fade { from { opacity: 0; } }
+
+@media (min-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); grid-template-areas: "h g" "f g"; column-gap: 40px; align-items: end; padding-top: 48px; padding-bottom: 56px; min-height: min(760px, calc(100svh - 110px)); }
+  .hero h1 { align-self: end; font-size: clamp(3rem, 5.4vw, 6rem); }
+  .hero-foot { align-self: start; }
+  .gift { width: 420px; height: 420px; }
+  .gift .hero-present { transform: scale(1.55); }
+  .p-left { width: 44%; max-width: 270px; margin-top: 10px; } .p-right { width: 40%; max-width: 250px; margin-bottom: 10px; }
+}
+@media (max-width: 899px) { .hero { min-height: 0; } .gift { margin: 30px 0; } }
+
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.75, 0, 1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 span, .hero-present, .hero-present *, .gift-hint { animation: none !important; transition: none !important; }
+  .polaroid { transition: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
 
 /* Ajándékkereső */
 .finder { padding: clamp(48px, 7vw, 96px) var(--gutter) 24px; }

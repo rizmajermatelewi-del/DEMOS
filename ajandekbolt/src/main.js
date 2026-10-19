@@ -113,6 +113,25 @@ $('pack').addEventListener('submit', (e) => {
   $('held-title').focus()
 })
 
+// A hero ajándéka: kattintásra leugrik a fedél, kiugrik a mostani szűrőkre ajánlott első három termék, aztán a keresőhöz görgetünk.
+const calm = matchMedia('(prefers-reduced-motion: reduce)')
+$('gift').addEventListener('click', () => {
+  const gift = $('gift')
+  if (calm.matches) { $('kereso').scrollIntoView(); return }
+  if (gift.classList.contains('open')) return
+  const picks = suggest(state).filter((p) => p.stock > 0).slice(0, 3)
+  $('burst').innerHTML = picks.map((p, i) => `<span class="pop" style="--i:${i};--tint:${TINTS[p.id % TINTS.length]}">${ICONS[p.icon].replace('<svg', '<svg aria-hidden="true" focusable="false"')}<b>${p.name}</b></span>`).join('')
+  gift.classList.add('open')
+  setTimeout(() => $('kereso').scrollIntoView({ behavior: 'smooth' }), 1300)
+  setTimeout(() => gift.classList.remove('open'), 2600)
+})
+
+// Görgetésre beúszó szakaszok
+const reveal = new IntersectionObserver((entries) => entries.forEach((e) => {
+  if (e.isIntersecting) { e.target.classList.add('in'); reveal.unobserve(e.target) }
+}), { rootMargin: '0px 0px -12% 0px' })
+document.querySelectorAll('main > section:not(.hero)').forEach((s) => { s.classList.add('reveal'); reveal.observe(s) })
+
 const order = [1, 2, 3, 4, 5, 6, 0]
 const today = new Date().getDay()
 $('hours-table').insertAdjacentHTML('beforeend', `<tbody>${order.map((d) => {
