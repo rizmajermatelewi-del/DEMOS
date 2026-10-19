@@ -31,10 +31,15 @@
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-text">
           <p class="mono-tag">TELEFON · LAPTOP · TABLET · NYOMTATÁS</p>
-          <h1 id="hero-title">Mondja meg, mi a baja.<br />Mi megmondjuk, mennyi és mikorra.</h1>
-          <p class="lead">Ár és határidő még azelőtt, hogy bejönne. A bevizsgálás ingyenes, ha nálunk javíttatja, és a munkalapszámmal bármikor megnézheti, hol tart.</p>
+          <h1 id="hero-title">Mutassa meg, <span>hol fáj neki.</span></h1>
+          <p class="lead">Szétszedtük a telefont. Bökjön rá arra a részre, ami rossz, és már itt látja, mennyi lesz és mikorra kész. A bevizsgálás ingyenes, ha nálunk javíttatja.</p>
+          <ol class="parts" id="parts" aria-label="Melyik rész rossz?"></ol>
+          <p class="quote" id="quote" aria-live="polite"></p>
         </div>
-        <img class="hero-img" src="./src/assets/telefon.webp" alt="Szerelő egy szétszedett telefon alaplapján dolgozik" width="1400" height="933" fetchpriority="high" />
+        <div class="rig" aria-hidden="true">
+          <div class="phone" id="phone"></div>
+          <p class="rig-note">fig. 1 · szétszerelt nézet</p>
+        </div>
       </section>
 
       <section class="estimate" id="becsles" aria-labelledby="est-title">

@@ -40,10 +40,12 @@ $('pick').addEventListener('change', (e) => {
   if (e.target.name === 'device') { renderPick(); document.querySelector(`input[name="device"][value="${state.device}"]`).focus() } else renderReceipt()
 })
 
+const whenText = (e) => e.ready.kind === 'ma' ? 'ma 17:00-ra kész' : e.ready.kind === 'kovetkezo' ? `${day(e.ready.date)} délutánra kész` : `alkatrész rendelve, ${day(e.ready.date)}`
+
 function renderReceipt() {
   const now = new Date()
   const e = estimate(state.device, state.brand, state.fault, now)
-  const when = e.ready.kind === 'ma' ? 'ma 17:00-ra kész' : e.ready.kind === 'kovetkezo' ? `${day(e.ready.date)} délutánra kész` : `alkatrész rendelve, ${day(e.ready.date)}`
+  const when = whenText(e)
   $('receipt').innerHTML = `
     <p class="r-head">CSAVAR SZERVIZ<br />ÁRBECSLÉS</p>
     <p class="r-line"><span>Eszköz</span><span>${DEVICES[state.device].name}, ${esc(state.brand)}</span></p>
@@ -75,5 +77,47 @@ function renderCalc() {
 $('calc').addEventListener('input', renderCalc)
 $('calc').addEventListener('submit', (e) => e.preventDefault())
 
-renderPick()
+// Hero: a szétszerelt telefon rétegei. Minden réteg egy hiba; a lista és a réteg ugyanazt választja ki.
+const LAYERS = [
+  { id: 'kijelzo', no: '01', name: 'Kijelző', cls: 'l-screen' },
+  { id: 'toltes', no: '02', name: 'Töltőcsatlakozó', cls: 'l-frame' },
+  { id: 'nemindul', no: '03', name: 'Alaplap', cls: 'l-board' },
+  { id: 'akku', no: '04', name: 'Akkumulátor', cls: 'l-battery' },
+  { id: 'viz', no: '05', name: 'Hátlap, vízzár', cls: 'l-back' },
+  { id: 'lassu', no: '06', name: 'Szoftver', cls: null },
+]
+const phone = $('phone')
+phone.innerHTML = LAYERS.filter((l) => l.cls).map((l, i) => `<div class="layer ${l.cls}" data-id="${l.id}" style="--i:${4 - i}"><span class="layer-no">${l.no}</span></div>`).join('')
+$('parts').innerHTML = LAYERS.map((l) => `<li><button type="button" class="part" data-id="${l.id}" aria-pressed="false"><span class="no">${l.no}</span><span class="pn">${l.name}</span><span class="pf">${FAULTS[l.id].name}</span></button></li>`).join('')
+
+function selectPart(id) {
+  state.device = 'telefon'
+  state.fault = id
+  phone.dataset.pick = id
+  document.querySelectorAll('.part').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === id)))
+  document.querySelectorAll('.layer').forEach((l) => l.classList.toggle('is-on', l.dataset.id === id))
+  const e = estimate('telefon', state.brand, id, new Date())
+  $('quote').innerHTML = `<span class="q-price">${ft(e.low)} – ${ft(e.high)}</span><span class="q-when">${whenText(e)}${e.stock ? '' : ' · az alkatrészt rendeljük'}</span><a href="#becsles">Teljes becslés, más márkára is ↓</a>`
+  renderPick()
+}
+const hover = (id) => {
+  if (id) phone.dataset.hover = id; else delete phone.dataset.hover
+  document.querySelectorAll('.layer').forEach((l) => l.classList.toggle('is-hover', l.dataset.id === id))
+}
+$('parts').addEventListener('click', (e) => { const b = e.target.closest('.part'); if (b) selectPart(b.dataset.id) })
+$('parts').addEventListener('pointerover', (e) => hover(e.target.closest('.part')?.dataset.id))
+$('parts').addEventListener('pointerleave', () => hover(null))
+phone.addEventListener('click', (e) => { const l = e.target.closest('.layer'); if (l) selectPart(l.dataset.id) })
+phone.addEventListener('pointerover', (e) => hover(e.target.closest('.layer')?.dataset.id))
+phone.addEventListener('pointerleave', () => hover(null))
+// Betöltés után a telefon szétnyílik (mozgáscsökkentésnél a CSS átmenet nélkül teszi).
+setTimeout(() => phone.classList.add('open'), 350)
+
+// Görgetésre beúszó szakaszok
+const reveal = new IntersectionObserver((entries) => entries.forEach((e) => {
+  if (e.isIntersecting) { e.target.classList.add('in'); reveal.unobserve(e.target) }
+}), { rootMargin: '0px 0px -12% 0px' })
+document.querySelectorAll('main > section:not(.hero)').forEach((s) => { s.classList.add('reveal'); reveal.observe(s) })
+
+selectPart('kijelzo')
 renderCalc()
