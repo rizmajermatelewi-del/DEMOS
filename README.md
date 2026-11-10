@@ -26,6 +26,8 @@ kezdeményezés, kitalált mintaadatokkal — nem ügyfélmunka.
 | [`allatorvos/`](allatorvos) | Állatorvos: növekedési vonalzó oltásokkal, teljes oltási naptár, SMS-emlékeztető, ügyelet | https://demo-allatorvos.vercel.app |
 | [`ugyved/`](ugyved) | Ügyvédi iroda: dosszié ügytípusonként fülekkel, díj és időtartam, „hozza magával” iratlista, konzultáció | https://demo-ugyved.vercel.app |
 | [`tetovalo/`](tetovalo) | Tetoválószalon: kirajzolódó flash minták egyszeri foglalással, ár-, alkalom- és fájdalombecslő | https://demo-tetovalo.vercel.app |
+| [`automento/`](automento) | Autómentő: helymegosztás egy gombbal, kiérkezési idő és díjsáv, autópályán kilométerkőből | https://demo-automento.vercel.app (még nincs élesítve) |
+| [`karrier/`](karrier) | Pékség karrieroldal: műszak-tálca, élő egyezés és heti bérbecslés, kétperces jelentkezés | https://demo-karrier.vercel.app (még nincs élesítve) |
 
 Mindegyik mappa önálló Vite projekt, saját `package.json`-nal és README-vel
 (probléma + döntések).

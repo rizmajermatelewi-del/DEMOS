@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#2b1a10" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%232b1a10%27/><ellipse cx=%2716%27 cy=%2718%27 rx=%2710%27 ry=%276%27 fill=%27%23e9a23b%27/><path d=%27M10 17c2-2 4-2 6 0s4 2 6 0%27 stroke=%27%232b1a10%27 stroke-width=%272%27 fill=%27none%27/></svg>" />
+    <title>Hajnal Pékség, állások: bemutató</title>
+    <meta name="description" content="Bemutató karrieroldal egy pékségnek: bejelöli, mikor ér rá, és élőben látja, melyik állás illik Önhöz és nagyjából mennyit keresne. Két perces jelentkezés, nem küld adatot." />
+    <script type="application/ld+json">
+      { "@context": "https://schema.org", "@type": "Bakery", "name": "Hajnal Pékség",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.", "url": "https://demo-karrier.vercel.app",
+        "telephone": "+36 30 555 0188", "address": { "@type": "PostalAddress", "addressLocality": "Monor", "addressCountry": "HU" } }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#mikor">Ugrás a beosztáshoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=karrier#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <a class="brand" href="#">Hajnal <span>Pékség</span><small>Monor, 1998 óta</small></a>
+      <nav aria-label="Fő menü"><a href="#mikor">Beosztás</a><a href="#allasok">Állások</a><a href="#jelentkezes">Jelentkezés</a></nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <img class="hero-img" src="/pekseg-hajnal.webp" alt="Két pék formázza a tésztát egy lisztes fa asztalon, mögöttük izzik a kemence és sorakoznak a friss kenyerek" width="1600" height="900" fetchpriority="high" />
+        <div class="hero-text">
+          <p class="kicker">Három embert keresünk</p>
+          <h1 id="hero-title">Hajnali háromkor kezdünk. <span>Ön mikor ér rá?</span></h1>
+          <p class="lead">Jelölje be a tálcán, mikor tud dolgozni. Rögtön látja, melyik állás illik Önhöz és nagyjából mennyit keresne. A jelentkezés két perc, önéletrajz nem kell.</p>
+          <a class="cta" href="#mikor">Megnézem, mi illik hozzám</a>
+        </div>
+      </section>
+
+      <section class="tray-wrap" id="mikor" aria-labelledby="tray-title">
+        <div class="tray-head">
+          <h2 id="tray-title">Mikor ér rá?</h2>
+          <p>Koppintson a műszakokra. Annyit jelöljön, amennyit tényleg vállalna.</p>
+        </div>
+        <div class="tray" id="tray" role="group" aria-label="Elérhetőség napok és műszakok szerint"></div>
+        <p class="tray-sum" id="tray-sum" aria-live="polite"></p>
+      </section>
+
+      <section class="jobs" id="allasok" aria-labelledby="jobs-title">
+        <h2 id="jobs-title">Ezekre keresünk embert</h2>
+        <ul class="job-list" id="job-list"></ul>
+        <p class="jobs-note">A bérek bruttóban, tájékoztató jelleggel. A hajnali műszakban a 22 és 6 óra közötti munkára 15% éjszakai pótlék jár, ezt már beleszámoltuk.</p>
+      </section>
+
+      <section class="apply" id="jelentkezes" aria-labelledby="apply-title">
+        <div class="apply-intro">
+          <h2 id="apply-title">Jelentkezés, két perc</h2>
+          <p>Amit fent bejelölt, azt már tudjuk. Csak azt kérjük, amit nem.</p>
+          <img src="/kenyer.webp" alt="Frissen sült kovászos kenyerek és aranybarna kiflik hűlnek egy rácson, hajnali fényben" width="1200" height="900" loading="lazy" />
+        </div>
+        <form class="apply-form" id="form" novalidate>
+          <label for="name">Neve</label>
+          <input id="name" name="name" autocomplete="name" required />
+          <label for="phone">Telefonszáma</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="06 30 123 4567" required aria-describedby="phone-hint" />
+          <p class="hint" id="phone-hint">Hívjuk vissza, nem e-mailezünk.</p>
+          <label for="job">Melyik állás érdekli?</label>
+          <select id="job" name="job"></select>
+          <fieldset class="yesno">
+            <legend>Van egészségügyi kiskönyve?</legend>
+            <label><input type="radio" name="kiskonyv" value="igen" /> Van</label>
+            <label><input type="radio" name="kiskonyv" value="nem" checked /> Nincs, de intézném</label>
+          </fieldset>
+          <label for="note">Bármi, amit tudnunk kell <span>(nem kötelező)</span></label>
+          <textarea id="note" name="note" rows="3" placeholder="Pl. biciklivel jönnék Péteriből, júliusban egy hétig nem tudok"></textarea>
+          <p class="avail" id="avail"></p>
+          <label class="consent"><input type="checkbox" id="consent" /> <span>Hozzájárulok, hogy a jelentkezésem miatt felhívjanak. Fél év után töröljük.</span></label>
+          <p class="error" id="error" role="alert"></p>
+          <button type="submit">Jelentkezem</button>
+        </form>
+      </section>
+
+      <section class="owner" id="owner" hidden aria-labelledby="owner-title">
+        <h2 id="owner-title" tabindex="-1">Köszönjük, két munkanapon belül hívjuk.</h2>
+        <p class="owner-sub">Így érkezik meg a jelentkezése a pékséghez:</p>
+        <article class="ticket" id="ticket"></article>
+        <p class="owner-note">Bemutató: a jelentkezés nem ment el sehova.</p>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p><strong>Hajnal Pékség</strong>, Monor · bolt nyitva H–Szo 6–19 · <a href="tel:+36305550188">06 30 555 0188</a></p>
+      <p class="credit">Bemutató projekt, kitalált vállalkozás. Fotók: generált illusztrációk. Készítette <a href="https://rizmajerdev.com/">Rizmajer Máté</a>.</p>
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

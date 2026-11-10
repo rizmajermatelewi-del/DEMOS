@@ -1,0 +1,150 @@
+/* Hajnal Pékség: kenyérhéj-barna mint felület (nem krémszín), lisztfehér
+   szöveg, aranybarna cipó a kiemelés, a beosztás egy lyukacsos sütőtálca. */
+:root {
+  --crust: #2b1a10;
+  --crust-2: #3a2416;
+  --line: #5a3b27;
+  --flour: #f7f2ec;
+  --muted: #d6c8ba;
+  --loaf: #e9a23b;
+  --loaf-ink: #2b1a10;
+  --steel: #2f3134;
+  --radius: 16px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--crust); color: var(--flour); font: 400 1.0625rem/1.65 'Figtree Variable', system-ui, sans-serif; }
+h1, h2, h3, .brand { font-family: 'Bricolage Grotesque Variable', system-ui, sans-serif; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--loaf); outline-offset: 3px; }
+
+.skip { position: absolute; left: 1rem; top: -4rem; background: var(--loaf); color: var(--loaf-ink); padding: .7rem 1rem; border-radius: 8px; z-index: 10; }
+.skip:focus { top: 1rem; }
+.banner { margin: 0; padding: .55rem 1rem; background: #1c110a; color: var(--muted); font-size: .8125rem; text-align: center; }
+.banner a { color: var(--flour); }
+.banner-cta { margin-left: .5rem; font-weight: 700; color: var(--loaf) !important; text-decoration: none; }
+
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1.5rem; padding: .9rem clamp(1rem, 4vw, 3rem); border-bottom: 1px solid var(--line); }
+.brand { display: inline-flex; flex-direction: column; justify-content: center; min-height: 44px; font-size: 1.5rem; font-weight: 800; text-decoration: none; line-height: 1.05; }
+.brand span { color: var(--loaf); }
+.brand small { font-family: 'Figtree Variable', sans-serif; font-weight: 500; font-size: .75rem; color: var(--muted); }
+.top nav { display: flex; gap: .25rem; }
+.top nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 .75rem; border-radius: 999px; text-decoration: none; font-weight: 600; }
+.top nav a:hover { background: var(--crust-2); }
+
+main > section { padding: clamp(2.75rem, 7vw, 5.5rem) clamp(1rem, 4vw, 3rem); }
+
+/* Hős: a kemence fotója, rajta a kérdés. */
+.hero { position: relative; display: grid; min-height: min(88vh, 760px); align-items: end; padding: 0 !important; overflow: hidden; }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(43 26 16 / .15) 0%, rgb(43 26 16 / .55) 45%, rgb(43 26 16 / .97) 85%); z-index: 1; }
+.hero-text { position: relative; z-index: 2; padding: clamp(1.5rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem); max-width: 50rem; }
+.kicker { display: inline-block; margin: 0 0 1rem; padding: .3rem .8rem; border-radius: 999px; background: var(--loaf); color: var(--loaf-ink); font-weight: 700; font-size: .9rem; }
+h1 { margin: 0; font-size: clamp(2.3rem, 6.5vw, 4.5rem); line-height: 1.02; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
+h1 span { color: var(--loaf); display: block; }
+.lead { margin: 1.25rem 0 0; max-width: 36rem; font-size: 1.15rem; color: var(--flour); }
+.cta { display: inline-flex; align-items: center; min-height: 54px; margin-top: 1.75rem; padding: 0 1.5rem; border-radius: 999px; background: var(--loaf); color: var(--loaf-ink); font-weight: 800; font-size: 1.05rem; text-decoration: none; }
+.cta:hover { filter: brightness(1.05); }
+
+h2 { margin: 0 0 .5rem; font-size: clamp(1.8rem, 4.5vw, 2.8rem); line-height: 1.08; font-weight: 800; text-wrap: balance; }
+.tray-head p, .apply-intro p { color: var(--muted); margin: 0; max-width: 40rem; }
+
+/* A tálca: lyukacsos acéllemez, a bejelölt műszak egy aranybarna cipó. */
+.tray {
+  margin-top: 1.75rem; display: grid; grid-template-columns: minmax(5.5rem, auto) repeat(3, minmax(0, 1fr)); gap: .5rem;
+  padding: clamp(.75rem, 2.5vw, 1.5rem); border-radius: 22px; max-width: 46rem;
+  background-color: var(--steel);
+  background-image: radial-gradient(circle, rgb(0 0 0 / .45) 2.2px, transparent 2.6px);
+  background-size: 14px 14px;
+  box-shadow: inset 0 0 0 6px #3d4044, 0 20px 40px -20px rgb(0 0 0 / .6);
+}
+.col-head, .row-head { display: flex; align-items: center; font-weight: 700; font-size: .95rem; color: #eef0f2; }
+.col-head { flex-direction: column; justify-content: center; text-align: center; line-height: 1.2; }
+.col-head small { font-weight: 500; color: #c9cdd2; font-size: .8rem; }
+.cell {
+  min-height: 48px; border-radius: 999px; cursor: pointer;
+  border: 2px dashed rgb(255 255 255 / .35); background: rgb(0 0 0 / .25);
+  transition: background-color .25s ease-out, transform .2s ease-out;
+}
+.cell:hover { border-color: rgb(255 255 255 / .7); }
+.cell[aria-pressed='true'] {
+  border: 0; background: radial-gradient(120% 90% at 50% 20%, #f6c46a 0%, var(--loaf) 45%, #b8741f 100%);
+  box-shadow: inset 0 -4px 0 rgb(0 0 0 / .18);
+}
+.cell[aria-pressed='true']::after { content: ''; display: block; width: 60%; height: 3px; margin: 0 auto; border-radius: 2px; background: rgb(255 255 255 / .45); transform: rotate(-12deg); }
+.tray-sum { min-height: 1.6em; margin: 1rem 0 0; font-weight: 600; }
+@media (max-width: 420px) { .row-head { font-size: .85rem; } .tray { grid-template-columns: 4.6rem repeat(3, minmax(0, 1fr)); gap: .4rem; } }
+
+/* Állások. */
+.jobs { background: var(--crust-2); border-block: 1px solid var(--line); }
+.job-list { list-style: none; padding: 0; margin: 1.75rem 0 0; display: grid; gap: 1rem; max-width: 64rem; }
+.job { display: grid; gap: 1.25rem; padding: clamp(1.1rem, 3vw, 1.75rem); border-radius: var(--radius); border: 2px solid var(--line); background: var(--crust); transition: border-color .25s ease-out; }
+@media (min-width: 760px) { .job { grid-template-columns: 1.3fr 1fr; align-items: center; } }
+.job[data-fit='jo'] { border-color: var(--loaf); }
+.job h3 { margin: 0; font-size: 1.45rem; font-weight: 800; }
+.job-when { margin: .25rem 0 .75rem; color: var(--muted); font-weight: 600; }
+.job-needs { margin: 0; padding-left: 1.1rem; color: var(--muted); }
+.fit-label { margin: 0; font-weight: 800; font-size: 1.1rem; }
+.job[data-fit='jo'] .fit-label { color: var(--loaf); }
+.job[data-fit='nem'] .fit-label { color: var(--muted); }
+.meter { height: 10px; margin: .6rem 0; border-radius: 999px; background: rgb(255 255 255 / .12); overflow: hidden; }
+.meter span { display: block; height: 100%; width: 0; background: var(--loaf); transition: width .35s cubic-bezier(.22, 1, .36, 1); }
+.fit-days { margin: 0; color: var(--muted); font-size: .95rem; min-height: 1.4em; }
+.fit-pay { margin: .35rem 0 1rem; }
+.fit-pay span { color: var(--muted); }
+.fit-pay strong { color: var(--flour); }
+.pick { display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.1rem; border-radius: 999px; border: 2px solid var(--loaf); color: var(--flour); font-weight: 700; text-decoration: none; }
+.pick:hover { background: var(--loaf); color: var(--loaf-ink); }
+.jobs-note { margin: 1.25rem 0 0; color: var(--muted); font-size: .95rem; max-width: 60ch; }
+
+/* Jelentkezés. */
+.apply { display: grid; gap: 2rem; }
+@media (min-width: 900px) { .apply { grid-template-columns: 1fr 1.1fr; align-items: start; } }
+.apply-intro img { margin-top: 1.5rem; border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; }
+.apply-form { display: grid; gap: .35rem; padding: clamp(1.25rem, 3vw, 2rem); border-radius: 22px; background: var(--flour); color: var(--crust); }
+.apply-form label { font-weight: 700; margin-top: .65rem; }
+.apply-form label span { font-weight: 400; color: #6b5444; }
+.apply-form input:not([type=radio]):not([type=checkbox]), .apply-form select, .apply-form textarea {
+  width: 100%; min-height: 48px; border-radius: 12px; border: 2px solid #b9a594; background: #fff; color: var(--crust); font: inherit; padding: .65rem .8rem;
+}
+.apply-form ::placeholder { color: #7a6656; }
+.apply-form :is(input, select, textarea):focus { outline: none; border-color: var(--crust); box-shadow: 0 0 0 4px rgb(233 162 59 / .45); }
+.hint { margin: 0; color: #6b5444; font-size: .9rem; }
+.yesno { border: 0; padding: 0; margin: .65rem 0 0; }
+.yesno legend { font-weight: 700; margin-bottom: .25rem; }
+.yesno label { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; margin: 0 1.25rem 0 0; font-weight: 500; }
+.yesno input, .consent input { width: 20px; height: 20px; accent-color: var(--crust); flex: none; }
+.avail { margin: .9rem 0 0; padding: .75rem .9rem; border-radius: 12px; background: #efe3d6; font-size: .95rem; }
+.consent { display: flex; gap: .65rem; align-items: flex-start; font-weight: 500 !important; }
+.error { min-height: 1.3em; margin: .5rem 0 0; color: #a3291b; font-weight: 700; }
+.apply-form button { margin-top: .5rem; min-height: 56px; border: 0; border-radius: 999px; background: var(--crust); color: var(--flour); font-family: inherit; font-weight: 800; font-size: 1.1rem; cursor: pointer; }
+.apply-form button:hover { background: #432818; }
+
+/* Így látja a tulaj. */
+.owner { border-top: 1px solid var(--line); }
+.owner h2:focus { outline: none; }
+.owner-sub { color: var(--muted); }
+.ticket { max-width: 34rem; margin-top: 1rem; padding: 1.25rem 1.5rem; border-radius: 6px; background: #fff; color: #1b1b1b; box-shadow: 0 18px 40px -18px rgb(0 0 0 / .7); font-variant-numeric: tabular-nums; }
+.ticket header { display: flex; justify-content: space-between; gap: 1rem; align-items: center; border-bottom: 2px dashed #ccc; padding-bottom: .75rem; }
+.t-role { font-weight: 800; }
+.t-fit { padding: .2rem .6rem; border-radius: 999px; background: #eee; font-weight: 700; font-size: .9rem; }
+.t-fit[data-fit='jo'] { background: var(--loaf); color: var(--loaf-ink); }
+.t-name { margin: .9rem 0 0; font-size: 1.3rem; font-weight: 800; }
+.t-phone { margin: .1rem 0 .75rem; }
+.ticket dl { margin: 0; display: grid; gap: .5rem; }
+.ticket dl div { display: grid; grid-template-columns: 6.5rem 1fr; gap: .5rem; }
+.ticket dt { color: #555; }
+.ticket dd { margin: 0; }
+.owner-note { color: var(--muted); font-size: .9rem; }
+
+.foot { padding: 2rem clamp(1rem, 4vw, 3rem) 3rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem; }
+.foot p { margin: .25rem 0; }
+.foot a { color: var(--flour); }
+.credit { font-size: .85rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cell, .meter span, .job { transition: none; }
+}

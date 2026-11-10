@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#15181b" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%2315181b%27/><path d=%27M6 22h20M10 22V12h8l4 5v5%27 fill=%27none%27 stroke=%27%23ffb000%27 stroke-width=%273%27 stroke-linejoin=%27round%27/></svg>" />
+    <title>Csörlő Autómentés: bemutató</title>
+    <meta name="description" content="Bemutató oldal egy autómentőnek: egy gombnyomással megosztja a helyét, megmondja, mikorra érnek oda és mennyi lesz, autópályán a kilométerkőből is. Nem küld adatot sehova." />
+    <script type="application/ld+json">
+      { "@context": "https://schema.org", "@type": "AutomotiveBusiness", "name": "Csörlő Autómentés",
+        "description": "Bemutató oldal, saját portfólió-projekt, nem élő vállalkozás.", "url": "https://demo-automento.vercel.app",
+        "telephone": "+36 30 555 0177", "openingHours": "Mo-Su 00:00-23:59",
+        "address": { "@type": "PostalAddress", "addressLocality": "Cegléd", "addressCountry": "HU" } }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#hol">Ugrás a helymegosztáshoz</a>
+    <p class="banner" role="status">
+      <strong>Bemutató projekt</strong>, saját kezdeményezés, mintaadatokkal. Nem élő vállalkozás. Készítette:
+      <a href="https://rizmajerdev.com/">Rizmajer Máté</a>
+      <a class="banner-cta" href="https://rizmajerdev.com/?demo=automento#kapcsolat">Ilyet kérek a vállalkozásomnak →</a>
+    </p>
+
+    <header class="top">
+      <a class="brand" href="#"><span class="beacon" aria-hidden="true"></span>CSÖRLŐ<small>autómentés · Cegléd · 0–24</small></a>
+      <a class="call" href="tel:+36305550177"><span class="long">06 30 555 0177</span><span class="short">Hívás</span></a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-text">
+          <p class="kicker">Éjjel-nappal, M4 · M5 · Pest megye déli része</p>
+          <h1 id="hero-title">Lerobbant? Mondja meg, <span>hol áll.</span></h1>
+          <p class="lead">Egy gombnyomással elküldi nekünk a pontos helyét. Mi megmondjuk, mikorra érünk oda, és nagyjából mennyi lesz, mielőtt elindulunk.</p>
+
+          <div class="actions" id="hol">
+            <button class="btn-locate" id="locate" type="button">
+              <span class="pin" aria-hidden="true"></span>Megosztom a helyem
+            </button>
+            <a class="btn-call" href="tel:+36305550177">Inkább hívom: 06 30 555 0177</a>
+          </div>
+          <p class="status" id="status" aria-live="polite"></p>
+        </div>
+        <figure class="hero-photo">
+          <img src="/mentes-este.webp" alt="Fehér platós mentőautó villogó sárga fénnyel az autópálya leállósávjában, éppen felhúz egy lerobbant kisautót" width="1600" height="900" fetchpriority="high" />
+        </figure>
+      </section>
+
+      <section class="result" id="result" hidden aria-labelledby="result-title">
+        <div class="sign">
+          <h2 id="result-title" class="sign-title" tabindex="-1">Megvan, hol áll.</h2>
+          <dl class="sign-rows">
+            <div><dt>Hely</dt><dd id="r-where"></dd></div>
+            <div><dt>Odaérünk</dt><dd id="r-eta"></dd></div>
+            <div><dt>Becsült díj</dt><dd id="r-price"></dd></div>
+          </dl>
+          <fieldset class="tow">
+            <legend>Mire van szüksége?</legend>
+            <label><input type="radio" name="tow" value="tow" checked /> Vontatás Ceglédre</label>
+            <label><input type="radio" name="tow" value="onsite" /> Csak helyszíni segítség (bikázás, defekt)</label>
+          </fieldset>
+          <label class="note-label" for="note">Mit lát maga körül? <span>(nem kötelező)</span></label>
+          <textarea id="note" rows="2" placeholder="Pl. piros Opel Astra, Szeged felé, a 46-os kő után"></textarea>
+          <div class="share">
+            <a class="share-btn sms" id="sms" href="#">Elküldöm SMS-ben</a>
+            <a class="share-btn wa" id="wa" href="#" target="_blank" rel="noopener">WhatsAppon</a>
+            <button class="share-btn copy" id="copy" type="button">Másolom</button>
+          </div>
+          <p class="sign-foot">A díj tájékoztató: kiszállás + kilométer, éjjel (22–6) +25%. A végleges összeget a helyszínen mondjuk meg, mielőtt hozzányúlunk az autóhoz.</p>
+        </div>
+      </section>
+
+      <section class="kmpost" aria-labelledby="km-title">
+        <div class="km-text">
+          <h2 id="km-title">Autópályán áll, vagy nem akarja megadni a helyét?</h2>
+          <p>Nézzen körül: a leállósáv mellett kis táblák mutatják, hányadik kilométernél jár. Írja be, és onnan számolunk.</p>
+        </div>
+        <form class="km-form" id="km-form" novalidate>
+          <div class="post" aria-hidden="true"><span id="post-road">M5</span><strong id="post-km">46</strong></div>
+          <div class="km-fields">
+            <label>Autópálya
+              <select id="road"><option>M5</option><option>M4</option></select>
+            </label>
+            <label>Kilométer
+              <input id="km" type="number" inputmode="decimal" step="0.1" min="0" value="46" />
+            </label>
+            <button type="submit">Ez az</button>
+          </div>
+          <p class="km-error" id="km-error" role="alert"></p>
+        </form>
+      </section>
+
+      <section class="safety" aria-labelledby="safety-title">
+        <h2 id="safety-title">Amíg odaérünk</h2>
+        <ol class="checks">
+          <li><label><input type="checkbox" /> <span><strong>Vészvillogó be.</strong> Akkor is, ha világos van.</span></label></li>
+          <li><label><input type="checkbox" /> <span><strong>Láthatósági mellény</strong> fel, még mielőtt kiszáll.</span></label></li>
+          <li><label><input type="checkbox" /> <span><strong>Elakadásjelző háromszög</strong> legalább 50 méterre az autó mögé, autópályán 100 méterre.</span></label></li>
+          <li><label><input type="checkbox" /> <span><strong>Autópályán szálljon ki a korlát mögé</strong>, és ott várjon, ne az autóban.</span></label></li>
+        </ol>
+      </section>
+
+      <section class="prices" aria-labelledby="prices-title">
+        <div>
+          <h2 id="prices-title">Árak, előre</h2>
+          <table class="price-table">
+            <tbody>
+              <tr><th scope="row">Kiszállás</th><td id="p-callout"></td></tr>
+              <tr><th scope="row">Kilométerenként (oda és a vontatás)</th><td id="p-km"></td></tr>
+              <tr><th scope="row">Éjjel, 22 és 6 óra között</th><td>+25%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <form class="plan" id="plan" novalidate>
+          <h3>Nem sürgős? Szállítás előre egyeztetve</h3>
+          <p>Ha az autó áll valahol, és csak el kell vinni szervizbe, bontóba vagy haza, írja be, hány kilométer az út.</p>
+          <label for="plan-km">Út hossza, km</label>
+          <input id="plan-km" type="number" inputmode="numeric" min="1" max="500" value="25" />
+          <p class="plan-out" id="plan-out" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="photos" aria-label="Munka közben">
+        <img src="/csorlo.webp" alt="Kesztyűs kéz akasztja a csörlő hevederét egy autó elejére, este, sárga villogó fényében" width="1200" height="900" loading="lazy" />
+      </section>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">Gyakori kérdések</h2>
+        <details><summary>Kifizeti a biztosító?</summary><p>Ha van casco vagy assistance szolgáltatása, sokszor igen. Mondja meg a biztosító nevét, és a számlát úgy állítjuk ki, hogy be tudja nyújtani.</p></details>
+        <details><summary>Hova visznek?</summary><p>Ahova kéri: szervizbe, haza vagy a ceglédi telephelyünkre, ahol 3 napig díjmentesen áll az autó.</p></details>
+        <details><summary>Hogyan fizethetek?</summary><p>Készpénzzel vagy kártyával a helyszínen. Cégeknek átutalással, számlára.</p></details>
+        <details><summary>Mi történik a helyemmel, ha megosztom?</summary><p>Ez a bemutató oldal nem küld adatot sehova. A helye csak akkor jut el hozzánk, ha Ön elküldi SMS-ben vagy WhatsAppon.</p></details>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p><strong>Csörlő Autómentés</strong>, Cegléd · <a href="tel:+36305550177">06 30 555 0177</a> · éjjel-nappal</p>
+      <p class="credit">Bemutató projekt, kitalált vállalkozás. Fotók: generált illusztrációk. Készítette <a href="https://rizmajerdev.com/">Rizmajer Máté</a>.</p>
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

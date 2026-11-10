@@ -1,0 +1,178 @@
+/* Csörlő Autómentés: aszfalt, borostyán villogó, autópálya-tábla zöld,
+   fehér kilométerkő. Overpass a közúti táblák betűjéből született. */
+:root {
+  --asphalt: #15181b;
+  --surface: #1f2327;
+  --line: #353b41;
+  --text: #f2f3f1;
+  --muted: #b3b9bf;
+  --beacon: #ffb000;
+  --sign: #0b6e4f;
+  --post: #f4f4f0;
+  --ink: #111;
+  --radius: 14px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--asphalt);
+  color: var(--text);
+  font: 400 1.0625rem/1.6 'Overpass Variable', system-ui, sans-serif;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--beacon); outline-offset: 3px; }
+
+.skip { position: absolute; left: 1rem; top: -4rem; background: var(--beacon); color: var(--ink); padding: .7rem 1rem; border-radius: 8px; z-index: 10; }
+.skip:focus { top: 1rem; }
+
+.banner { margin: 0; padding: .55rem 1rem; background: #0d0f11; color: var(--muted); font-size: .8125rem; text-align: center; }
+.banner a { color: var(--text); }
+.banner-cta { margin-left: .5rem; font-weight: 700; color: var(--beacon) !important; text-decoration: none; }
+
+.top {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .9rem clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 5; background: rgb(21 24 27 / .96);
+}
+.brand { display: flex; min-height: 44px; align-items: center; gap: .6rem; font-weight: 900; font-size: 1.35rem; letter-spacing: .04em; text-decoration: none; }
+.brand small { display: block; font-weight: 500; font-size: .75rem; letter-spacing: .02em; color: var(--muted); }
+.beacon { width: 14px; height: 14px; border-radius: 50%; background: var(--beacon); box-shadow: 0 0 0 0 rgb(255 176 0 / .6); animation: pulse 1.6s ease-out infinite; }
+@keyframes pulse { to { box-shadow: 0 0 0 12px rgb(255 176 0 / 0); } }
+.call {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.1rem; border-radius: 999px;
+  background: var(--beacon); color: var(--ink); font-weight: 800; text-decoration: none;
+}
+.call .short { display: none; }
+@media (max-width: 480px) { .call .long { display: none; } .call .short { display: inline; } }
+
+main > section { padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem); }
+
+/* Hős: a hely megosztása az első és legnagyobb dolog. */
+.hero { display: grid; gap: 2rem; align-items: center; position: relative; }
+.hero::after { /* veszélyjelző csík, mint a mentőautó hátulján */
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 10px;
+  background: repeating-linear-gradient(-45deg, var(--beacon) 0 14px, var(--ink) 14px 28px);
+}
+@media (min-width: 960px) { .hero { grid-template-columns: 1.05fr 1fr; min-height: 78vh; } }
+.kicker { margin: 0 0 .75rem; color: var(--beacon); font-weight: 700; font-size: .95rem; }
+h1 { margin: 0; font-size: clamp(2.4rem, 7vw, 4.6rem); line-height: 1; font-weight: 900; letter-spacing: -.02em; text-wrap: balance; }
+h1 span { color: var(--beacon); }
+.lead { max-width: 34rem; color: var(--muted); font-size: 1.15rem; margin: 1.25rem 0 0; }
+.actions { display: grid; gap: .75rem; margin-top: 2rem; max-width: 30rem; }
+.btn-locate {
+  display: flex; align-items: center; justify-content: center; gap: .7rem;
+  min-height: 64px; border: 0; border-radius: var(--radius); cursor: pointer;
+  background: var(--beacon); color: var(--ink); font-family: inherit; font-weight: 900; font-size: 1.3rem; line-height: 1; letter-spacing: .01em;
+}
+.btn-locate:hover { filter: brightness(1.06); }
+.pin { width: 22px; height: 22px; border-radius: 50% 50% 50% 0; background: var(--ink); transform: rotate(-45deg); position: relative; }
+.pin::after { content: ''; position: absolute; inset: 7px; border-radius: 50%; background: var(--beacon); }
+.btn-call {
+  display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: var(--radius);
+  border: 2px solid var(--line); font-weight: 700; text-decoration: none;
+}
+.btn-call:hover { border-color: var(--beacon); }
+.status { min-height: 1.6em; margin: 1rem 0 0; color: var(--text); font-weight: 600; }
+.hero-photo { margin: 0; border-radius: var(--radius); overflow: hidden; }
+.hero-photo img { aspect-ratio: 16 / 10; object-fit: cover; width: 100%; }
+
+/* Eredmény: autópálya-tábla. */
+.result { padding-top: 0 !important; }
+.sign {
+  max-width: 44rem; margin: 2rem auto 0; background: var(--sign); color: #fff;
+  border: 3px solid #fff; border-radius: 18px; padding: clamp(1.25rem, 4vw, 2.25rem);
+  box-shadow: 0 0 0 6px var(--sign);
+}
+.sign-title { margin: 0 0 1rem; font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 900; }
+.sign-title:focus { outline: none; }
+.sign-rows { margin: 0; display: grid; gap: .6rem; }
+.sign-rows div { display: grid; grid-template-columns: 8.5rem 1fr; gap: .75rem; border-top: 1px solid rgb(255 255 255 / .35); padding-top: .6rem; }
+.sign-rows dt { font-weight: 600; opacity: .9; }
+.sign-rows dd { margin: 0; font-weight: 800; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+@media (max-width: 480px) { .sign-rows div { grid-template-columns: 1fr; gap: 0; } }
+.tow { border: 0; padding: 0; margin: 1.5rem 0 0; display: grid; gap: .4rem; }
+.tow legend { font-weight: 800; margin-bottom: .4rem; }
+.tow label { display: flex; align-items: center; gap: .6rem; min-height: 44px; }
+.tow input { width: 20px; height: 20px; accent-color: var(--beacon); }
+.note-label { display: block; margin-top: 1rem; font-weight: 800; }
+.note-label span { font-weight: 400; opacity: .85; }
+textarea, input[type=number], select {
+  width: 100%; margin-top: .4rem; border-radius: 10px; border: 2px solid rgb(255 255 255 / .5);
+  background: rgb(0 0 0 / .25); color: inherit; font: inherit; padding: .7rem .8rem;
+}
+textarea::placeholder { color: rgb(255 255 255 / .75); }
+.share { display: grid; gap: .6rem; margin-top: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.share-btn {
+  display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 12px;
+  font-family: inherit; font-weight: 800; font-size: 1rem; line-height: 1; text-decoration: none; cursor: pointer; border: 2px solid #fff;
+}
+.sms { background: #fff; color: var(--sign); }
+.wa, .copy { background: transparent; color: #fff; }
+.sign-foot { margin: 1.25rem 0 0; font-size: .9rem; opacity: .9; }
+
+/* Kilométerkő. */
+.kmpost { display: grid; gap: 2rem; align-items: center; background: var(--surface); border-block: 1px solid var(--line); }
+@media (min-width: 900px) { .kmpost { grid-template-columns: 1fr 1fr; } }
+.km-text h2, .safety h2, .prices h2, .faq h2 { margin: 0 0 .75rem; font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1.1; font-weight: 900; text-wrap: balance; }
+.km-text p { color: var(--muted); max-width: 32rem; }
+.km-form { display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; }
+.post {
+  width: 92px; padding: .5rem .4rem 1rem; background: var(--post); color: var(--ink); text-align: center;
+  border-radius: 6px 6px 2px 2px; box-shadow: inset 0 10px 0 var(--sign);
+}
+.post span { display: block; margin-top: .55rem; font-weight: 800; font-size: .9rem; }
+.post strong { display: block; font-size: 2.2rem; line-height: 1; font-weight: 900; font-variant-numeric: tabular-nums; }
+.km-fields { display: grid; gap: .75rem; }
+.km-fields label { font-weight: 700; color: var(--muted); }
+.km-fields select, .km-fields input { border-color: var(--line); background: var(--asphalt); }
+.km-fields button {
+  min-height: 52px; border: 0; border-radius: 12px; background: var(--beacon); color: var(--ink); font-family: inherit; font-weight: 900; font-size: 1.05rem; line-height: 1; cursor: pointer;
+}
+.km-error { grid-column: 1 / -1; margin: 0; color: var(--beacon); font-weight: 600; min-height: 1.2em; }
+
+/* Biztonság. */
+.checks { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: .75rem; max-width: 44rem; }
+.checks label { display: flex; gap: .9rem; align-items: flex-start; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; }
+.checks input { width: 22px; height: 22px; margin-top: .15rem; accent-color: var(--beacon); flex: none; }
+.checks label:has(input:checked) { border-color: var(--beacon); }
+.checks label:has(input:checked) span { color: var(--muted); }
+
+/* Árak. */
+.prices { display: grid; gap: 2rem; background: var(--surface); border-block: 1px solid var(--line); }
+@media (min-width: 900px) { .prices { grid-template-columns: 1fr 1fr; } }
+.price-table { width: 100%; border-collapse: collapse; }
+.price-table th, .price-table td { text-align: left; padding: .8rem 0; border-bottom: 1px solid var(--line); }
+.price-table th { font-weight: 500; color: var(--muted); }
+.price-table td { text-align: right; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.plan { border: 2px solid var(--line); border-radius: var(--radius); padding: 1.5rem; }
+.plan h3 { margin: 0 0 .5rem; font-size: 1.25rem; }
+.plan p { color: var(--muted); margin: 0 0 1rem; }
+.plan label { font-weight: 700; }
+.plan input { border-color: var(--line); background: var(--asphalt); }
+.plan-out { margin: 1rem 0 0 !important; color: var(--text) !important; font-weight: 800; font-size: 1.2rem; }
+
+/* Fotók. */
+.photos { display: grid; gap: 1rem; }
+.photos img { max-height: 70vh; }
+.photos img { border-radius: var(--radius); width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+
+/* GYIK. */
+.faq { max-width: 52rem; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { min-height: 52px; display: flex; align-items: center; cursor: pointer; font-weight: 800; font-size: 1.1rem; }
+.faq p { color: var(--muted); margin: 0 0 1rem; max-width: 65ch; }
+
+.foot { padding: 2rem clamp(1rem, 4vw, 3rem) 3rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem; }
+.foot p { margin: .25rem 0; }
+.foot a { color: var(--text); }
+.credit { font-size: .85rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .beacon { animation: none; }
+  * { scroll-behavior: auto !important; }
+}
