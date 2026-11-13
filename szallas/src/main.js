@@ -97,7 +97,7 @@ function renderBoard() {
     const sel = state.room?.id === r.id
     return `<div class="hook" role="listitem"><span class="nail" aria-hidden="true"></span>
       <button type="button" class="key${sel ? ' is-picked' : ''}${short ? ' is-nofit' : ''}" data-room="${r.id}" aria-pressed="${sel}"
-        aria-label="${nth(r.id)} kulcs, ${r.name}, szabad${short ? `, de ${short}` : ''}">
+        aria-label="${r.id} ${r.name}: ${nth(r.id)} kulcs, szabad${short ? `, de ${short}` : ''}">
         <span class="ring" aria-hidden="true"></span>${KEY_METAL}
         <span class="fob" aria-hidden="true"><b>${r.id}</b><small>${r.name}</small></span>
         ${short ? `<span class="nofit" aria-hidden="true">${short}</span>` : ''}

@@ -91,7 +91,7 @@ h2 { margin: 0 0 .5rem; font-size: clamp(1.8rem, 4.5vw, 2.8rem); line-height: 1.
 .job[data-fit='jo'] .fit-label { color: var(--loaf); }
 .job[data-fit='nem'] .fit-label { color: var(--muted); }
 .meter { height: 10px; margin: .6rem 0; border-radius: 999px; background: rgb(255 255 255 / .12); overflow: hidden; }
-.meter span { display: block; height: 100%; width: 0; background: var(--loaf); transition: width .35s cubic-bezier(.22, 1, .36, 1); }
+.meter span { display: block; height: 100%; width: 100%; background: var(--loaf); transform: scaleX(0); transform-origin: left; transition: transform .35s cubic-bezier(.22, 1, .36, 1); }
 .fit-days { margin: 0; color: var(--muted); font-size: .95rem; min-height: 1.4em; }
 .fit-pay { margin: .35rem 0 1rem; }
 .fit-pay span { color: var(--muted); }

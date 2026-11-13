@@ -87,8 +87,7 @@ main { max-width: 1180px; margin: 0 auto; padding: 0 1.25rem 4rem; overflow-x: c
   align-items: center;
   padding: 1.8rem 2rem;
   background: var(--white);
-  border: 1.5px solid var(--line);
-  border-left: 6px solid var(--teal);
+  border: 1.5px solid color-mix(in srgb, var(--teal) 55%, var(--line));
   border-radius: var(--radius);
 }
 .urgent h2 { font-size: 1.6rem; }
@@ -175,7 +174,7 @@ fieldset { border: 0; margin: 0; padding: 0; }
 .error { color: #b3261e; font-size: 0.9rem; font-weight: 400; }
 .attached { grid-column: 1 / -1; margin: 0; padding: 0.8rem 1rem; background: var(--teal-soft); border-radius: 12px; font-weight: 700; }
 .attached[hidden] { display: none; }
-.form-status { margin: 0; padding: 1rem 1.2rem; background: var(--white); border-left: 5px solid var(--teal); border-radius: 12px; }
+.form-status { margin: 0; padding: 1rem 1.2rem; background: var(--white); border: 1.5px solid var(--teal); border-radius: 12px; }
 
 footer { max-width: 1180px; margin: 0 auto; padding: 2rem 1.25rem 3rem; font-size: 0.88rem; color: var(--soft); }
 
@@ -185,18 +184,10 @@ footer { max-width: 1180px; margin: 0 auto; padding: 2rem 1.25rem 3rem; font-siz
   .hero-copy > :nth-child(2) { animation-delay: 0.1s; }
   .hero-copy > :nth-child(3) { animation-delay: 0.2s; }
   /* A single polish passes over the teal line of the headline */
-  .shine {
-    background: linear-gradient(100deg, var(--teal) 40%, #7fd0c7 50%, var(--teal) 60%) 120% 0 / 250% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shine 1.6s 0.5s var(--ease) both;
-  }
   .hero-photo img { animation: rise 0.9s 0.15s var(--ease) both; }
   .smile.polish .glare { animation: glare 0.8s var(--ease); }
 }
 @keyframes rise { from { opacity: 0; transform: translateY(0.8rem); } }
-@keyframes shine { from { background-position: 120% 0; } to { background-position: -20% 0; } }
 @keyframes glare { 0% { opacity: 0; transform: translateX(0) skewX(-18deg); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateX(480px) skewX(-18deg); } }
 
 @media (max-width: 900px) {

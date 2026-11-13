@@ -82,7 +82,7 @@ function update() {
     const li = $(`job-${j.id}`)
     li.dataset.fit = avail.size ? v.key : ''
     li.querySelector('.fit-label').textContent = avail.size ? v.text : 'Jelöljön be műszakokat'
-    li.querySelector('.meter span').style.width = `${Math.round(m.pct * 100)}%`
+    li.querySelector('.meter span').style.transform = `scaleX(${m.pct.toFixed(3)})`
     const days = m.covered >= m.need ? `Mind a ${m.need} kért nap passzol` : `${m.covered} nap passzol a kért ${m.need}-ből`
     li.querySelector('.fit-days').textContent = avail.size ? days : ''
     const pay = weeklyGross(j, m.covered)

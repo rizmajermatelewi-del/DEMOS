@@ -54,8 +54,8 @@ button, input, textarea { font: inherit; color: inherit; }
 .file::before { left: 28px; right: -28px; top: 74px; bottom: -28px; background: #a98f57; }
 .file-tabs { position: absolute; top: 0; left: 0; right: 0; height: 46px; }
 .ftab { position: absolute; bottom: 0; left: calc(var(--i) * 15.8% + 1.5%); width: 15%; height: 38px; padding: 0 6px; border: 0; border-radius: 10px 10px 0 0; background: #cdb47c; color: #4a3a1a;
-  font: 600 0.82rem var(--sans); cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: height 0.2s, background 0.2s; }
-.ftab:hover { height: 43px; background: #d9c189; }
+  font: 600 0.82rem var(--sans); cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: transform 0.2s, background 0.2s; }
+.ftab:hover { transform: translateY(-5px); box-shadow: 0 5px 0 #d9c189; background: #d9c189; }
 .ftab[aria-selected="true"] { height: 47px; background: var(--manila); color: var(--ox); z-index: 2; }
 .file-body { position: relative; z-index: 1; min-height: 360px; padding: 28px clamp(20px, 3vw, 34px); border: 14px solid var(--manila); border-radius: 4px; color: var(--ink);
   background: repeating-linear-gradient(transparent 0 31px, #ece4d5 31px 32px), #fffdf7; box-shadow: 0 34px 60px -30px rgb(0 0 0 / 0.75); }
@@ -69,7 +69,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .f-more { font-weight: 600; color: var(--ox); }
 .stamp { position: absolute; right: 22px; top: 26px; padding: 4px 12px; border: 3px solid #b3261e; border-radius: 4px; color: #b3261e; font: 700 0.95rem var(--sans); letter-spacing: 0.22em; text-transform: uppercase; transform: rotate(-12deg); opacity: 0.85; mix-blend-mode: multiply; }
 .swap > :not(.stamp) { animation: settle 0.45s cubic-bezier(0.2, 0.75, 0, 1) both; }
-.swap > .stamp { animation: thump 0.45s 0.3s cubic-bezier(0.3, 1.5, 0.5, 1) backwards; }
+.swap > .stamp { animation: thump 0.45s 0.3s cubic-bezier(0.23, 1, 0.32, 1) backwards; }
 @keyframes thump { from { opacity: 0; transform: rotate(-12deg) scale(2.4); } }
 @media (max-width: 640px) {
   .file { padding-top: 0; }

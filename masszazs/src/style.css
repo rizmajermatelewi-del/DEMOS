@@ -42,7 +42,7 @@ h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); line-height: 1.02; }
 
 main { max-width: 1180px; margin: 0 auto; padding: 0 1.25rem 4rem; overflow-x: clip; }
 main > section { scroll-margin-top: 1rem; }
-.eyebrow { margin: 0; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--clay); }
+.eyebrow { margin: 0; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #984527; }
 .lede { font-size: 1.12rem; max-width: 34rem; margin: 1rem 0 0; color: var(--soft); }
 .hint { font-size: 0.9rem; color: var(--soft); margin: 0.8rem 0 0; }
 

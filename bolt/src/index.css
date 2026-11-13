@@ -211,7 +211,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 0 1rem 4rem; overflow-x: clip
   background: linear-gradient(90deg, #c9cdd1, #8d9196);
   transform-origin: 50% 100%;
   transform: rotate(-40deg);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .lever-arm::after {
   content: '';
@@ -473,7 +473,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 0 1rem 4rem; overflow-x: clip
 
 @media (prefers-reduced-motion: no-preference) {
   /* Items swing onto their pegs once, in board order */
-  .hang { animation: hang-in 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) both; animation-delay: calc(var(--i) * 45ms); transform-origin: 50% 0; }
+  .hang { animation: hang-in 0.7s cubic-bezier(0.23, 1, 0.32, 1) both; animation-delay: calc(var(--i) * 45ms); transform-origin: 50% 0; }
   .hang:hover .tool { animation: nudge 0.9s ease-out; }
   .hold[open] { animation: tag-in 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
 }

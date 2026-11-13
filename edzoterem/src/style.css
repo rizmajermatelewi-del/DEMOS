@@ -169,7 +169,7 @@ main > section { scroll-margin-top: 1rem; }
 #trial-form input:focus { outline: none; border-color: var(--hot); }
 #trial-form .btn { justify-self: start; }
 .error { color: #ff9a76; font-size: 0.9rem; font-weight: 500; }
-.form-status { margin: 0; padding: 0.9rem 1rem; background: var(--ink-2); border-left: 4px solid var(--hot); }
+.form-status { margin: 0; padding: 0.9rem 1rem; background: var(--ink-2); border: 1px solid var(--hot); }
 
 /* FAQ, visit */
 .faq { max-width: 50rem; padding: 4rem 0 2rem; }

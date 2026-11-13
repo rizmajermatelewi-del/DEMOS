@@ -188,7 +188,7 @@ fieldset { border: 0; margin: 0; padding: 0; }
 .error { color: #a82c18; font-size: 0.9rem; font-weight: 600; }
 .send { grid-column: 1 / -1; display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
 .pay { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
-.form-status { grid-column: 1 / -1; margin: 0; padding: 0.9rem 1.1rem; background: var(--paper); border-left: 4px solid var(--stem); border-radius: 0 1rem 1rem 0; }
+.form-status { grid-column: 1 / -1; margin: 0; padding: 0.9rem 1.1rem; background: var(--paper); border: 1px solid var(--stem); border-radius: 1rem; }
 
 /* Visit */
 .visit { padding: 4.5rem 0 1rem; border-top: 1px solid var(--line); }

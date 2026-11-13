@@ -299,15 +299,15 @@ footer {
 
 @media (prefers-reduced-motion: no-preference) {
   /* Each letter is pressed into its groove, in reading order */
-  .board .l { animation: press 0.5s cubic-bezier(0.34, 1.5, 0.64, 1) backwards; animation-delay: calc(var(--i) * 22ms); }
+  .board .l { animation: press 0.5s cubic-bezier(0.23, 1, 0.32, 1) backwards; animation-delay: calc(var(--i) * 22ms); }
   .compact .l { animation-delay: 0s; animation-duration: 0.3s; }
   /* Hovering a dish nudges its loose letters */
-  .row:hover .l { animation: wobble 0.5s ease-in-out; animation-delay: calc(var(--i) * 8ms); }
+  .row:hover .l { animation: wobble 0.35s ease-out; animation-delay: calc(var(--i) * 8ms); }
   .today-copy { transition: transform 0.3s; }
   .today-copy:hover { transform: rotate(0deg); }
   /* A dish you add slides onto the slip; a new slip drops onto the rail */
   .ticket-lines li { animation: slip-in 0.25s ease-out backwards; }
-  .slip { animation: hang 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) backwards; }
+  .slip { animation: hang 0.45s cubic-bezier(0.23, 1, 0.32, 1) backwards; }
   .pick li:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
 }
 @keyframes slip-in {
@@ -322,8 +322,7 @@ footer {
 }
 @keyframes wobble {
   0%, 100% { transform: rotate(var(--r)) translateY(var(--y)); }
-  35% { transform: rotate(calc(var(--r) * -3)) translateY(calc(var(--y) - 2px)); }
-  70% { transform: rotate(calc(var(--r) * 2)) translateY(var(--y)); }
+  40% { transform: rotate(var(--r)) translateY(calc(var(--y) - 2px)); }
 }
 
 /* Allergen stickers after a dish, and the legend under the board */
@@ -639,9 +638,9 @@ footer {
 
 @media (prefers-reduced-motion: no-preference) {
   .row.out::after { animation: strike 0.35s ease-out; }
-  .stamp-grid li.fresh { animation: stamp 0.45s cubic-bezier(0.34, 1.6, 0.64, 1); }
+  .stamp-grid li.fresh { animation: stamp 0.45s cubic-bezier(0.23, 1, 0.32, 1); }
   .sheet.tearing { animation: tear 0.45s ease-in forwards; }
-  .sign-board { animation: flip 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) 0.3s backwards; }
+  .sign-board { animation: flip 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.3s backwards; }
 }
 @keyframes strike { from { transform: rotate(-1.4deg) scaleX(0); } }
 @keyframes stamp { from { transform: rotate(-30deg) scale(2.2); opacity: 0; } }

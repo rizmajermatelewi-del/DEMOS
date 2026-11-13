@@ -65,7 +65,7 @@ button, input { font: inherit; color: inherit; }
 .marks li { position: absolute; left: var(--x); bottom: calc(var(--lift) * 30px); translate: -50% 0; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 2px solid var(--line); font: 700 0.75rem var(--display); color: var(--muted); }
 .marks li.must { border-color: var(--sun); }
 .marks li.got { background: var(--coral); border-color: var(--coral); color: #2a0f06; }
-.marks li.got.new { animation: stamp 0.35s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.marks li.got.new { animation: stamp 0.35s cubic-bezier(0.23, 1, 0.32, 1); }
 @keyframes stamp { from { transform: scale(0.4) rotate(-20deg); } }
 .ruler input { position: absolute; left: 0; right: 0; bottom: 14px; width: 100%; height: 34px; margin: 0; background: none; -webkit-appearance: none; appearance: none; cursor: pointer; }
 .ruler input::-webkit-slider-runnable-track { height: 10px; border-radius: 999px; background: linear-gradient(90deg, var(--coral) var(--p, 30%), var(--line) var(--p, 30%)); }
@@ -96,7 +96,7 @@ button, input { font: inherit; color: inherit; }
 @media (min-width: 800px) { .pet { grid-template-columns: auto 1fr 1fr; } }
 .age { margin: 22px 0 10px; font-size: 1.15rem; }
 .timeline { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 10px; }
-.timeline li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; padding: 14px 16px; border-radius: 18px; background: #f6faf8; border-left: 6px solid var(--line); }
+.timeline li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; padding: 14px 16px; border-radius: 18px; background: #f6faf8; border: 2px solid var(--line); }
 .when { font: 700 1rem var(--display); }
 .when small { display: block; font: 400 0.85rem var(--body); color: var(--muted); }
 .what { grid-column: 1 / -1; font-weight: 700; }

@@ -21,7 +21,7 @@ const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0'
 const days = dropDays(today, 6)
 const state = { part: 'kerek', picked: new Set(['defekt']), day: null }
 
-$('spots').innerHTML = Object.entries(SPOTS).map(([id, [x, y]], i) => `<button type="button" class="spot" data-part="${id}" style="left:${x}%;top:${y}%" aria-label="${PARTS[id].name}" aria-pressed="false"><span>${i + 1}</span><b>${PARTS[id].name}</b></button>`).join('')
+$('spots').innerHTML = Object.entries(SPOTS).map(([id, [x, y]], i) => `<button type="button" class="spot" data-part="${id}" style="left:${x}%;top:${y}%" aria-pressed="false"><span>${i + 1}</span><b>${PARTS[id].name}</b></button>`).join('')
 $('spots').addEventListener('click', (e) => {
   const b = e.target.closest('.spot')
   if (!b) return
